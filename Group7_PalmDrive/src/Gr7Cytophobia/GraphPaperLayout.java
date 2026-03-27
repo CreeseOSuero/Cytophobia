@@ -1,6 +1,5 @@
 package Gr7Cytophobia;//put package code
 
-import Cytophobia.*;
 import java.awt.*;
 import java.util.Hashtable;
 

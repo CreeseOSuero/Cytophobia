@@ -1,6 +1,5 @@
 package Gr7Cytophobia;
 
-import Cytophobia.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;

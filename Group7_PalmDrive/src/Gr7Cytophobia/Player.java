@@ -1,6 +1,5 @@
 package Gr7Cytophobia;
 
-import Cytophobia.*;
 import javax.swing.*;
 
 public class Player extends Entity {
