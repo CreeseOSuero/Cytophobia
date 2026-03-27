@@ -1,6 +1,5 @@
 package Gr7Cytophobia;
 
-import Cytophobia.*;
 import java.awt.*;
 import javax.swing.*;
 
