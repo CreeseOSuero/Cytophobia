@@ -1,0 +1,153 @@
+package gr5cytophobia;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class PD5 implements KeyListener {
+
+    JFrame frame;
+
+    ImageIcon wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
+    ImageIcon floor, bed1, bed2, sky, couch, shelf,carpet, table,plant;
+    ImageIcon frontS, frontW, backS, backW, leftS, leftW, rightS, rightW;
+
+    JLabel tiles[];
+
+    int mapLayout[];
+    int mapWidth = 32;
+    int mapHeight = 18;
+
+    int frameWidth = 1920;
+    int frameHeight = 1080;
+
+    public PD5() {
+        frame = new JFrame("PDBL");
+
+        // ---- LOAD IMAGES ----
+        wall1 = new ImageIcon("Images/wall1.jpg");
+        wall2 = new ImageIcon("Images/wall2.jpg");
+        wall3 = new ImageIcon("Images/wall3.jpg");
+        wall4 = new ImageIcon("Images/wall4.jpg");
+        wall5 = new ImageIcon("Images/wall5.jpg");
+        wall6 = new ImageIcon("Images/wall6.jpg");
+        wall7 = new ImageIcon("Images/wall7.jpg");
+        wall8 = new ImageIcon("Images/wall8.jpg");
+
+        floor = new ImageIcon("Images/floor.png");
+        bed1 = new ImageIcon("Images/bed1.png");
+        bed2 = new ImageIcon("Images/bed2.png");
+        couch = new ImageIcon("Images/couch.png");
+        sky = new ImageIcon("Images/sky.jpg");
+        shelf = new ImageIcon("Images/shelf.png");
+        carpet = new ImageIcon("Images/carpet.png");
+        table =new ImageIcon("Images/table.png");
+        plant =new ImageIcon("Images/plant.png");
+
+        frontS = new ImageIcon("Images/plr_10.PNG");
+        frontW = new ImageIcon("Images/plr_11.PNG");
+        backS = new ImageIcon("Images/plr_30.PNG");
+        backW = new ImageIcon("Images/plr_31.PNG");
+        leftS = new ImageIcon("Images/plr_00.PNG");
+        leftW = new ImageIcon("Images/plr_01.PNG");
+        rightS = new ImageIcon("Images/plr_20.PNG");
+        rightW = new ImageIcon("Images/plr_21.PNG");
+
+        // ---- SCALE IMAGES ----
+        wall1 = scale(wall1); wall2 = scale(wall2); wall3 = scale(wall3); wall4 = scale(wall4);
+        wall5 = scale(wall5); wall6 = scale(wall6); wall7 = scale(wall7); wall8 = scale(wall8);
+        floor = scale(floor); bed1 = scale(bed1); bed2 = scale(bed2); sky = scale(sky);
+
+        frontS = scale(frontS); frontW = scale(frontW);
+        backS = scale(backS); backW = scale(backW);
+        leftS = scale(leftS); leftW = scale(leftW);
+        rightS = scale(rightS); rightW = scale(rightW);
+        couch = scale(couch);
+        shelf = scale(shelf);
+        carpet= scale(carpet);
+        table = scale(table);
+        plant = scale(plant);
+
+        // ---- MAP ----
+        mapLayout = new int[]{
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,6,4,4,4,4,4,4,4,4,4,4,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,5,12,1,1,1,1,1,1,1,1,13,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,5,14,1,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,5,1,1,1,1,1,1,1,1,1,11,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,5,15,1,1,1,1,1,16,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,9,11,11,11,11,11,11,11,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+        };
+
+        tiles = new JLabel[mapLayout.length];
+
+        for (int i = 0; i < tiles.length; i++) {
+            switch (mapLayout[i]) {
+                case 1 -> tiles[i] = new JLabel(floor);
+                case 2 -> tiles[i] = new JLabel(bed1);
+                case 3 -> tiles[i] = new JLabel(bed2);
+                case 4 -> tiles[i] = new JLabel(wall1);
+                case 5 -> tiles[i] = new JLabel(wall2);
+                case 6 -> tiles[i] = new JLabel(wall3);
+                case 7 -> tiles[i] = new JLabel(wall4);
+                case 8 -> tiles[i] = new JLabel(wall5);
+                case 9 -> tiles[i] = new JLabel(wall6);
+                case 10 -> tiles[i] = new JLabel(wall7);
+                case 11 -> tiles[i] = new JLabel(wall8);
+                case 12 -> tiles[i] = new JLabel(couch);
+                case 13 -> tiles[i] = new JLabel(shelf);
+                case 14 -> tiles[i] = new JLabel(carpet);
+                case 15 -> tiles[i] = new JLabel(table);
+                case 16 -> tiles[i] = new JLabel(plant);
+                default -> tiles[i] = new JLabel(sky);
+            }
+        }
+    }
+
+    private ImageIcon scale(ImageIcon icon) {
+        return new ImageIcon(icon.getImage().getScaledInstance(
+                frameWidth / mapWidth,
+                frameHeight / mapHeight,
+                Image.SCALE_DEFAULT
+        ));
+    }
+
+    public void setFrame() {
+        JLayeredPane pane = new JLayeredPane();
+        pane.setPreferredSize(new Dimension(frameWidth, frameHeight));
+
+        int tileW = frameWidth / mapWidth;
+        int tileH = frameHeight / mapHeight;
+
+        for (int i = 0; i < tiles.length; i++) {
+            tiles[i].setBounds((i % mapWidth) * tileW, (i / mapWidth) * tileH, tileW, tileH);
+            pane.add(tiles[i], JLayeredPane.DEFAULT_LAYER);
+        }
+
+        frame.add(pane);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addKeyListener(this);
+    }
+
+    @Override public void keyTyped(KeyEvent e) {}
+    @Override public void keyReleased(KeyEvent e) {}
+    @Override public void keyPressed(KeyEvent e) {}
+
+    public static void main(String[] args) {
+        new PD5().setFrame();
+    }
+}
