@@ -1,4 +1,4 @@
-package cs.goated;
+package Gr2Cytophobia;
 import java.awt.*;
 import java.util.Hashtable;
 
