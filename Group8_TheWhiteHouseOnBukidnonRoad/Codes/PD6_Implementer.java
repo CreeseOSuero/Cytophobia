@@ -11,12 +11,12 @@ import javax.swing.SwingUtilities;
  *
  * @author AIDEN
  */
-public class PD4_Implementer {
+public class PD6_Implementer {
     public static void main(String[] args) {
         try {
             SwingUtilities.invokeLater(() -> {
                 try {
-                    new PD4_GUI();
+                    new PD6_GUI();
                 } catch (Exception ex) {
                     System.err.println("Fatal error in main lambda: " + ex.getMessage());
                     ex.printStackTrace();
@@ -30,4 +30,3 @@ public class PD4_Implementer {
         }
     }
 }
-

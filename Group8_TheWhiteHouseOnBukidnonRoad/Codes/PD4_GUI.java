@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package QUARTER3;
 
 import java.awt.*;
@@ -10,486 +6,371 @@ import java.awt.geom.Point2D;
 import javax.swing.*;
 
 public class PD4_GUI implements KeyListener {
-
-    JFrame frame;
-    JLabel bg, plr, enemy;
-    JPanel overlay; // Lighting layer
-
-    // Logic Arrays
-    int interLayout[]; // Collision grid
-    boolean interDone[]; // Check if interaction happened
-    String interDia[];   // Dialogues
-
-    // Dimensions
-    int mapWidth = 32;
-    int mapHeight = 18;
-    int frameWidth = 1600;
-    int frameHeight = 900;
-
+    
+    // Constants
+    private static final int MAP_WIDTH = 32;
+    private static final int MAP_HEIGHT = 18;
+    private static final int FRAME_WIDTH = 1600;
+    private static final int FRAME_HEIGHT = 900;
+    private static final int PLAYER_SIZE = 2;
+    
+    // UI Components
+    private JFrame frame;
+    private JLabel bg;
+    private JLabel player;
+    private JPanel overlay;
+    private JLabel fadeEffect;
+    private JLabel dialogueBox;
+    private JLabel dialogueName;
+    private JLabel dialogueText;
+    private JLabel alphaGrad;
+    
     // Player State
-    ImageIcon plrStates[];
-    volatile boolean plrMobile;
-    int plrDir = 3;
-    int plrState = 0;
-    
-    // STARTING POSITION: OUTSIDE (Bottom Left)
-    int charX = 2, charY = 16; 
-    boolean hasKey = false; // Logic for the door
+    private PlayerState playerState;
+    private MapData mapData;
+    private GameState gameState;
 
-    // Enemy State
-    int enemyX = 25, enemyY = 5; // Starts INSIDE the house
-    Timer enemyTimer;            // Timer for enemy movement
-
-    // UI & Effects
-    JLabel glitchEffect;
-    JLabel darkEffect;
-    JLabel fadeEffect;
-    JLabel alphaGrad;
-    JLabel dialogueBox;
-    JLabel dialogueName;
-    JLabel dialogueText;
-    JLabel idFront;
-    JLabel idBack;
-    
-    // Story State
-    volatile boolean doingObjective;
-    volatile boolean doDialog;
-    volatile boolean isCompleting;
-    volatile int interType;
-    boolean keyPress = false;
-
-    // ================= HELPER METHODS =================
-
-    ImageIcon loadImg(String ref, int scaleX, int scaleY) {
-        if (getClass().getResource(ref) == null && !ref.startsWith("/")) {
-             // System.out.println("Missing image: " + ref); 
-        }
-        return new ImageIcon((new ImageIcon(ref)).getImage()
-                .getScaledInstance((frameWidth / mapWidth) * scaleX, (frameHeight / mapHeight) * scaleY, Image.SCALE_DEFAULT));
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new PD4_GUI());
     }
-
-    void changeComponentConstraints(JFrame frame, Component comp, Rectangle cons) {
-        ((GraphPaperLayout) (frame.getContentPane().getLayout())).setConstraints(comp, cons);
-        frame.getContentPane().revalidate();
-        frame.getContentPane().repaint();
-    }
-    
-    void tWait(int ms) throws InterruptedException {
-        Thread.sleep(ms);
-    }
-
-    // ================= CONSTRUCTOR =================
     
     public PD4_GUI() {
-        frame = new JFrame("Cytophobia");
-
-        // 1. SETUP DATA & ARRAYS
-        plrMobile = false; // Starts frozen for intro
-        plrStates = new ImageIcon[12];
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 3; ++j) {
-                plrStates[i * 3 + j] = loadImg("Images/plr_" + i + j + ".PNG", 2, 2);
-            }
+        System.out.println("=== PD4_GUI Starting ===");
+        try {
+            initializeFrame();
+            initializePlayer();
+            initializeMap();
+            initializeUI();
+            initializeOverlay();
+            setupLayout();
+            startGame();
+            System.out.println("=== PD4_GUI Started Successfully ===");
+        } catch (Exception ex) {
+            System.err.println("FATAL ERROR: " + ex.getMessage());
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
-        plr = new JLabel(plrStates[9]); 
-
-        // MAP LAYOUT:
-        // 0 = Floor, 1 = Wall, 9 = Door
-        // 7 = Key (Outside), 6 = Barricade, 8 = Window
-        interLayout = new int[]{
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,8,8,0,0,0,0,0,8,8,0,0,0,0,0,8,8,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,3,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0,0,0,
-            1,1,1,1,1,1,1,1,1,1,1,1,1,9,9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, // WALL & DOOR(9)
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // OUTSIDE
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7, // KEY(7)
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-        };
-
-        interDone = new boolean[8];
-        interDia = new String[]{
-            "Just some dusty old books.",        // (Type 2 - 2 = Index 0) Bookshelf
-            "The sheets are twisted and cold.",  // (Type 3 - 2 = Index 1) Bed
-            "",                                  // (Type 4 - 2 = Index 2) Unused
-            "The stairs are blocked.",           // (Type 5 - 2 = Index 3) Stairs
-            "I can't go there.",                 // (Type 6 - 2 = Index 4) Barricade "cant"
-            "I found the House Key under a rock!", // (Type 7 - 2 = Index 5) Key
-            "The window is sealed shut.",        // (Type 8 - 2 = Index 6) Window
-            "The door is locked. I need a key."  // (Type 9 - 2 = Index 7) DOOR LOCKED
-        };
-
-        // 2. SETUP UI COMPONENTS
-        bg = new JLabel(loadImg("Images/Background.png", mapWidth, mapHeight));
-        alphaGrad = new JLabel(loadImg("Images/alpha_grad.png", mapWidth, 3));
-        glitchEffect = new JLabel(loadImg("Images/glitch_effect.gif", mapWidth, mapHeight));
+    }
+    
+    private void initializeFrame() {
+        System.out.println("Initializing frame...");
+        frame = new JFrame("Cytophobia - The House");
+        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addKeyListener(this);
+        frame.setFocusable(true);
+        System.out.println("Frame initialized");
+    }
+    
+    private void initializePlayer() {
+        System.out.println("Initializing player...");
+        playerState = new PlayerState();
+        player = new JLabel(playerState.getCurrentSprite());
+        System.out.println("Player initialized, sprite: " + (playerState.getCurrentSprite() != null));
+    }
+    
+    private void initializeMap() {
+        System.out.println("Initializing map...");
+        mapData = new MapData();
+        System.out.println("Map initialized");
+    }
+    
+    private void initializeUI() {
+        System.out.println("Initializing UI...");
         
-        dialogueBox = new JLabel();
-        dialogueBox.setBackground(Color.BLACK);
-        dialogueBox.setOpaque(true);
-        
-        darkEffect = new JLabel();
-        darkEffect.setBackground(Color.BLACK);
-        darkEffect.setOpaque(true);
-        
-        dialogueName = new JLabel();
-        dialogueText = new JLabel();
+        // Try multiple path formats
+        bg = loadLabel("Images/PD4_Background.png", MAP_WIDTH, MAP_HEIGHT, "Background");
         
         fadeEffect = new JLabel();
         fadeEffect.setBackground(Color.BLACK);
         fadeEffect.setOpaque(true);
         
-        idFront = new JLabel(loadImg("Images/id.png", 12, 10));
-        idBack = new JLabel(loadImg("Images/id_back.png", 12, 10));
+        dialogueBox = new JLabel();
+        dialogueBox.setBackground(Color.BLACK);
+        dialogueBox.setOpaque(true);
         
+        dialogueName = new JLabel();
         dialogueName.setForeground(Color.WHITE);
-        dialogueText.setForeground(Color.WHITE);
         dialogueName.setFont(new Font("Courier New", Font.PLAIN, 40));
+        
+        dialogueText = new JLabel();
+        dialogueText.setForeground(Color.WHITE);
         dialogueText.setFont(new Font("Arial Unicode MS", Font.PLAIN, 25));
-
-        // 3. SETUP ENEMY
-        enemy = new JLabel(loadImg("Images/enemy.png", 2, 2)); 
-
-        // 4. ASSEMBLE FRAME
-        frame.setLayout(new GraphPaperLayout(new Dimension(mapWidth, mapHeight)));
         
-        // Z-Index Order:
-        // Bottom: Player, Enemy, BG
-        frame.add(plr, new Rectangle(charX, charY, 2, 2));
-        frame.add(enemy, new Rectangle(enemyX, enemyY, 2, 2));
-        frame.add(bg, new Rectangle(0, 0, mapWidth, mapHeight));
-        
-        // Middle: Interactables (ID Cards)
-        frame.add(idFront, new Rectangle(10, 0, 12, 10));
-        frame.add(idBack, new Rectangle(10, 0, 12, 10));
-        
-        // Top: UI & Dialogue
-        frame.add(dialogueName, new Rectangle(2, 12, mapWidth - 2, 2));
-        frame.add(dialogueText, new Rectangle(2, 14, mapWidth - 2, 3));
-        frame.add(dialogueBox, new Rectangle(0, 12, mapWidth, mapHeight - 12));
-        frame.add(alphaGrad, new Rectangle(0, 9, mapWidth, 3));
-
-        // Very Top: Effects
-        frame.add(fadeEffect, new Rectangle(0, 0, mapWidth, mapHeight));
-        frame.add(glitchEffect, new Rectangle(0, 0, mapWidth, mapHeight));
-        frame.add(darkEffect, new Rectangle(0, 0, mapWidth, mapHeight));
-
-        // 5. LIGHTING OVERLAY (Flashlight Effect)
+        alphaGrad = loadLabel("Images/alpha_grad.png", MAP_WIDTH, 3, "AlphaGrad");
+        System.out.println("UI initialized");
+    }
+    
+    private JLabel loadLabel(String path, int w, int h, String name) {
+        System.out.println("Loading " + name + " from: " + path);
+        ImageIcon icon = loadImage(path, w, h);
+        if (icon == null || icon.getImage() == null || icon.getIconWidth() <= 0) {
+            System.err.println("FAILED to load " + name + " - creating placeholder");
+            // Create colored placeholder
+            JLabel placeholder = new JLabel(name + " MISSING");
+            placeholder.setBackground(Color.RED);
+            placeholder.setOpaque(true);
+            placeholder.setForeground(Color.WHITE);
+            placeholder.setHorizontalAlignment(SwingConstants.CENTER);
+            return placeholder;
+        }
+        System.out.println(name + " loaded successfully: " + icon.getIconWidth() + "x" + icon.getIconHeight());
+        return new JLabel(icon);
+    }
+    
+    private void initializeOverlay() {
+        System.out.println("Initializing overlay...");
         overlay = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                // Calculate tile size
-                int tileW = getWidth() / mapWidth;
-                int tileH = getHeight() / mapHeight;
-                // Center flashlight on player
-                float centerX = (charX + 1) * tileW;
-                float centerY = (charY + 1) * tileH;
-                float radius = 300f; 
-                float[] dist = {0.0f, 1.0f};
-                Color[] colors = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 245)}; // Transparent to Dark
-                
-                RadialGradientPaint p = new RadialGradientPaint(
+                try {
+                    Graphics2D g2d = (Graphics2D) g;
+                    int tileW = getWidth() / MAP_WIDTH;
+                    int tileH = getHeight() / MAP_HEIGHT;
+                    float centerX = (playerState.x + 1) * tileW;
+                    float centerY = (playerState.y + 1) * tileH;
+                    float radius = 300f;
+                    float[] dist = {0.0f, 1.0f};
+                    Color[] colors = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 245)};
+                    
+                    RadialGradientPaint paint = new RadialGradientPaint(
                         new Point2D.Float(centerX, centerY), radius, dist, colors);
-                g2d.setPaint(p);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
+                    g2d.setPaint(paint);
+                    g2d.fillRect(0, 0, getWidth(), getHeight());
+                } catch (Exception ex) {
+                    System.err.println("Overlay paint error: " + ex.getMessage());
+                }
             }
         };
         overlay.setOpaque(false);
+        System.out.println("Overlay initialized");
+    }
+    
+    private void setupLayout() {
+        System.out.println("Setting up layout...");
+        frame.setLayout(new GraphPaperLayout(new Dimension(MAP_WIDTH, MAP_HEIGHT)));
+        
+        System.out.println("Adding components to frame...");
+        frame.add(player, new Rectangle(playerState.x, playerState.y, PLAYER_SIZE, PLAYER_SIZE));
+        frame.add(bg, new Rectangle(0, 0, MAP_WIDTH, MAP_HEIGHT));
+        frame.add(dialogueName, new Rectangle(2, 12, MAP_WIDTH - 2, 2));
+        frame.add(dialogueText, new Rectangle(2, 14, MAP_WIDTH - 2, 3));
+        frame.add(dialogueBox, new Rectangle(0, 12, MAP_WIDTH, MAP_HEIGHT - 12));
+        frame.add(alphaGrad, new Rectangle(0, 9, MAP_WIDTH, 3));
+        frame.add(fadeEffect, new Rectangle(0, 0, MAP_WIDTH, MAP_HEIGHT));
+        
         frame.setGlassPane(overlay);
         overlay.setVisible(true);
-
-        // 6. INITIAL VISIBILITY
-        glitchEffect.setVisible(false);
+        
+        // Initial visibility - MAKE EVERYTHING VISIBLE FOR DEBUG
+        fadeEffect.setVisible(false);
         alphaGrad.setVisible(false);
         dialogueBox.setVisible(false);
         dialogueName.setVisible(false);
         dialogueText.setVisible(false);
-        idFront.setVisible(false);
-        idBack.setVisible(false);
-        plr.setVisible(false);
-
-        // 7. SETUP WINDOW
-        frame.setSize(frameWidth, frameHeight);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.addKeyListener(this);
-        frame.setVisible(true);
-        frame.setFocusable(true);
-        frame.requestFocusInWindow();
-
-        // 8. ENEMY AI TIMER
-        enemyTimer = new Timer(700, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateEnemyMovement();
-            }
-        });
-        enemyTimer.start(); 
-
-        // 9. STORYLINE THREAD
-        Thread storyThread = new Thread(() -> {
-            try {
-                runStoryline();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        });
-        storyThread.start();
+        player.setVisible(true); // Make player visible immediately
+        bg.setVisible(true);     // Make background visible immediately
         
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                storyThread.interrupt();
-            }
-        });
+        System.out.println("Layout complete - bg visible: " + bg.isVisible() + ", player visible: " + player.isVisible());
     }
-
-    // ================= ENEMY AI =================
-    void updateEnemyMovement() {
-        if (!plrMobile) return; 
+    
+    private void startGame() {
+        System.out.println("Starting game...");
+        gameState = new GameState();
         
-        int dx = charX - enemyX;
-        int dy = charY - enemyY;
-
-        // If further than 1 tile away, move closer
-        if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-            int nextX = enemyX;
-            int nextY = enemyY;
-
-            // Move along the axis with the largest distance
-            if (Math.abs(dx) >= Math.abs(dy)) nextX += Integer.signum(dx);
-            else nextY += Integer.signum(dy);
-
-            // Collision check
-            int tileIndex = nextY * mapWidth + nextX;
-            if (tileIndex >= 0 && tileIndex < interLayout.length) {
-                int tile = interLayout[tileIndex];
-                // Enemy is blocked by Walls (1), Doors (9), and Barricades (6)
-                if (tile != 1 && tile != 6 && tile != 9) { 
-                    enemyX = nextX;
-                    enemyY = nextY;
+        // Start immediately without story thread for debugging
+        playerState.mobile = true;
+        
+        frame.setVisible(true);
+        frame.requestFocusInWindow();
+        System.out.println("Game started, frame visible");
+    }
+    
+    // Image loading with multiple fallback attempts
+    private ImageIcon loadImage(String ref, int scaleX, int scaleY) {
+        String[] attempts = {
+            ref,                                    // As-is
+            "/" + ref,                              // With leading slash
+            ref.replace("Images/", "Images/"),      // Ensure case
+            "src/" + ref,                           // From src folder
+            "./" + ref,                             // Relative
+            ref.toLowerCase(),                      // Lowercase
+            ref.replace(".PNG", ".png").replace(".png", ".PNG") // Try both cases
+        };
+        
+        for (String path : attempts) {
+            try {
+                System.out.println("  Trying path: " + path);
+                java.net.URL url = getClass().getResource(path);
+                if (url == null) {
+                    url = getClass().getClassLoader().getResource(path);
+                }
+                if (url == null) {
+                    // Try file system
+                    java.io.File file = new java.io.File(path);
+                    if (file.exists()) {
+                        url = file.toURI().toURL();
+                    }
+                }
+                
+                if (url != null) {
+                    ImageIcon icon = new ImageIcon(url);
+                    if (icon.getImage() != null && icon.getIconWidth() > 0) {
+                        // Scale it
+                        int w = (FRAME_WIDTH / MAP_WIDTH) * scaleX;
+                        int h = (FRAME_HEIGHT / MAP_HEIGHT) * scaleY;
+                        Image scaled = icon.getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT);
+                        System.out.println("  SUCCESS with: " + path);
+                        return new ImageIcon(scaled);
+                    }
+                }
+            } catch (Exception ex) {
+                System.out.println("  Failed: " + ex.getMessage());
+            }
+        }
+        
+        System.err.println("ALL ATTEMPTS FAILED for: " + ref);
+        return null;
+    }
+    
+    // Simple inner classes
+    private class PlayerState {
+        ImageIcon[] sprites = new ImageIcon[12];
+        volatile boolean mobile = false;
+        int direction = 3;
+        int animationFrame = 0;
+        int x = 2, y = 16;
+        
+        PlayerState() {
+            System.out.println("Loading player sprites...");
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 3; j++) {
+                    sprites[i * 3 + j] = loadImage("Images/plr_" + i + j + ".PNG", PLAYER_SIZE, PLAYER_SIZE);
                 }
             }
-            changeComponentConstraints(frame, enemy, new Rectangle(enemyX, enemyY, 2, 2));
+            System.out.println("Sprites loaded");
+        }
+        
+        ImageIcon getCurrentSprite() {
+            return sprites[direction * 3 + animationFrame];
+        }
+        
+        void nextFrame() {
+            animationFrame = (animationFrame + 1) % 3;
+        }
+        
+        void turnRight() {
+            direction = (direction + 1) % 4;
+        }
+        
+        void move(int dx, int dy) {
+            x += dx;
+            y += dy;
+            x = Math.max(0, Math.min(x, MAP_WIDTH - PLAYER_SIZE));
+            y = Math.max(0, Math.min(y, MAP_HEIGHT - PLAYER_SIZE));
         }
     }
-
-    // ================= STORYLINE LOGIC =================
-    public void runStoryline() throws InterruptedException {
-        tWriteDia("", "...", 1, 3000); // Shortened intro
-        SwingUtilities.invokeLater(() -> {
-            fadeEffect.setVisible(true);
-            plr.setVisible(true);
-        });
+    
+    private class MapData {
+        int[] layout = {
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,0,0,0,0,1,0,0,0,0,
+            0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+        };
         
-        // Fade in
-        for (int i[] = {255}; i[0] >= 0; --i[0]) {
-            SwingUtilities.invokeLater(() -> {
-                fadeEffect.setBackground(new Color(0, 0, 0, i[0]));
-                frame.repaint();
-            });
-            tWait(4);
+        boolean isWall(int x, int y) {
+            int idx = y * MAP_WIDTH + x;
+            return idx >= 0 && idx < layout.length && layout[idx] == 1;
         }
         
-        SwingUtilities.invokeLater(() -> {
-            darkEffect.setVisible(false);
-            fadeEffect.setVisible(false);
-        });
-
-        tWriteDia("???", "I need to get inside.", 1000, 500);
+        boolean isTransition(int x, int y) {
+            return x >= 28 && x <= 30 && y >= 3 && y <= 5;
+        }
+    }
+    
+    private class GameState {
+        boolean doorChecked = false;
+        boolean wallDoorChecked = false;
+        boolean keyPressed = false;
+    }
+    
+    // Key handling
+    @Override
+    public void keyPressed(KeyEvent evt) {
+        if (!playerState.mobile || gameState.keyPressed) return;
+        gameState.keyPressed = true;
         
-        plrMobile = true; 
-        doingObjective = true;
-
-        while (doingObjective) {
-            tWait(20);
-            if (doDialog) {
-                tWriteDia("???", interDia[interType], 1000, 1000);
-                plrMobile = true;
-                doDialog = false;
+        int prevX = playerState.x;
+        int prevY = playerState.y;
+        
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_LEFT:
+                playerState.direction = 0;
+                playerState.move(-1, 0);
+                break;
+            case KeyEvent.VK_UP:
+                playerState.direction = 1;
+                playerState.move(0, -1);
+                break;
+            case KeyEvent.VK_RIGHT:
+                playerState.direction = 2;
+                playerState.move(1, 0);
+                break;
+            case KeyEvent.VK_DOWN:
+                playerState.direction = 3;
+                playerState.move(0, 1);
+                break;
+        }
+        
+        // Check transition
+        if (mapData.isTransition(playerState.x, playerState.y)) {
+            System.out.println("Transition triggered!");
+            return;
+        }
+        
+        // Collision
+        for (int dx = 0; dx < 2; dx++) {
+            for (int dy = 0; dy < 2; dy++) {
+                if (mapData.isWall(playerState.x + dx, playerState.y + dy)) {
+                    playerState.x = prevX;
+                    playerState.y = prevY;
+                    break;
+                }
             }
         }
-
-        // Logic for ending tutorial / finding main objective
-        // (You can expand this later)
+        
+        // Update visual
+        playerState.nextFrame();
+        player.setIcon(playerState.getCurrentSprite());
+        ((GraphPaperLayout)frame.getContentPane().getLayout())
+            .setConstraints(player, new Rectangle(playerState.x, playerState.y, PLAYER_SIZE, PLAYER_SIZE));
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();
+        overlay.repaint();
     }
-
-    int tWriteDia(String name, String text, int textDuration, int delayAfter) throws InterruptedException {
-        SwingUtilities.invokeLater(() -> {
-            alphaGrad.setVisible(true);
-            dialogueBox.setVisible(true);
-            dialogueName.setText(name);
-            dialogueText.setText("_");
-            dialogueName.setVisible(true);
-            dialogueText.setVisible(true);
-        });
-        int delayPerChar = (text.length() > 0) ? textDuration / text.length() : 0;
-        int i = 0;
-        final String[] buf = {""};
-        while (i < text.length()) {
-            buf[0] += text.charAt(i++);
-            SwingUtilities.invokeLater(() -> { dialogueText.setText(buf[0] + "_"); });
-            tWait(delayPerChar);
-        }
-        for (i = 0; i < delayAfter / 500; ++i) {
-            if (i % 2 == 0) SwingUtilities.invokeLater(() -> { dialogueText.setText(buf[0] + "_"); });
-            else SwingUtilities.invokeLater(() -> { dialogueText.setText(buf[0]); });
-            tWait(500);
-        }
-        tWait(delayAfter % 500);
-        SwingUtilities.invokeLater(() -> {
-            alphaGrad.setVisible(false);
-            dialogueBox.setVisible(false);
-            dialogueName.setText("");
-            dialogueText.setText("");
-            dialogueName.setVisible(false);
-        });
-        return 0;
-    }
-
-    // ================= MOVEMENT & INPUT =================
+    
     @Override
-public void keyPressed(KeyEvent e) {
-
-int prevX = charX;
-int prevY = charY;
-
-if (e.getKeyCode() < 41 && e.getKeyCode() >= 37 && plrMobile && !keyPress) {
-
-keyPress = true;
-plrDir = e.getKeyCode() - 37;
-
-if (plrDir == 0) charX--;
-else if (plrDir == 1) charY--;
-else if (plrDir == 2) charX++;
-else if (plrDir == 3) charY++;
-
-// =========================
-// Boundary Check
-// =========================
-if (charX < 0) charX = 0;
-if (charY < 0) charY = 0;
-if (charX > mapWidth - 2) charX = mapWidth - 2;
-if (charY > mapHeight - 2) charY = mapHeight - 2;
-
-// =========================
-// CHECK ALL 4 PLAYER TILES
-// =========================
-boolean blocked = false;
-int tileHit = 0;
-
-for (int dx = 0; dx < 2; dx++) {
-for (int dy = 0; dy < 2; dy++) {
-
-int checkX = charX + dx;
-int checkY = charY + dy;
-
-int tileIndex = checkY * mapWidth + checkX;
-
-if (tileIndex >= 0 && tileIndex < interLayout.length) {
-
-int tile = interLayout[tileIndex];
-
-if (tile == 1) {
-blocked = true;
-}
-
-if (tile > 1) {
-tileHit = tile;
-}
-}
-}
-}
-
-// =========================
-// WALL COLLISION
-// =========================
-if (blocked) {
-charX = prevX;
-charY = prevY;
-}
-
-// =========================
-// DOOR LOGIC
-// =========================
-if (tileHit == 9) {
-
-if (!hasKey) {
-
-doDialog = true;
-interType = 7;
-plrMobile = false;
-
-charX = prevX;
-charY = prevY;
-}
-}
-
-// =========================
-// INTERACTIONS
-// =========================
-if (tileHit > 1 && tileHit != 9 && (doingObjective || isCompleting)) {
-
-int type = tileHit;
-
-if (type != 8 && !interDone[type - 2]) {
-
-plrMobile = false;
-interDone[type - 2] = true;
-
-if (type == 7) {
-
-hasKey = true;
-doDialog = true;
-interType = 5;
-
-} else {
-
-doDialog = true;
-interType = type - 2;
-}
-}
-
-else if (type == 8) {
-
-isCompleting = false;
-}
-}
-
-// =========================
-// Update Player
-// =========================
-changeComponentConstraints(frame, plr, new Rectangle(charX, charY, 2, 2));
-
-plr.setIcon(plrStates[plrDir * 3 + plrState]);
-
-if (++plrState > 2)
-plrState = 0;
-
-overlay.repaint();
-}
-}
-
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        keyPress = false;
+    public void keyReleased(KeyEvent evt) {
+        gameState.keyPressed = false;
     }
-
+    
     @Override
-    public void keyTyped(KeyEvent e) {
-        // Required by KeyListener interface
-    }
+    public void keyTyped(KeyEvent evt) {}
 }
