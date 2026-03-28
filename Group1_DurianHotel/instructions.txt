@@ -1,1 +1,6 @@
 Group 1 members : Creese Andrenee O. Suero, Ximon Mattheus P. Soledad, David Jann C. Clar
+
+The file where exception handling was implemented was PD7.java
+In order to run the file, please run PD7Tester.java
+
+Thank you so much!
