@@ -1,4 +1,4 @@
-package cs.goated;
+package Gr2Cytophobia;
 
 import javax.swing.*;
 import java.awt.*;
