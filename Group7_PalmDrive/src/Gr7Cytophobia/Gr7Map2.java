@@ -111,7 +111,7 @@ public class Gr7Map2 implements KeyListener {
         ImageIcon s[] = new ImageIcon[12];
         for(int i = 0; i < 4; ++i)
             for(int j = 0; j < 3; ++j)
-                s[i*3+j] = loadImg("PD6Assets/"+("plr_"+i)+j+".PNG", 2, 2);
+                s[i*3+j] = loadImg(Gr7Implementer.assetsFolder+("plr_"+i)+j+".PNG", 2, 2);
         plr = new Player(new JLabel(), 14, 4, s); // 14, 4 true start, 12 6 4 by 4 start
         plr.setMobility(false);
         
@@ -120,8 +120,8 @@ public class Gr7Map2 implements KeyListener {
         
         icons = new ImageIcon[iconCount];
         iconSizes = new int[iconCount * 2];
-        addIcon(Gr7Implementer.assetsFolder+"/mtile.png", 2, 2);
-        addIcon(Gr7Implementer.assetsFolder+"/inverted_door.png", 2, 3);
+        addIcon(Gr7Implementer.assetsFolder+"mtile.png", 2, 2);
+        addIcon(Gr7Implementer.assetsFolder+"inverted_door.png", 2, 3);
         mapLayout = new int[]{
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -142,9 +142,9 @@ public class Gr7Map2 implements KeyListener {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         };
-        bg = new JLabel(loadImg(Gr7Implementer.assetsFolder+"/room2.png", mapWidth, mapHeight));
+        bg = new JLabel(loadImg(Gr7Implementer.assetsFolder+"room2.png", mapWidth, mapHeight));
         
-        alphaGrad = new JLabel(loadImg(Gr7Implementer.assetsFolder+"/alpha_grad.png", mapWidth, 3));
+        alphaGrad = new JLabel(loadImg(Gr7Implementer.assetsFolder+"alpha_grad.png", mapWidth, 3));
         
         dialogueBox = new JLabel();
         dialogueBox.setBackground(Color.BLACK);
