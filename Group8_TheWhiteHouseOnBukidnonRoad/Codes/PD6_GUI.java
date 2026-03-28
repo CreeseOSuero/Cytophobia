@@ -1,4 +1,4 @@
-package QUARTER3;
+package Codes;
 
 import java.awt.*;
 import java.awt.event.*;
