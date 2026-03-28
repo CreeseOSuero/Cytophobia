@@ -1,0 +1,5 @@
+Instructions:
+1. Paste the folder inside the [projectname]/src folder into the src folder of your project
+- The package name of all codes is Gr2Cytophobia, which means that all java files are in src/Gr2Cytophobia
+2. Paste the Images folder into your project folder
+3. To run the program, run src/Gr7Cytophobia/PDTester.java file
