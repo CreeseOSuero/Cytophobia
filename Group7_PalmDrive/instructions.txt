@@ -1,5 +1,3 @@
-Instructions:
-1. Paste the folder inside the [projectname]/src folder into the src folder of your project
-- The package name of all codes is Gr7Cytophobia, which means that all java files are in src/Gr7Cytophobia
-2. Paste the assets folder into your project folder
-3. To run the program, run src/Gr7Cytophobia/Gr7Implementer.java file
+The program in src/Cytophobia needs Menu.java from PD8A/src/Cytophobia in order to run
+
+To run the program, it is encouraged that the entire PD8A be downloaded (which includes assets 0 - 10, and source code containing all maps)
