@@ -501,7 +501,7 @@ public void keyPressed(KeyEvent e) {
             int py = (cp / mW) * tileH - cameraScroll.getVerticalScrollBar().getValue();
             
             Area mask = new Area(new Rectangle(0, 0, getWidth(), getHeight()));
-            int r = 400; 
+            int r = 450; 
             Ellipse2D hole = new Ellipse2D.Double(px + (tileW/2) - (r/2), py + (tileH/2) - (r/2), r, r);
             mask.subtract(new Area(hole));
             
