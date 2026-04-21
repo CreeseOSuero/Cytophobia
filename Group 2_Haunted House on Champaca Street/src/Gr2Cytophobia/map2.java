@@ -68,7 +68,7 @@ public class map2 implements KeyListener {
     boolean canMove = true;
 
     boolean hasSaltBag = false;
-    int saltCount = 3;
+    int saltCount = 8;
     boolean hasMatches = false;
     int matchCount = 0;
     int effigyCount = 5;
@@ -288,7 +288,7 @@ public class map2 implements KeyListener {
             O[exitTile].setIcon(doorIcon);
             
             enemyTimer.stop();
-            enemyTimer = new Timer(340, e -> moveEnemyAI());
+            enemyTimer = new Timer(320, e -> moveEnemyAI());
             enemyTimer.start();
             
             showDialogue("THE DOOR IS OPEN. RUN!");
