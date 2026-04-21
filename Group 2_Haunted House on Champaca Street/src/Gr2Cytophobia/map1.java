@@ -23,10 +23,10 @@ public class map1 implements KeyListener {
     int currentQuizIdx = 0;
     JPanel container;
     String[][] quizData = {
-    {"How do enzymes speed up reactions?", "A) Heat", "B) Lower Activation Energy", "C) Add Reactants", "D) Change pH", "B"},
-    {"What is the 'powerhouse'?", "A) Nucleus", "B) Ribosome", "C) Mitochondria", "D) Golgi", "C"},
-    {"Difference in cells?", "A) Size", "B) Nucleus/Organelles", "C) DNA presence", "D) Bacteria only", "B"},
-    {"Why are leaves green?", "A) Absorb all", "B) Iron", "C) Reflects Green", "D) Protection", "C"},
+    {"How do enzymes speed up reactions?", "A) Low Heat", "B) Lower Activation Energy", "C) Higher Activation Energy", "D) Less Substrate", "B"},
+    {"What is the 'powerhouse' of the cell?", "A) Nucleus", "B) Ribosome", "C) Mitochondria", "D) Golgi Apparatus", "C"},
+    {"What is the Difference in animal and plant cells?", "A) Size", "B) Cell Wall", "C) Presence of DNA", "D) Bacteria only", "B"},
+    {"Why are leaves green?", "A) Absorb all green", "B) Iron", "C) Chlorophyll", "D) Cell Wall", "C"},
     {"Natural Selection is...", "A) Choosing traits", "B) Survival of fittest", "C) Physical strength", "D) One lifetime", "B"}
     };
     JPanel bookUI;
