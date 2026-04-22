@@ -285,12 +285,16 @@ public class Group7Map2 implements KeyListener {
                 tWriteDia("", "Map cleared", 1000, 1000);
                 long cur = System.currentTimeMillis() - Group7Map1.startTime;
                 long fast = getFastestFinishTime();
-                if(cur <= fast) {
-                    tWriteDia("", String.format("Fastest finish time is %d min %d sec.", fast/60000, fast/60), 1000, 3000);
-                    tWriteDia("", String.format("Current finish time is %d min %d sec.", cur/60000, cur/60), 1000, 3000);
+                if(fast == Long.MAX_VALUE) {
+                    setFastestFinishTime(cur);
+                    tWriteDia("", String.format("First finish time is %d min %d sec.", cur/60000, cur%60), 1000, 3000);
+                }
+                else if(cur >= fast) {
+                    tWriteDia("", String.format("Fastest finish time is %d min %d sec.", fast/60000, fast%60), 1000, 3000);
+                    tWriteDia("", String.format("Current finish time is %d min %d sec.", cur/60000, cur%60), 1000, 3000);
                 } else {
                     setFastestFinishTime(cur);
-                    tWriteDia("", String.format("New fastest finish time of %d min %d sec!", fast/60000, fast/60), 1000, 3000);
+                    tWriteDia("", String.format("New fastest finish time of %d min %d sec!", fast/60000, fast%60), 1000, 3000);
                 }
                 Menu.startNextLevel(7);
                 frame.dispose();
