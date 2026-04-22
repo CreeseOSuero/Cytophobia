@@ -268,10 +268,7 @@ public class Origin implements KeyListener{
 
     static String[] quizQ = {
             "<html><b>Which organelle is known as the 'powerhouse' of the cell because it generates ATP?</b><br>A. Ribosome<br>B. Golgi Apparatus<br>C. Mitochondria<br>D. Nucleus</html>",
-
-    };
-
-    /*            "<html><b>In a DNA molecule, which nitrogenous base always pairs with Cytosine?</b><br>A. Adenine<br>B. Guanine<br>C. Thymine<br>D. Uracil</html>",
+            "<html><b>In a DNA molecule, which nitrogenous base always pairs with Cytosine?</b><br>A. Adenine<br>B. Guanine<br>C. Thymine<br>D. Uracil</html>",
             "<html><b>What is the primary purpose of mitosis in multicellular organisms?</b><br>A. Production of gametes<br>B. Growth and tissue repair<br>C. Genetic diversity<br>D. Energy storage</html>",
             "<html><b>Which of the following refers to the genetic makeup or set of alleles of an organism?</b><br>A. Phenotype<br>B. Genotype<br>C. Prototype<br>D. Karyotype</html>",
             "<html><b>What process do plants use to convert light energy into chemical energy stored in glucose?</b><br>A. Fermentation<br>B. Transpiration<br>C. Photosynthesis<br>D. Respiration</html>",
@@ -280,8 +277,7 @@ public class Origin implements KeyListener{
             "<html><b>In an energy pyramid, which level contains the most available energy?</b><br>A. Primary Consumers<br>B. Secondary Consumers<br>C. Producers<br>D. Decomposers</html>",
             "<html><b>What is the main function of an enzyme in a biological reaction?</b><br>A. Increase activation energy<br>B. Act as a catalyst<br>C. Provide heat<br>D. Store DNA</html>",
             "<html><b>Which of the following is a characteristic maintained by all living things to stay stable?</b><br>A. Locomotion<br>B. Photosynthesis<br>C. Homeostasis<br>D. Nervous System</html>"
-
-     */
+    };
 
     static char[] quizAns = {'C', 'B', 'B', 'B', 'C', 'B', 'A', 'C', 'B', 'C'};
 
