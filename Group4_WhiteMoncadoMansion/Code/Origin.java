@@ -352,7 +352,7 @@ public class Origin implements KeyListener{
 
             tWriteDia("", "<html>Suddenly, as if time skipped an hour, you find yourself lying on the ground outside the place.</html>", 3000, 3000);
 
-            tWriteDia("", STR."<html>Congratulations, unfortunate wanderer. You have survived the Moncado White Mansion. Elapsed Time: \{secondsTime} seconds </html>", 3000, 3000);
+            tWriteDia("", "<html>Congratulations, unfortunate wanderer. You have survived the Moncado White Mansion. Elapsed Time: "+secondsTime+" seconds </html>", 3000, 3000);
 
             inQuiz = false;
             defeatedMonster = true;
