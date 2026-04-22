@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.io.*;
 
 //group members: Reyno & Rebuyon
 
@@ -38,7 +39,8 @@ public class Group4Map1 implements KeyListener{
 
     static int totalGrids = mW * mH;
 
-
+    static long startTime;
+    
     int[] mapLayout = new int[totalGrids];
     static int[] interactionLayout = new int[totalGrids];
     static int[] collisionLayout = new int[totalGrids];
@@ -257,15 +259,19 @@ public class Group4Map1 implements KeyListener{
 
      //rand crate with key
     static boolean defeatedMonster = false;
-    boolean doorUnlocked = false;
     static boolean introMonster = false;
     static boolean inQuiz = false;
-    boolean doneQuiz = false;
     static int quizIndex = 0;
+    
+    static int triesLeft = 3;
+    static boolean stillAlive = true;
 
     static String[] quizQ = {
             "<html><b>Which organelle is known as the 'powerhouse' of the cell because it generates ATP?</b><br>A. Ribosome<br>B. Golgi Apparatus<br>C. Mitochondria<br>D. Nucleus</html>",
-            "<html><b>In a DNA molecule, which nitrogenous base always pairs with Cytosine?</b><br>A. Adenine<br>B. Guanine<br>C. Thymine<br>D. Uracil</html>",
+            
+    };
+
+    /*      "<html><b>In a DNA molecule, which nitrogenous base always pairs with Cytosine?</b><br>A. Adenine<br>B. Guanine<br>C. Thymine<br>D. Uracil</html>",
             "<html><b>What is the primary purpose of mitosis in multicellular organisms?</b><br>A. Production of gametes<br>B. Growth and tissue repair<br>C. Genetic diversity<br>D. Energy storage</html>",
             "<html><b>Which of the following refers to the genetic makeup or set of alleles of an organism?</b><br>A. Phenotype<br>B. Genotype<br>C. Prototype<br>D. Karyotype</html>",
             "<html><b>What process do plants use to convert light energy into chemical energy stored in glucose?</b><br>A. Fermentation<br>B. Transpiration<br>C. Photosynthesis<br>D. Respiration</html>",
@@ -274,7 +280,8 @@ public class Group4Map1 implements KeyListener{
             "<html><b>In an energy pyramid, which level contains the most available energy?</b><br>A. Primary Consumers<br>B. Secondary Consumers<br>C. Producers<br>D. Decomposers</html>",
             "<html><b>What is the main function of an enzyme in a biological reaction?</b><br>A. Increase activation energy<br>B. Act as a catalyst<br>C. Provide heat<br>D. Store DNA</html>",
             "<html><b>Which of the following is a characteristic maintained by all living things to stay stable?</b><br>A. Locomotion<br>B. Photosynthesis<br>C. Homeostasis<br>D. Nervous System</html>"
-    };
+    
+     */
 
     static char[] quizAns = {'C', 'B', 'B', 'B', 'C', 'B', 'A', 'C', 'B', 'C'};
 
@@ -335,12 +342,17 @@ public class Group4Map1 implements KeyListener{
             tWriteDia("Tikbalang", "You don't belong here anymore. Goodbye.", 1500, 1500);
 
             blackScreen.setVisible(true);
+            
+            long elapsedTime = System.nanoTime() - startTime;
+            double secondsTime = (double) elapsedTime/1000000000;
+
+            updateTimeRecord(secondsTime);
 
             tWriteDia("", "<html>You suddenly feel light-headed and dizzy. Your consciousness starts to fade.</html>", 3000, 3000);
 
             tWriteDia("", "<html>Suddenly, as if time skipped an hour, you find yourself lying on the ground outside the place.</html>", 3000, 3000);
 
-            tWriteDia("", "<html>Congratulations, unfortunate wanderer. You have survived the Moncado White Mansion.</html>", 3000, 3000);
+            tWriteDia("", "<html>Congratulations, unfortunate wanderer. You have survived the Moncado White Mansion. Elapsed Time: "+secondsTime+" seconds </html>", 3000, 3000);
 
             inQuiz = false;
             defeatedMonster = true;
@@ -356,6 +368,7 @@ public class Group4Map1 implements KeyListener{
 
         new Thread(() -> {
             try {
+                /*
                 tWait(3000);
 
                 tWriteDia("", "<html>General Hilario Moncado constructed the dilapidated Moncado White Mansion in the 1930s, " +
@@ -368,12 +381,16 @@ public class Group4Map1 implements KeyListener{
                         "you must find a way to escape the room. </html>", 3000, 4000);
 
                 tWait(2000);
-
+                */
                 blackScreen.setVisible(false);
 
 
                 tWriteDia("", "Hmm, boxes.", 1000, 2000);
                 tWriteDia("", "Maybe I can find something useful in them. (Walk into obstacles to interact)", 2000, 2000);
+                    
+                
+
+                startTime = System.nanoTime();
 
                 P.Unrestrict();
 
@@ -485,6 +502,33 @@ public class Group4Map1 implements KeyListener{
                 } else {
                     frame.add(labels[i], new Rectangle(x, y, 1, 1));
                 }
+            }
+        }
+    }
+    
+    public static void updateTimeRecord(double currentTime) {
+        double bestTime = Double.MAX_VALUE;
+
+        File file = new File("src/Code/Log/record_Time.txt");
+        file.getParentFile().mkdirs();
+
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line = reader.readLine();
+                if (line != null && !line.isEmpty()) {
+                    bestTime = Double.parseDouble(line);
+                }
+            } catch (IOException | NumberFormatException e) {
+                System.err.println("Error reading the record: " + e.getMessage());
+            }
+        }
+
+        if (currentTime < bestTime) {
+            System.out.println("New Best Time! Saving...");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+                writer.write(String.valueOf(currentTime));
+            } catch (IOException e) {
+                System.err.println("Error saving the record: " + e.getMessage());
             }
         }
     }

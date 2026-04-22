@@ -170,16 +170,28 @@ class choiceDoor extends Group4Interactables {
         if (Group4Map1.inQuiz) {
             new Thread(() -> {
                 try {
-
+                    P.Restrict();
                     if (Ans == quizAns[quizIndex]) {
-                        P.Restrict();
                         tWriteDia("Tikbalang", "Correct.", 800, 800);
                         quizIndex++;
                         askNext();
                     } else {
-                        P.Restrict();
-                        tWriteDia("Tikbalang", "Wrong. Try again.", 1000, 800);
-                        askNext();
+                        triesLeft -= 1;
+                        if (triesLeft > 0){
+                            tWriteDia("Tikbalang", "Wrong. You have " + triesLeft + " chance(s) left.", 1000, 800);
+                            askNext();
+                        } else {
+                            inQuiz = false;
+
+                            tWriteDia("Tikbalang", "You are unfortunate, traveler.", 1500, 1500);
+
+                            tWriteDia("Tikbalang", "Now, accept your doom.", 1500, 1500);
+
+                            blackScreen.setVisible(true);
+
+                            tWriteDia("", "Game over. You have failed.", 3000, 3000);
+
+                        }
                     }
                 } catch (InterruptedException ex) {
                 }
@@ -217,7 +229,7 @@ class Monster extends Group4Interactables {
 
                     tWriteDia("Tikbalang", "<html>I have locked all the exits in this house. You are trapped here with me. <html>", 3000, 3000);
                     tWriteDia("Tikbalang", "<html>I will let you escape, but you must answer 10 of my riddles. If you refuse, you shall reside in these walls forever.</html>", 3000, 3000);
-                    tWriteDia("Tikbalang", "<html>To answer, you must walk through one of these doors as your choice. (A, B, C, D). Choose wisely.</html>", 3000, 3000);
+                    tWriteDia("Tikbalang", "<html>To answer, you must walk through one of these doors as your choice. (A, B, C, D). Choose wisely, for I will only permit 3 mistakes.</html>", 3000, 3000);
 
                     startQuiz();
 
