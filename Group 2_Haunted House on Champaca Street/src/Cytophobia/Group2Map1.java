@@ -1,4 +1,4 @@
-package cs.goated;
+package Cytophobia;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
