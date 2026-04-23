@@ -1,4 +1,4 @@
-package cs.goated;
+package Cytophobia;
 import java.awt.*;
 import java.util.Hashtable;
 
