@@ -294,7 +294,7 @@ public class Group7Map2 implements KeyListener {
                     tWriteDia("", String.format("Current finish time is %d min %d sec.", cur/60000, (cur/1000)%60), 1000, 3000);
                 } else {
                     setFastestFinishTime(cur);
-                    tWriteDia("", String.format("New fastest finish time of %d min %d sec!", fast/60000, (fast/1000)%60), 1000, 3000);
+                    tWriteDia("", String.format("New fastest finish time of %d min %d sec!", cur/60000, (cur/1000)%60), 1000, 3000);
                 }
                 Menu.startNextLevel(7);
                 frame.dispose();
