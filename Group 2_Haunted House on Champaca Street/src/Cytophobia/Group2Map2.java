@@ -307,7 +307,7 @@ private void triggerWin() {
     Group2TimerAttempts.saveBestTime(finalTime);
     
     JOptionPane.showMessageDialog(null, "WIN! Time: " + finalTime + "s\nRecord: " + Group2TimerAttempts.getBestTimeDisplay());
-    frame.dispose()
+    f.dispose();
     Menu.startNextLevel(2);
     }
 
