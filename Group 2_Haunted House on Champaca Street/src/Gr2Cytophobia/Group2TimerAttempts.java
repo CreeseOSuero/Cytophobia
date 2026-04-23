@@ -1,4 +1,4 @@
-package cs.goated;
+package Gr2Cytophobia;
 import java.io.*;
 
 public class Group2TimerAttempts {
