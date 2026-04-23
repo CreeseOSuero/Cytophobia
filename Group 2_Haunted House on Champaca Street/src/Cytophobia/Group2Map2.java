@@ -1,4 +1,4 @@
-package cs.goated;
+package Cytophobia;
 
 import javax.swing.*;
 import java.awt.*;
@@ -300,14 +300,15 @@ public class Group2Map2 implements KeyListener {
         }
     }
 
-    private void triggerWin() {
+private void triggerWin() {
         canMove = false;
         enemyTimer.stop();
     long finalTime = Group2TimerAttempts.getElapsed();
     Group2TimerAttempts.saveBestTime(finalTime);
     
     JOptionPane.showMessageDialog(null, "WIN! Time: " + finalTime + "s\nRecord: " + Group2TimerAttempts.getBestTimeDisplay());
-    System.exit(0);
+    frame.dispose()
+    Menu.startNextLevel(2);
     }
 
     public void moveEnemyAI() {
