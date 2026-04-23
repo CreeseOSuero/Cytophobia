@@ -307,7 +307,8 @@ public class Group2Map2 implements KeyListener {
     Group2TimerAttempts.saveBestTime(finalTime);
     
     JOptionPane.showMessageDialog(null, "WIN! Time: " + finalTime + "s\nRecord: " + Group2TimerAttempts.getBestTimeDisplay());
-    System.exit(0);
+    frame.dispose()
+    Menu.startNextLevel(2);
     }
 
     public void moveEnemyAI() {
