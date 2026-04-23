@@ -16,17 +16,18 @@ class InvalidKeyException extends Exception {
 }
 
 public class Group2Map1 implements KeyListener {
+    private int[] ML_BLUEPRINT;
+    private int[] OP_BLUEPRINT;
     boolean hasEnteredLibrary = false;
     boolean isDistressed = false;
     boolean a = false;
-    
     int currentQuizIdx = 0;
     JPanel container;
     String[][] quizData = {
-    {"How do enzymes speed up reactions?", "A) Heat", "B) Lower Activation Energy", "C) Add Reactants", "D) Change pH", "B"},
-    {"What is the 'powerhouse'?", "A) Nucleus", "B) Ribosome", "C) Mitochondria", "D) Golgi", "C"},
-    {"Difference in cells?", "A) Size", "B) Nucleus/Organelles", "C) DNA presence", "D) Bacteria only", "B"},
-    {"Why are leaves green?", "A) Absorb all", "B) Iron", "C) Reflects Green", "D) Protection", "C"},
+    {"How do enzymes speed up reactions?", "A) Low Heatw", "B) Lower Activation Energy", "C) Add Reactants", "D) Change pH", "B"},
+    {"What is the 'powerhouse' of the cell?", "A) Nucleus", "B) Ribosome", "C) Mitochondria", "D) Golgi", "C"},
+    {"Difference of animal cells and plant cells?", "A) Size", "B) Cell Wall", "C) DNA presence", "D) Bacteria only", "B"},
+    {"Why are leaves green?", "A) Absorbs all green", "B) Copper", "C) Chlorophyll", "D) Protection", "C"},
     {"Natural Selection is...", "A) Choosing traits", "B) Survival of fittest", "C) Physical strength", "D) One lifetime", "B"}
     };
     JPanel bookUI;
@@ -80,39 +81,39 @@ public class Group2Map1 implements KeyListener {
     int step = 0;
     public Group2Map1() {
         f = new JFrame("PD Map");
-        animd[2] = new ImageIcon("assets2/animd3.png");
-        animd[1] = new ImageIcon("assets2/animd2.png");
-        animd[0] = new ImageIcon("assets2/animd1.png");
-        animr[0] = new ImageIcon("assets2/animr1.png");
-        animr[1] = new ImageIcon("assets2/animr2.png");
-        animr[2] = new ImageIcon("assets2/animr3.png");
-        animl[0] = new ImageIcon("assets2/animl1.png"); 
-        animl[1] = new ImageIcon("assets2/animl2.png"); 
-        animl[2] = new ImageIcon("assets2/animl3.png"); 
-        animu[0] = new ImageIcon("assets2/animu1.png");
-        animu[1] = new ImageIcon("assets2/animu2.png"); 
-        animu[2] = new ImageIcon("assets2/animu3.png");
-        idle = new ImageIcon("assets2/idle.png");
-        table = new ImageIcon("assets2/table.png");
-        key1 = new ImageIcon("assets2/key1.png");
-        key2 = new ImageIcon("assets2/bookshelf.png");
-        book = new ImageIcon("assets2/book.png");
-        lore = new ImageIcon("assets2/bookshelf.png");
-        bookshelf = new ImageIcon("assets2/bookshelf.png");
-        mirror = new ImageIcon("assets2/mirror.png");
-        lantern = new ImageIcon("assets2/lantern.png");
-        mirrornormal = new ImageIcon("assets2/mirrornormal.png");
-        w = new ImageIcon("assets2/wall.png");
-        w1 = new ImageIcon("assets2/wall1.png");
-        w2 = new ImageIcon("assets2/wall2.jpg");
-        w3 = new ImageIcon("assets2/wall3.png");
-        w4 = new ImageIcon("assets2/wall4.png");
-        t = new ImageIcon("assets2/floor.png");
-        b = new ImageIcon("assets2/bed.png");
-        B = new ImageIcon("assets2/bathtub.png");
-        D = new ImageIcon("assets2/door.png");
-        d = new ImageIcon("assets2/drawer.png");
-        T = new ImageIcon("assets2/toilet.png");
+        animd[2] = new ImageIcon("Images/animd3.png");
+        animd[1] = new ImageIcon("Images/animd2.png");
+        animd[0] = new ImageIcon("Images/animd1.png");
+        animr[0] = new ImageIcon("Images/animr1.png");
+        animr[1] = new ImageIcon("Images/animr2.png");
+        animr[2] = new ImageIcon("Images/animr3.png");
+        animl[0] = new ImageIcon("Images/animl1.png"); 
+        animl[1] = new ImageIcon("Images/animl2.png"); 
+        animl[2] = new ImageIcon("Images/animl3.png"); 
+        animu[0] = new ImageIcon("Images/animu1.png");
+        animu[1] = new ImageIcon("Images/animu2.png"); 
+        animu[2] = new ImageIcon("Images/animu3.png");
+        idle = new ImageIcon("Images/idle.png");
+        table = new ImageIcon("Images/table.png");
+        key1 = new ImageIcon("Images/key1.png");
+        key2 = new ImageIcon("Images/bookshelf.png");
+        book = new ImageIcon("Images/book.png");
+        lore = new ImageIcon("Images/bookshelf.png");
+        bookshelf = new ImageIcon("Images/bookshelf.png");
+        mirror = new ImageIcon("Images/mirror.png");
+        lantern = new ImageIcon("Images/lantern.png");
+        mirrornormal = new ImageIcon("Images/mirrornormal.png");
+        w = new ImageIcon("Images/wall.png");
+        w1 = new ImageIcon("Images/wall1.png");
+        w2 = new ImageIcon("Images/wall2.jpg");
+        w3 = new ImageIcon("Images/wall3.png");
+        w4 = new ImageIcon("Images/wall4.png");
+        t = new ImageIcon("Images/floor.png");
+        b = new ImageIcon("Images/bed.png");
+        B = new ImageIcon("Images/bathtub.png");
+        D = new ImageIcon("Images/door.png");
+        d = new ImageIcon("Images/drawer.png");
+        T = new ImageIcon("Images/toilet.png");
         this.tileW = (fW / mW);
         this.tileH = (fH / mH);
         int bedW = (int)(tileW/1.15);
@@ -303,6 +304,8 @@ public class Group2Map1 implements KeyListener {
             else if(mL[i]==7) ts[i]=new JLabel(t);
             else ts[i]=new JLabel(w4);
         }
+        this.ML_BLUEPRINT = mL.clone();
+        this.OP_BLUEPRINT = OP.clone();
     }   
 public void setFrame() {
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -312,7 +315,10 @@ public void setFrame() {
     container = new JPanel(null); 
     container.setPreferredSize(new Dimension(960, 560));
     container.setBackground(Color.BLACK);
-
+    
+    Group2TimerAttempts.start(); 
+    new javax.swing.Timer(1, e -> container.repaint()).start();
+    
     gamePanel = new JPanel(new GraphPaperLayout(new Dimension(mW, mH)));
     gamePanel.setPreferredSize(new Dimension(fW, fH));
     gamePanel.setBackground(Color.BLACK);
@@ -387,7 +393,7 @@ public void setFrame() {
         bookUI.add(choices[i]);
     }
 
-    JLabel bookBackground = new JLabel(new ImageIcon(new ImageIcon("assets2/quiz.png")
+    JLabel bookBackground = new JLabel(new ImageIcon(new ImageIcon("Images/quiz.png")
         .getImage().getScaledInstance(700, 500, Image.SCALE_SMOOTH)));
     bookBackground.setBounds(0, 0, 700, 500);
     bookUI.add(bookBackground);
@@ -420,7 +426,7 @@ public void setFrame() {
     f.setVisible(true);
     f.requestFocusInWindow();
 
-    visionRadius = 0.9; 
+    visionRadius = 1.9; 
     updateCamera();
 
     Timer startTimer = new Timer(100, e -> {
@@ -448,7 +454,7 @@ if (!introPlayed) {
 public void triggerDeathSequence() {
     canMove = false;
     bookUI.setVisible(false);
-    scareOverlay.setIcon(new ImageIcon(new ImageIcon("assets2/scary_face.jpg")
+    scareOverlay.setIcon(new ImageIcon(new ImageIcon("Images/scary_face.jpg")
         .getImage().getScaledInstance(960, 560, Image.SCALE_SMOOTH)));
     scareOverlay.setVisible(true);
     Timer deathTimer = new Timer(50, new ActionListener() {
@@ -461,7 +467,9 @@ public void triggerDeathSequence() {
             
             if (elapsed >= 3000) { 
                 ((Timer)e.getSource()).stop();
-                System.exit(0); 
+                container.setLocation(0, 0); 
+                scareOverlay.setVisible(false);
+                respawn();  
             }
         }
     });
@@ -559,6 +567,48 @@ public void updateLighting() {
         shadow.repaint();
     }
 }
+
+public void respawn() {
+    Group2TimerAttempts.addAttempt();
+
+    for (int i = 0; i < mL.length; i++) {
+        mL[i] = ML_BLUEPRINT[i];
+        OP[i] = OP_BLUEPRINT[i];
+
+        if (mL[i] == 0) ts[i].setIcon(t);
+        else if (mL[i] == 2) ts[i].setIcon(w1);
+        else if (mL[i] == 3) ts[i].setIcon(w2);
+        if (OP[i] == 7) O[i].setIcon(key1);
+        else if (OP[i] == 10) O[i].setIcon(key2);
+        else if (OP[i] == 11) O[i].setIcon(book);
+        else if (OP[i] == 4) O[i].setIcon(D);
+        else if (OP[i] == 0) O[i].setIcon(null);
+    }
+
+    CH[cp].setIcon(null); 
+    cp = 179; 
+    CH[cp].setIcon(animd[0]);
+    hasKey1 = false;
+    hasKey2 = false;
+    hasKey3 = false;
+    hasFlashlight = false;
+    visionRadius = 1.1;
+    mirrorCount = 0;
+    currentQuizIdx = 0;
+
+    scareOverlay.setVisible(false);
+    bookUI.setVisible(false);
+    dialogueBox.setVisible(false);
+    
+    JOptionPane.showMessageDialog(f, "The darkness claimed you.\nAttempt: " + Group2TimerAttempts.attempts);
+
+    canMove = true;
+    updateCamera();
+    updateLighting();
+    container.revalidate();
+    container.repaint();
+}
+
 public void typeText(String text) {
     if (typewriterTimer != null) typewriterTimer.stop();
     if (currentHideTimer != null) currentHideTimer.stop();
@@ -684,7 +734,7 @@ public void typeText(String text) {
         startDialogueTimer(2500);
     } 
     else if (mirrorCount == 2) {
-    scareOverlay.setIcon(new ImageIcon(new ImageIcon("assets2/mirror.png").getImage()
+    scareOverlay.setIcon(new ImageIcon(new ImageIcon("Images/mirror.png").getImage()
               .getScaledInstance(960, 560, Image.SCALE_SMOOTH)));
     
     scareOverlay.setBounds(cameraScroll.getX(), cameraScroll.getY(), 960, 560);
@@ -780,7 +830,16 @@ public void keyPressed(KeyEvent e) {
         }
 
         int tileInFront = cp + lastDir;
-
+        
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && !hasEnteredLibrary) {
+        hasEnteredLibrary = true; 
+        for (java.awt.Window w : java.awt.Window.getWindows()) {
+            if (w instanceof javax.swing.JDialog) w.dispose();
+        }
+        container.repaint();
+        return; 
+    }  
+        
         if (keyCode == KeyEvent.VK_E) {
             isActionKey = true;
             if (tileInFront >= 0 && tileInFront < OP.length) {
@@ -799,17 +858,15 @@ public void keyPressed(KeyEvent e) {
             }
             
             if (cp == 314 && !hasEnteredLibrary) {
-        hasEnteredLibrary = true; // Set this IMMEDIATELY to prevent re-entry
-        canMove = false; // Lock movement for the entire sequence
+        hasEnteredLibrary = true; 
+        canMove = false; 
     
         typeText("This place must be a library..");
-    
-        // Start a timer for the second half of the thought
+
         Timer libraryPart = new Timer(4000, dwadaw -> {
         typeText("Maybe I'll find something about this place..?");
-        
-        // Only re-enable movement after the SECOND message is done
-        startDialogueTimer(4000); // This sets canMove = true after 4 seconds
+
+        startDialogueTimer(4000); 
         });
         libraryPart.setRepeats(false);
         libraryPart.start();
@@ -946,23 +1003,26 @@ public void keyPressed(KeyEvent e) {
     public ShadowLayer() {
         setOpaque(false);
         setBounds(0, 0, 960, 560); 
-    }
+    }   
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        
         Area darkness = new Area(new Rectangle(0, 0, 960, 560));
-
+        
+        
         int offsetX = cameraScroll.getHorizontalScrollBar().getValue();
         int offsetY = cameraScroll.getVerticalScrollBar().getValue();
         
         int pX = (cp % mW) * tileW + (tileW / 2) - offsetX;
         int pY = (cp / mW) * tileH + (tileH / 2) - offsetY;
         int r = (int)(visionRadius * tileW);
-
+        
+        super.paintComponent(g);
+        
         Polygon lightShape = new Polygon();
         for (double i = 0; i <= 360; i += 0.5) {
             double rad = Math.toRadians(i);
@@ -977,6 +1037,22 @@ public void keyPressed(KeyEvent e) {
 
         g2d.setColor(Color.BLACK);
         g2d.fill(darkness);
+        
+         g2d.setFont(new Font("Monospaced", Font.BOLD, 20));
+
+            g2d.setColor(Color.BLACK);
+            g2d.drawString("ATTEMPT: " + Group2TimerAttempts.attempts, 32, 72);
+            g2d.drawString("TIME: " + Group2TimerAttempts.getElapsed() + "s", 32, 102);
+
+        
+            g2d.setColor(Color.CYAN); 
+            g2d.drawString("ATTEMPT: " + Group2TimerAttempts.attempts, 30, 70);
+
+            g2d.setColor(Color.WHITE);
+            g2d.drawString("TIME: " + Group2TimerAttempts.getElapsed() + "s", 30, 100);
+
+            g2d.setColor(Color.YELLOW);
+            g2d.drawString("BEST: " + Group2TimerAttempts.getBestTimeDisplay(), 30, 130);
 
         if (r > 0) {
             RadialGradientPaint glow = new RadialGradientPaint(
@@ -1044,13 +1120,7 @@ public void keyPressed(KeyEvent e) {
             x += fm.charWidth(c);
         }
     }
-    
 }
-    public static void main(String[] args) {
-        Group2Map1 m = new Group2Map1();
-        m.setFrame();
-    }
 }
-
 
 
