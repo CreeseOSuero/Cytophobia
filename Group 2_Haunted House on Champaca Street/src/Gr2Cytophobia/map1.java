@@ -15,18 +15,19 @@ class InvalidKeyException extends Exception {
     }
 }
 
-public class map1 implements KeyListener {
+public class Group2Map1 implements KeyListener {
+    private int[] ML_BLUEPRINT;
+    private int[] OP_BLUEPRINT;
     boolean hasEnteredLibrary = false;
     boolean isDistressed = false;
     boolean a = false;
-    
     int currentQuizIdx = 0;
     JPanel container;
     String[][] quizData = {
-    {"How do enzymes speed up reactions?", "A) Low Heat", "B) Lower Activation Energy", "C) Higher Activation Energy", "D) Less Substrate", "B"},
-    {"What is the 'powerhouse' of the cell?", "A) Nucleus", "B) Ribosome", "C) Mitochondria", "D) Golgi Apparatus", "C"},
-    {"What is the Difference in animal and plant cells?", "A) Size", "B) Cell Wall", "C) Presence of DNA", "D) Bacteria only", "B"},
-    {"Why are leaves green?", "A) Absorb all green", "B) Iron", "C) Chlorophyll", "D) Cell Wall", "C"},
+    {"How do enzymes speed up reactions?", "A) Low Heatw", "B) Lower Activation Energy", "C) Add Reactants", "D) Change pH", "B"},
+    {"What is the 'powerhouse' of the cell?", "A) Nucleus", "B) Ribosome", "C) Mitochondria", "D) Golgi", "C"},
+    {"Difference of animal cells and plant cells?", "A) Size", "B) Cell Wall", "C) DNA presence", "D) Bacteria only", "B"},
+    {"Why are leaves green?", "A) Absorbs all green", "B) Copper", "C) Chlorophyll", "D) Protection", "C"},
     {"Natural Selection is...", "A) Choosing traits", "B) Survival of fittest", "C) Physical strength", "D) One lifetime", "B"}
     };
     JPanel bookUI;
@@ -78,7 +79,7 @@ public class map1 implements KeyListener {
     int cm = 0;     
     int cp = 0;  
     int step = 0;
-    public map1() {
+    public Group2Map1() {
         f = new JFrame("PD Map");
         animd[2] = new ImageIcon("Images/animd3.png");
         animd[1] = new ImageIcon("Images/animd2.png");
@@ -303,6 +304,8 @@ public class map1 implements KeyListener {
             else if(mL[i]==7) ts[i]=new JLabel(t);
             else ts[i]=new JLabel(w4);
         }
+        this.ML_BLUEPRINT = mL.clone();
+        this.OP_BLUEPRINT = OP.clone();
     }   
 public void setFrame() {
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -312,7 +315,10 @@ public void setFrame() {
     container = new JPanel(null); 
     container.setPreferredSize(new Dimension(960, 560));
     container.setBackground(Color.BLACK);
-
+    
+    Group2TimerAttempts.start(); 
+    new javax.swing.Timer(1, e -> container.repaint()).start();
+    
     gamePanel = new JPanel(new GraphPaperLayout(new Dimension(mW, mH)));
     gamePanel.setPreferredSize(new Dimension(fW, fH));
     gamePanel.setBackground(Color.BLACK);
@@ -420,7 +426,7 @@ public void setFrame() {
     f.setVisible(true);
     f.requestFocusInWindow();
 
-    visionRadius = 0.9; 
+    visionRadius = 1.9; 
     updateCamera();
 
     Timer startTimer = new Timer(100, e -> {
@@ -461,7 +467,9 @@ public void triggerDeathSequence() {
             
             if (elapsed >= 3000) { 
                 ((Timer)e.getSource()).stop();
-                System.exit(0); 
+                container.setLocation(0, 0); 
+                scareOverlay.setVisible(false);
+                respawn();  
             }
         }
     });
@@ -559,6 +567,48 @@ public void updateLighting() {
         shadow.repaint();
     }
 }
+
+public void respawn() {
+    Group2TimerAttempts.addAttempt();
+
+    for (int i = 0; i < mL.length; i++) {
+        mL[i] = ML_BLUEPRINT[i];
+        OP[i] = OP_BLUEPRINT[i];
+
+        if (mL[i] == 0) ts[i].setIcon(t);
+        else if (mL[i] == 2) ts[i].setIcon(w1);
+        else if (mL[i] == 3) ts[i].setIcon(w2);
+        if (OP[i] == 7) O[i].setIcon(key1);
+        else if (OP[i] == 10) O[i].setIcon(key2);
+        else if (OP[i] == 11) O[i].setIcon(book);
+        else if (OP[i] == 4) O[i].setIcon(D);
+        else if (OP[i] == 0) O[i].setIcon(null);
+    }
+
+    CH[cp].setIcon(null); 
+    cp = 179; 
+    CH[cp].setIcon(animd[0]);
+    hasKey1 = false;
+    hasKey2 = false;
+    hasKey3 = false;
+    hasFlashlight = false;
+    visionRadius = 1.1;
+    mirrorCount = 0;
+    currentQuizIdx = 0;
+
+    scareOverlay.setVisible(false);
+    bookUI.setVisible(false);
+    dialogueBox.setVisible(false);
+    
+    JOptionPane.showMessageDialog(f, "The darkness claimed you.\nAttempt: " + Group2TimerAttempts.attempts);
+
+    canMove = true;
+    updateCamera();
+    updateLighting();
+    container.revalidate();
+    container.repaint();
+}
+
 public void typeText(String text) {
     if (typewriterTimer != null) typewriterTimer.stop();
     if (currentHideTimer != null) currentHideTimer.stop();
@@ -731,7 +781,7 @@ public void typeText(String text) {
             typeText("Is this the end?..");
             Timer winTimer = new Timer(5000, e -> {
             f.dispose();
-            map2 g = new map2();
+            Group2Map2 g = new Group2Map2();
                 g.setFrame();
             });
             winTimer.setRepeats(false);
@@ -780,7 +830,16 @@ public void keyPressed(KeyEvent e) {
         }
 
         int tileInFront = cp + lastDir;
-
+        
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && !hasEnteredLibrary) {
+        hasEnteredLibrary = true; 
+        for (java.awt.Window w : java.awt.Window.getWindows()) {
+            if (w instanceof javax.swing.JDialog) w.dispose();
+        }
+        container.repaint();
+        return; 
+    }  
+        
         if (keyCode == KeyEvent.VK_E) {
             isActionKey = true;
             if (tileInFront >= 0 && tileInFront < OP.length) {
@@ -799,17 +858,15 @@ public void keyPressed(KeyEvent e) {
             }
             
             if (cp == 314 && !hasEnteredLibrary) {
-        hasEnteredLibrary = true; // Set this IMMEDIATELY to prevent re-entry
-        canMove = false; // Lock movement for the entire sequence
+        hasEnteredLibrary = true; 
+        canMove = false; 
     
         typeText("This place must be a library..");
-    
-        // Start a timer for the second half of the thought
+
         Timer libraryPart = new Timer(4000, dwadaw -> {
         typeText("Maybe I'll find something about this place..?");
-        
-        // Only re-enable movement after the SECOND message is done
-        startDialogueTimer(4000); // This sets canMove = true after 4 seconds
+
+        startDialogueTimer(4000); 
         });
         libraryPart.setRepeats(false);
         libraryPart.start();
@@ -946,23 +1003,26 @@ public void keyPressed(KeyEvent e) {
     public ShadowLayer() {
         setOpaque(false);
         setBounds(0, 0, 960, 560); 
-    }
+    }   
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        
         Area darkness = new Area(new Rectangle(0, 0, 960, 560));
-
+        
+        
         int offsetX = cameraScroll.getHorizontalScrollBar().getValue();
         int offsetY = cameraScroll.getVerticalScrollBar().getValue();
         
         int pX = (cp % mW) * tileW + (tileW / 2) - offsetX;
         int pY = (cp / mW) * tileH + (tileH / 2) - offsetY;
         int r = (int)(visionRadius * tileW);
-
+        
+        super.paintComponent(g);
+        
         Polygon lightShape = new Polygon();
         for (double i = 0; i <= 360; i += 0.5) {
             double rad = Math.toRadians(i);
@@ -977,6 +1037,22 @@ public void keyPressed(KeyEvent e) {
 
         g2d.setColor(Color.BLACK);
         g2d.fill(darkness);
+        
+         g2d.setFont(new Font("Monospaced", Font.BOLD, 20));
+
+            g2d.setColor(Color.BLACK);
+            g2d.drawString("ATTEMPT: " + Group2TimerAttempts.attempts, 32, 72);
+            g2d.drawString("TIME: " + Group2TimerAttempts.getElapsed() + "s", 32, 102);
+
+        
+            g2d.setColor(Color.CYAN); 
+            g2d.drawString("ATTEMPT: " + Group2TimerAttempts.attempts, 30, 70);
+
+            g2d.setColor(Color.WHITE);
+            g2d.drawString("TIME: " + Group2TimerAttempts.getElapsed() + "s", 30, 100);
+
+            g2d.setColor(Color.YELLOW);
+            g2d.drawString("BEST: " + Group2TimerAttempts.getBestTimeDisplay(), 30, 130);
 
         if (r > 0) {
             RadialGradientPaint glow = new RadialGradientPaint(
