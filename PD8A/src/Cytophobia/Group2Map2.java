@@ -41,6 +41,8 @@ class InvalidKeyException extends Exception {
     }
 }
 public class Group2Map2 implements KeyListener {
+    private int[] ML_BLUEPRINT;
+    private int[] OP_BLUEPRINT;
     private long lastMoveTime = 0;
     private final int moveDelay = 250; 
     int lastMove = -1;
@@ -68,7 +70,7 @@ public class Group2Map2 implements KeyListener {
     boolean canMove = true;
 
     boolean hasSaltBag = false;
-    int saltCount = 3;
+    int saltCount = 8;
     boolean hasMatches = false;
     int matchCount = 0;
     int effigyCount = 5;
@@ -95,36 +97,36 @@ public class Group2Map2 implements KeyListener {
         this.tileW = (fW / mW);
         this.tileH = (fH / mH);     
 
-        wall = scaleIcon("assets2/walll.png", tileW, tileH);
-        trash = scaleIcon("assets2/trash.png", tileW, tileH);
-        barrel = scaleIcon("assets2/barrel.png", tileW, tileH);
-        table = scaleIcon("assets2/tablee.png", tileW, tileH);
-        stairs = scaleIcon("assets2/stairs.png", tileW*3, tileH*3); 
-        shelf = scaleIcon("assets2/shelf.png", tileW, tileH);
-        planks = scaleIcon("assets2/planks.png", tileW, tileH);
-        painting = scaleIcon("assets2/painting.png", tileW, tileH);
-        floors = scaleIcon("assets2/floors.png", tileW, tileH);
-        clock = scaleIcon("assets2/clock.png", tileW, tileH);
-        box = scaleIcon("assets2/box.png", tileW, tileH);
+        wall = scaleIcon("Images/walll.png", tileW, tileH);
+        trash = scaleIcon("Images/trash.png", tileW, tileH);
+        barrel = scaleIcon("Images/barrel.png", tileW, tileH);
+        table = scaleIcon("Images/tablee.png", tileW, tileH);
+        stairs = scaleIcon("Images/stairs.png", tileW*3, tileH*3); 
+        shelf = scaleIcon("Images/shelf.png", tileW, tileH);
+        planks = scaleIcon("Images/planks.png", tileW, tileH);
+        painting = scaleIcon("Images/painting.png", tileW, tileH);
+        floors = scaleIcon("Images/floors.png", tileW, tileH);
+        clock = scaleIcon("Images/clock.png", tileW, tileH);
+        box = scaleIcon("Images/box.png", tileW, tileH);
         
-        saltIcon = scaleIcon("assets2/saltIcon.png", tileW, tileH);
-        saltBagIcon = scaleIcon("assets2/saltBagIcon.png", tileW, tileH);
-        saltCounterIcon = scaleIcon("assets2/saltCounter.png", 45, 45);
+        saltIcon = scaleIcon("Images/saltIcon.png", tileW, tileH);
+        saltBagIcon = scaleIcon("Images/saltBagIcon.png", tileW, tileH);
+        saltCounterIcon = scaleIcon("Images/saltCounter.png", 45, 45);
         
-        matchIcon = scaleIcon("assets2/matches.png", tileW, tileH);
-        matchCounterIcon = scaleIcon("assets2/matchCounter.png", 45, 45);
-        effigyIcon = scaleIcon("assets2/effigy.png", tileW, tileH);
-        doorIcon = scaleIcon("assets2/door.png", tileW, tileH);
+        matchIcon = scaleIcon("Images/matches.png", tileW, tileH);
+        matchCounterIcon = scaleIcon("Images/matchCounter.png", 45, 45);
+        effigyIcon = scaleIcon("Images/effigy.png", tileW, tileH);
+        doorIcon = scaleIcon("Images/door.png", tileW, tileH);
 
         for(int i=0; i<3; i++) {
-            animd[i] = scaleIcon("assets2/animd" + (i+1) + ".png", tileW, tileH);
-            animr[i] = scaleIcon("assets2/animr" + (i+1) + ".png", tileW, tileH);
-            animl[i] = scaleIcon("assets2/animl" + (i+1) + ".png", tileW, tileH);
-            animu[i] = scaleIcon("assets2/animu" + (i+1) + ".png", tileW, tileH);
+            animd[i] = scaleIcon("Images/animd" + (i+1) + ".png", tileW, tileH);
+            animr[i] = scaleIcon("Images/animr" + (i+1) + ".png", tileW, tileH);
+            animl[i] = scaleIcon("Images/animl" + (i+1) + ".png", tileW, tileH);
+            animu[i] = scaleIcon("Images/animu" + (i+1) + ".png", tileW, tileH);
         }
 
         enemyLogic = new ChaserEnemy(70, 400); 
-        enemyIcon = scaleIcon("assets2/enemy.png", tileW, tileH);
+        enemyIcon = scaleIcon("Images/enemy.png", tileW, tileH);
         enemyLabel = new JLabel(enemyIcon);
 
         OP=new int[]{
@@ -207,7 +209,8 @@ public class Group2Map2 implements KeyListener {
             else if(mL[i]==2 || mL[i]==5) ts[i]=new JLabel(wall);
             else if(mL[i]==9) ts[i]=new JLabel(floors);
         }
-
+        this.ML_BLUEPRINT = mL.clone();
+        this.OP_BLUEPRINT = OP.clone();
         enemyTimer = new Timer(600, e -> moveEnemyAI());
         enemyTimer.start();
 
@@ -259,6 +262,7 @@ public class Group2Map2 implements KeyListener {
         cameraScroll.setBounds(0, 0, 1080, 700); 
         cameraScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         cameraScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        
 
         JLayeredPane lp = f.getLayeredPane();
         lp.add(cameraScroll, Integer.valueOf(0));
@@ -299,9 +303,11 @@ public class Group2Map2 implements KeyListener {
     private void triggerWin() {
         canMove = false;
         enemyTimer.stop();
-            JOptionPane.showMessageDialog(f, "The end?..");
-        f.dispose();
-        Menu.startNextLevel(2);
+    long finalTime = Group2TimerAttempts.getElapsed();
+    Group2TimerAttempts.saveBestTime(finalTime);
+    
+    JOptionPane.showMessageDialog(null, "WIN! Time: " + finalTime + "s\nRecord: " + Group2TimerAttempts.getBestTimeDisplay());
+    System.exit(0);
     }
 
     public void moveEnemyAI() {
@@ -365,6 +371,7 @@ public class Group2Map2 implements KeyListener {
                 canMove = false;
                 enemyTimer.stop();
                 JOptionPane.showMessageDialog(f, "NO ESCAPE.");
+                respawn();
             }
         }
     }
@@ -491,41 +498,107 @@ public void keyPressed(KeyEvent e) {
         cameraScroll.getHorizontalScrollBar().setValue(px - (1080 / 2) + (tileW / 2));
         cameraScroll.getVerticalScrollBar().setValue(py - (700 / 2) + (tileH / 2));
     }
+    
+    public void respawn() {
+    Group2TimerAttempts.addAttempt();
 
+    for (int i = 0; i < mL.length; i++) {
+        mL[i] = ML_BLUEPRINT[i];
+        OP[i] = OP_BLUEPRINT[i];
+
+        if (O[i] != null) {
+            if (OP[i]==4) O[i].setIcon(saltBagIcon);
+            else if(OP[i]==2) O[i].setIcon(clock);
+            else if(OP[i]==3) O[i].setIcon(barrel);
+            else if(OP[i]==5) O[i].setIcon(box);
+            else if(OP[i]==6) O[i].setIcon(shelf);
+            else if(OP[i]==7) O[i].setIcon(painting);
+            else if(OP[i]==8) O[i].setIcon(matchIcon);
+            else if(OP[i]==9) O[i].setIcon(effigyIcon);
+            else O[i].setIcon(null);
+        }
+
+        if (ts[i] != null) {
+            if (mL[i] == 0 || mL[i] == 9) ts[i].setIcon(floors);
+            else if (mL[i] == 2 || mL[i] == 5) ts[i].setIcon(wall);
+        }
+    }
+
+    CH[cp].setIcon(null); 
+
+    hasSaltBag = false;
+    saltCount = 8;
+    hasMatches = false;
+    matchCount = 5;
+    effigyCount = 5; 
+
+    cp = 62; 
+    enemyLogic.setPosition(70); 
+    CH[cp].setIcon(animd[0]); 
+
+    canMove = true;
+    enemyTimer.start();
+    updateCamera();
+
+    container.revalidate(); 
+    container.repaint();
+    
+    JOptionPane.showMessageDialog(f, "The darkness consumed you.\nAttempt: " + Group2TimerAttempts.attempts);
+}
+    
     public void keyTyped(KeyEvent e) {}
 
     class ShadowLayer extends JComponent {
-        public ShadowLayer() { setOpaque(false); }
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g;
-            int px = (cp % mW) * tileW - cameraScroll.getHorizontalScrollBar().getValue();
-            int py = (cp / mW) * tileH - cameraScroll.getVerticalScrollBar().getValue();
-            
-            Area mask = new Area(new Rectangle(0, 0, getWidth(), getHeight()));
-            int r = 400; 
-            Ellipse2D hole = new Ellipse2D.Double(px + (tileW/2) - (r/2), py + (tileH/2) - (r/2), r, r);
-            mask.subtract(new Area(hole));
-            
-            if (effigyCount <= 0) {
-                g2.setColor(new Color(150, 0, 0, 160)); 
-            } else {
-                g2.setColor(Color.BLACK);
-            }
-            g2.fill(mask);
+    public ShadowLayer() { setOpaque(false); }
+    
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
 
-            g2.setColor(Color.WHITE); g2.setFont(new Font("Monospaced", Font.BOLD, 22));
-            if (hasSaltBag) {
-                g2.drawImage(saltCounterIcon.getImage(), 30, 30, null);
-                g2.drawString("x" + saltCount, 85, 60);
-            }
-            if (hasMatches) {
-                g2.drawImage(matchCounterIcon.getImage(), 30, 85, null);
-                g2.drawString("x" + matchCount, 85, 115);
-            }
-            g2.setColor(Color.RED);
-            g2.drawString("EFFIGIES LEFT: " + effigyCount, getWidth() - 250, 60);
+        int px = (cp % mW) * tileW - cameraScroll.getHorizontalScrollBar().getValue();
+        int py = (cp / mW) * tileH - cameraScroll.getVerticalScrollBar().getValue();
+        
+        Area mask = new Area(new Rectangle(0, 0, getWidth(), getHeight()));
+        int r = 600; 
+        Ellipse2D hole = new Ellipse2D.Double(px + (tileW/2) - (r/2), py + (tileH/2) - (r/2), r, r);
+        mask.subtract(new Area(hole));
+
+        if (effigyCount <= 0) {
+            g2.setColor(new Color(150, 0, 0, 160)); 
+        } else {
+            g2.setColor(Color.BLACK);
         }
+        g2.fill(mask); 
+
+        g2.setFont(new Font("Monospaced", Font.BOLD, 20));
+
+        g2.setColor(Color.BLACK);
+        g2.drawString("ATTEMPT: " + Group2TimerAttempts.attempts, 32, 72);
+        g2.drawString("TIME: " + Group2TimerAttempts.getElapsed() + "s", 32, 102);
+
+        g2.setColor(Color.CYAN); 
+        g2.drawString("ATTEMPT: " + Group2TimerAttempts.attempts, 30, 70);
+
+        g2.setColor(Color.WHITE);
+        g2.drawString("TIME: " + Group2TimerAttempts.getElapsed() + "s", 30, 100);
+
+        g2.setColor(Color.YELLOW);
+        g2.drawString("BEST: " + Group2TimerAttempts.getBestTimeDisplay(), 30, 130);
+
+        g2.setColor(Color.WHITE); 
+        g2.setFont(new Font("Monospaced", Font.BOLD, 22));
+        if (hasSaltBag) {
+            g2.drawImage(saltCounterIcon.getImage(), 30, 160, null);
+            g2.drawString("x" + saltCount, 85, 190);
+        }
+        if (hasMatches) {
+            g2.drawImage(matchCounterIcon.getImage(), 30, 215, null);
+            g2.drawString("x" + matchCount, 85, 245);
+        }
+
+        g2.setColor(Color.RED);
+        g2.drawString("EFFIGIES LEFT: " + effigyCount, getWidth() - 250, 60);
     }
+}
 
     class GlitchLabel extends JLabel {
         public boolean isGlitching = true;
