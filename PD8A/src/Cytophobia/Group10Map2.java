@@ -88,9 +88,9 @@ public class Group10Map2 implements KeyListener, WindowListener {
         frame = new JFrame("Arena Map - Bear Trap Edition");
 
         wall = scaleIcon("assets10/wall.jpg");
-        tile = scaleIcon("assets10/floor.PNG");
+        tile = scaleIcon("assets10/floor.png");
         door = scaleIcon("assets10/door.jpg");
-        beartrap = scaleIcon("assets10/beartrap.PNG");
+        beartrap = scaleIcon("assets10/beartrap.png");
 
         playerSprites = new ImageIcon[4][3];
         for (int d = 0; d < 4; d++) {
