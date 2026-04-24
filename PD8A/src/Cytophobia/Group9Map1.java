@@ -20,19 +20,22 @@ public class Group9Map1 extends JPanel implements KeyListener {
     Image playerUp, playerDown, playerLeft, playerRight;
     Image currentPlayerSprite;
     Image floorImg, wallImg, objectImg, waterImg, correctHouseImg, wrongHouseImg;
+    
+    public static volatile long startTime;
 
     public Group9Map1() {
-        waterImg = new ImageIcon("assets9/Watertile.png").getImage();
-        floorImg = new ImageIcon("assets9/Rocktiles.png").getImage();
-        wallImg = new ImageIcon("assets9/tree3.jpg").getImage();
-        objectImg = new ImageIcon("assets9/mat.jpg").getImage();
-        correctHouseImg = new ImageIcon("assets9/house.jpg").getImage();
-        wrongHouseImg = new ImageIcon("assets9/house.jpg").getImage();
+        startTime = System.currentTimeMillis();
+        waterImg = new ImageIcon(getClass().getResource("/assets9/Watertile.PNG")).getImage();
+        floorImg = new ImageIcon(getClass().getResource("/assets9/Rocktiles.PNG")).getImage();
+        wallImg = new ImageIcon(getClass().getResource("/assets9/tree3.jpg")).getImage();
+        objectImg = new ImageIcon(getClass().getResource("/assets9/mat.jpg")).getImage();
+        correctHouseImg = new ImageIcon(getClass().getResource("/assets9/house.jpg")).getImage();
+        wrongHouseImg = new ImageIcon(getClass().getResource("/assets9/house.jpg")).getImage();
 
-        playerUp    = new ImageIcon("assets9/back2.png").getImage();
-        playerDown  = new ImageIcon("assets9/front2.png").getImage();
-        playerLeft  = new ImageIcon("assets9/left2.png").getImage();
-        playerRight = new ImageIcon("assets9/right2.png").getImage();
+        playerUp    = new ImageIcon(getClass().getResource("/assets9/back2.PNG")).getImage();
+        playerDown  = new ImageIcon(getClass().getResource("/assets9/front2.PNG")).getImage();
+        playerLeft  = new ImageIcon(getClass().getResource("/assets9/left2.PNG")).getImage();
+        playerRight = new ImageIcon(getClass().getResource("/assets9/right2.PNG")).getImage();
 
         currentPlayerSprite = playerDown;
 

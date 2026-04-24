@@ -49,8 +49,11 @@ public class Group10Map1 implements KeyListener, ActionListener, WindowListener 
     boolean enemyDespawned = false;
     
     Timer enemyTimer;
+    public static volatile long startTime;
 
     public Group10Map1() {
+        startTime = System.currentTimeMillis();
+        
         frame = new JFrame("Eliminate the Enemy");
         wall = scaleIcon("assets10/wall.jpg");
         tile = scaleIcon("assets10/floor.png");
@@ -61,7 +64,7 @@ public class Group10Map1 implements KeyListener, ActionListener, WindowListener 
         playerSprites = new ImageIcon[4][3];
         for (int d = 0; d < 4; d++) {
             for (int f = 0; f < 3; f++) {
-                playerSprites[d][f] = scaleIcon("assets10/Copy of plr_" + d + f + ".png");
+                playerSprites[d][f] = scaleIcon("assets10/Copy of plr_" + d + f + ".PNG");
             }
         }
         characterPlace = new int[]{
@@ -120,9 +123,9 @@ public class Group10Map1 implements KeyListener, ActionListener, WindowListener 
     }
 
     private ImageIcon scaleIcon(String path) {
-        ImageIcon icon = new ImageIcon(path);
-        return new ImageIcon(icon.getImage().getScaledInstance(
-            (frameWidth / mapWidth), (frameHeight / mapHeight), Image.SCALE_DEFAULT));
+        return new ImageIcon((new ImageIcon(getClass().getResource("/"+path))).getImage().getScaledInstance(frameWidth/mapWidth,
+                frameHeight/mapHeight,
+                Image.SCALE_DEFAULT));
     }
 
     public void setFrame() {
@@ -165,7 +168,7 @@ public class Group10Map1 implements KeyListener, ActionListener, WindowListener 
             newDir = 2; nextPos = characterPosition + 1;
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             newDir = 3; nextPos = characterPosition + mapWidth;
-        } else if(e.getKeyCode()==KeyEvent.VK_SPACE){{
+        } else if(e.getKeyCode()==KeyEvent.VK_E){{
             if(isAdjacent(characterPosition, potionPosition)){
                 enemyTimer.stop();
                 boolean correct = askQuestion();

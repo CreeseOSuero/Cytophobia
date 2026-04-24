@@ -3,10 +3,11 @@ package Cytophobia;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 // Members: Baguio, Banga, Tongcua
-
 public class Group9Map2 extends JPanel implements KeyListener {
+
     JFrame frame;
     int tileSize = 80;
 
@@ -34,53 +35,64 @@ public class Group9Map2 extends JPanel implements KeyListener {
     Image Fbed, Fblood, Ftable, Wblood, Wspider;
     Image playerDown, playerUp, playerLeft, playerRight;
     Image keyImage, manananggalImage;
-    Image floorImg, treeImg, objectImg, waterImg;
-    Image correctHouseImg, wrongHouseImg;
-    
+    Image waterImg, floorImg, treeImg, objectImg, correctHouseImg;
+
     Player player;
 
     boolean hasKey = false;
     boolean insideHouse = false;
     boolean showDialogue = false;
+    
+    boolean isBattleActive = false;
+    int currentQuestionIndex = 0;
+    String[] questions = {
+        "How many chambers does the heart have?",
+        "What are one-way doors in the heart called?",
+        "Main artery carrying oxygen-rich blood from left ventricle?",
+        "Funnel-shaped chamber collecting urine from calyces?",
+        "Cluster of capillaries within the nephron?",
+        "Functional units of the kidney (approx 1 million)?",
+        "Cells carrying oxygen, rich in hemoglobin?",
+        "Long tail-like projection in a neuron?",
+        "Fatty, insulating layer around axons?",
+        "Small gaps in the myelin sheath?"
+    };
+    String[] answers = {
+        "4", "valves", "aorta", "renal pelvis", "glomerulus", 
+        "nephrons", "red blood cell", "axon", "myelin sheath", "nodes of ranvier"
+    };
 
-    int keyRow = 3;
-    int keyCol = 1;
-
-    int houseRow = 5;
-    int houseCol = 4;
+    int keyRow = 3, keyCol = 1;
+    int houseRow = 5, houseCol = 4;
 
     public Group9Map2() {
+        floor1 = new ImageIcon(getClass().getResource("/assets9/Floortile.png")).getImage();
+        wall1 = new ImageIcon(getClass().getResource("/assets9/Walltile.png")).getImage();
+        window1 = new ImageIcon(getClass().getResource("/assets9/Wallwithwindow.png")).getImage();
+        Fbed = new ImageIcon(getClass().getResource("/assets9/Floorwithbed.png")).getImage();
+        Fblood = new ImageIcon(getClass().getResource("/assets9/Floortilewithblood.png")).getImage();
+        Ftable = new ImageIcon(getClass().getResource("/assets9/Floorwithtable.png")).getImage();
+        Wblood = new ImageIcon(getClass().getResource("/assets9/Wallwithblood.png")).getImage();
+        Wspider = new ImageIcon(getClass().getResource("/assets9/Wallwithspider.png")).getImage();
+        waterImg = new ImageIcon(getClass().getResource("/assets9/Watertile.png")).getImage();
+        floorImg = new ImageIcon(getClass().getResource("/assets9/Rocktiles.png")).getImage();
+        treeImg = new ImageIcon(getClass().getResource("/assets9/tree3.jpg")).getImage();
+        objectImg = new ImageIcon(getClass().getResource("/assets9/mat.jpg")).getImage();
+        correctHouseImg = new ImageIcon(getClass().getResource("/assets9/house.jpg")).getImage();
 
-        floor1 = new ImageIcon("assets9/Floortile.png").getImage();
-        wall1 = new ImageIcon("assets9/Walltile.png").getImage();
-        window1 = new ImageIcon("assets9/Wallwithwindow.png").getImage();
-        Fbed = new ImageIcon("assets9/Floorwithbed.png").getImage();
-        Fblood = new ImageIcon("assets9/Floortilewithblood.png").getImage();
-        Ftable = new ImageIcon("assets9/Floorwithtable.png").getImage();
-        Wblood = new ImageIcon("assets9/Wallwithblood.png").getImage();
-        Wspider = new ImageIcon("assets9/Wallwithspider.png").getImage();
-        
-        waterImg = new ImageIcon("assets9/Watertile.png").getImage();
-        floorImg = new ImageIcon("assets9/Rocktiles.png").getImage();
-        treeImg = new ImageIcon("assets9/tree3.jpg").getImage();
-        objectImg = new ImageIcon("assets9/mat.jpg").getImage();
-        correctHouseImg = new ImageIcon("assets9/house.jpg").getImage();
-        wrongHouseImg = new ImageIcon("assets9/house.jpg").getImage();
+        playerDown = new ImageIcon(getClass().getResource("/assets9/front2.png")).getImage();
+        playerUp = new ImageIcon(getClass().getResource("/assets9/back2.png")).getImage();
+        playerLeft = new ImageIcon(getClass().getResource("/assets9/left2.png")).getImage();
+        playerRight = new ImageIcon(getClass().getResource("/assets9/right2.png")).getImage();
 
-        playerDown = new ImageIcon("assets9/front2.png").getImage();
-        playerUp = new ImageIcon("assets9/back2.png").getImage();
-        playerLeft = new ImageIcon("assets9/left2.png").getImage();
-        playerRight = new ImageIcon("assets9/right2.png").getImage();
+        keyImage = new ImageIcon(getClass().getResource("/assets9/key.png")).getImage();
+        manananggalImage = new ImageIcon(getClass().getResource("/assets9/monster.png")).getImage();
 
-        keyImage = new ImageIcon("assets9/key.png").getImage();
-        manananggalImage = new ImageIcon("assets9/monster.png").getImage();
+        player = new Player(1, 1);
 
-        player = new Player(1,1);
-        
-        frame = new JFrame("PD7");
-        frame.setSize(map1[0].length * tileSize + 16,
-                map1.length * tileSize + 39);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame = new JFrame("PD8 - Manananggal Battle");
+        frame.setSize(map1[0].length * tileSize + 16, map1.length * tileSize + 39);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
         frame.addKeyListener(this);
         frame.setResizable(false);
@@ -94,10 +106,8 @@ public class Group9Map2 extends JPanel implements KeyListener {
 
         for (int row = 0; row < currentMap.length; row++) {
             for (int col = 0; col < currentMap[row].length; col++) {
-
                 Image tile = floor1;
                 int value = currentMap[row][col];
-
                 if (value == 1) tile = wall1;
                 else if (value == 2) tile = window1;
                 else if (value == 3) tile = Fbed;
@@ -105,71 +115,72 @@ public class Group9Map2 extends JPanel implements KeyListener {
                 else if (value == 5) tile = Ftable;
                 else if (value == 6) tile = Wblood;
                 else if (value == 7) tile = Wspider;
-                else if (value == 8) tile = waterImg; // Fixed missing value 8
-                else if (value == 9) tile = floorImg;
-                else if (value == 10) tile = treeImg;
-                else if (value == 11) tile = objectImg;
-                else if (value == 12) tile = correctHouseImg;
-
-                g.drawImage(tile, col * tileSize, row * tileSize,
-                        tileSize, tileSize, this);
+                g.drawImage(tile, col * tileSize, row * tileSize, tileSize, tileSize, this);
             }
         }
 
         if (!hasKey && !insideHouse) {
-            g.drawImage(keyImage, keyCol * tileSize, keyRow * tileSize,
-                    tileSize, tileSize, this);
+            g.drawImage(keyImage, keyCol * tileSize, keyRow * tileSize, tileSize, tileSize, this);
         }
 
         if (insideHouse) {
-            g.drawImage(manananggalImage, 5 * tileSize, 2 * tileSize,
-                    tileSize, tileSize, this);
+            g.drawImage(manananggalImage, 5 * tileSize, 2 * tileSize, tileSize, tileSize, this);
         }
 
         player.draw(g);
 
         g.setColor(Color.WHITE);
-        g.drawString("Key: " + (hasKey ? "Collected" : "Not Found"), 20, 20);
+        g.setFont(new Font("Arial", Font.BOLD, 14));
+        g.drawString("Key: " + (hasKey ? "Collected" : "Not Found"), 20, 25);
 
-        if (showDialogue) {
-            g.setColor(new Color(0, 0, 0, 200));
-            g.fillRect(50, 320, 700, 120);
-            g.setColor(Color.WHITE);
-            g.drawRect(50, 320, 700, 120);
-
-            g.setFont(new Font("Arial", Font.BOLD, 18));
-            g.drawString("Player: So this is where you hide...", 70, 360);
-            g.drawString("Manananggal: krrrhhh... sssshhk... tchkk...", 70, 400);
-            
-            Timer timer = new Timer(3000, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    frame.dispose();
-                    Menu.startNextLevel(9);
-                }
-            });
-
-            timer.start();
+        if (isBattleActive) {
+            drawBattleUI(g);
+        } else if (showDialogue) {
+            drawDialogueBox(g, "Manananggal: Answer these questions, or suffer defeat!", "Press ENTER to start the battle...");
         }
     }
 
-//Exception Handling starts here
+    private void drawDialogueBox(Graphics g, String line1, String line2) {
+        g.setColor(new Color(0, 0, 0, 230));
+        g.fillRect(50, 300, 650, 150);
+        g.setColor(Color.RED);
+        g.drawRect(50, 300, 650, 150);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Serif", Font.ITALIC, 20));
+        g.drawString(line1, 70, 350);
+        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        g.drawString(line2, 70, 400);
+    }
+
+    private void drawBattleUI(Graphics g) {
+        g.setColor(new Color(50, 0, 0, 240));
+        g.fillRect(50, 250, 700, 200);
+        g.setColor(Color.WHITE);
+        g.drawRect(50, 250, 700, 200);
+        
+        g.setFont(new Font("Arial", Font.BOLD, 18));
+        g.drawString("BATTLE: Answer correctly to survive!", 70, 280);
+        
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        g.drawString("Question " + (currentQuestionIndex + 1) + "/" + questions.length, 70, 310);
+        
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString(questions[currentQuestionIndex], 70, 350);
+        
+        g.setFont(new Font("Arial", Font.ITALIC, 14));
+        g.drawString("Press 'A' to answer this question", 70, 410);
+    }
 
     public void move(int dx, int dy) {
-        if (showDialogue) {
-            showDialogue = false; // Dismiss dialogue on next move attempt
-            repaint();
-            return;
-        }
+        if (isBattleActive || showDialogue) return; // Prevent movement during battle
 
         int newCol = player.getCol() + dx;
         int newRow = player.getRow() + dy;
 
-        if (newRow >= 0 && newRow < currentMap.length &&
-            newCol >= 0 && newCol < currentMap[0].length) {
-
+        if (newRow >= 0 && newRow < currentMap.length && newCol >= 0 && newCol < currentMap[0].length) {
             int tile = currentMap[newRow][newCol];
-
-            // Collision check
             if (tile != 1 && tile != 2 && tile != 6 && tile != 7) {
                 player.setPosition(newCol, newRow);
 
@@ -180,7 +191,7 @@ public class Group9Map2 extends JPanel implements KeyListener {
                 if (hasKey && !insideHouse && newRow == houseRow && newCol == houseCol) {
                     insideHouse = true;
                     currentMap = map2;
-                    player.setPosition(1,1);
+                    player.setPosition(1, 1);
                     showDialogue = true;
                 }
             }
@@ -188,39 +199,87 @@ public class Group9Map2 extends JPanel implements KeyListener {
         repaint();
     }
 
+    private void handleBattleAnswer() {
+        String userAnswer = JOptionPane.showInputDialog(this, questions[currentQuestionIndex]);
+        if (userAnswer != null && userAnswer.equalsIgnoreCase(answers[currentQuestionIndex])) {
+            JOptionPane.showMessageDialog(this, "Correct! The Manananggal weakens...");
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex >= questions.length) {
+                isBattleActive = false;
+                JOptionPane.showMessageDialog(this, "You have defeated the Manananggal!");
+                frame.dispose();
+                
+                long cur = System.currentTimeMillis() - Group9Map1.startTime;
+                long fastest = Long.MAX_VALUE;
+                try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("gr9fastest.log")))) {fastest = Long.parseLong(reader.readLine());}
+                catch (IOException ex) {}
+                String Scur = String.format("%d min %d sec", cur/60000, (cur/1000)%60);
+                String Sfastest = String.format("%d min %d sec", fastest/60000, (fastest/1000)%60);
+                if(fastest == Long.MAX_VALUE) JOptionPane.showMessageDialog(null, "First finish time: "+Scur);
+                else if(fastest > cur) JOptionPane.showMessageDialog(null, "New record! Fastest finish time: "+Scur);
+                else JOptionPane.showMessageDialog(null, "Current finish time: "+Scur+"\nFastest finish time: "+Sfastest);
+                if(fastest == Long.MAX_VALUE || fastest > cur) 
+                    try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr9fastest.log")))) {
+                        writer.write(String.valueOf(cur));
+                        writer.newLine();
+                    } catch(IOException ex) {}
+                
+                Menu.startNextLevel(9);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Wrong! The Manananggal shrieks! Try again.");
+        }
+        repaint();
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_UP) { player.setDirection("up"); move(0,-1); }
-        if (key == KeyEvent.VK_DOWN) { player.setDirection("down"); move(0,1); }
-        if (key == KeyEvent.VK_LEFT) { player.setDirection("left"); move(-1,0); }
-        if (key == KeyEvent.VK_RIGHT) { player.setDirection("right"); move(1,0); }
+
+        if (showDialogue && key == KeyEvent.VK_ENTER) {
+            showDialogue = false;
+            isBattleActive = true;
+            repaint();
+            return;
+        }
+
+        if (isBattleActive && key == KeyEvent.VK_A) {
+            handleBattleAnswer();
+            return;
+        }
+
+        if (!isBattleActive && !showDialogue) {
+            if (key == KeyEvent.VK_UP) { player.setDirection("up"); move(0, -1); }
+            if (key == KeyEvent.VK_DOWN) { player.setDirection("down"); move(0, 1); }
+            if (key == KeyEvent.VK_LEFT) { player.setDirection("left"); move(-1, 0); }
+            if (key == KeyEvent.VK_RIGHT) { player.setDirection("right"); move(1, 0); }
+        }
     }
 
-    @Override public void keyReleased(KeyEvent e){}
-    @Override public void keyTyped(KeyEvent e){}
+    @Override public void keyReleased(KeyEvent e) {}
+    @Override public void keyTyped(KeyEvent e) {}
 
     abstract class GameCharacter {
         protected int col, row;
         public GameCharacter(int col, int row) { this.col = col; this.row = row; }
-        public int getCol(){ return col; }
-        public int getRow(){ return row; }
-        public void setPosition(int col, int row){ this.col = col; this.row = row; }
+        public int getCol() { return col; }
+        public int getRow() { return row; }
+        public void setPosition(int col, int row) { this.col = col; this.row = row; }
         public abstract void draw(Graphics g);
     }
 
     class Player extends GameCharacter {
         private String direction = "down";
-        public Player(int col, int row){ super(col,row); }
-        public void setDirection(String dir){ direction = dir; }
+        public Player(int col, int row) { super(col, row); }
+        public void setDirection(String dir) { direction = dir; }
 
         @Override
-        public void draw(Graphics g){
+        public void draw(Graphics g) {
             Image sprite = playerDown;
-            if(direction.equals("up")) sprite = playerUp;
-            if(direction.equals("left")) sprite = playerLeft;
-            if(direction.equals("right")) sprite = playerRight;
-
+            if (direction.equals("up")) sprite = playerUp;
+            if (direction.equals("left")) sprite = playerLeft;
+            if (direction.equals("right")) sprite = playerRight;
             g.drawImage(sprite, col * tileSize, row * tileSize, tileSize, tileSize, null);
         }
     }

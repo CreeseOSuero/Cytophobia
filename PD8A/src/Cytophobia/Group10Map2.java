@@ -3,19 +3,8 @@ package Cytophobia;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.Random;
-
-class BoundaryException extends Exception {
-    public BoundaryException(String message) {
-        super(message);
-    }
-}
-
-class WallCollisionException extends Exception {
-    public WallCollisionException(String message) {
-        super(message);
-    }
-}
 
 class Player {
     private int score;
@@ -99,14 +88,14 @@ public class Group10Map2 implements KeyListener, WindowListener {
         frame = new JFrame("Arena Map - Bear Trap Edition");
 
         wall = scaleIcon("assets10/wall.jpg");
-        tile = scaleIcon("assets10/floor.png");
+        tile = scaleIcon("assets10/floor.PNG");
         door = scaleIcon("assets10/door.jpg");
-        beartrap = scaleIcon("assets10/beartrap.png");
+        beartrap = scaleIcon("assets10/beartrap.PNG");
 
         playerSprites = new ImageIcon[4][3];
         for (int d = 0; d < 4; d++) {
             for (int f = 0; f < 3; f++) {
-                playerSprites[d][f] = scaleIcon("assets10/Copy of plr_" + d + f + ".png");
+                playerSprites[d][f] = scaleIcon("assets10/Copy of plr_" + d + f + ".PNG");
             }
         }
 
@@ -151,17 +140,9 @@ public class Group10Map2 implements KeyListener, WindowListener {
     }
 
     private ImageIcon scaleIcon(String path) {
-        ImageIcon icon = new ImageIcon(path);
-        Image img = icon.getImage();
-        if (img == null) {
-            System.err.println("Warning: Could not load image: " + path);
-            return icon;
-        }
-        Image scaled = img.getScaledInstance(
-                frameWidth / mapWidth,
-                frameHeight / mapHeight,
-                Image.SCALE_DEFAULT);
-        return new ImageIcon(scaled);
+        return new ImageIcon((new ImageIcon(getClass().getResource("/"+path))).getImage().getScaledInstance(frameWidth/mapWidth,
+                frameHeight/mapHeight,
+                Image.SCALE_DEFAULT));
     }
 
     public void setFrame() {
@@ -303,6 +284,22 @@ public class Group10Map2 implements KeyListener, WindowListener {
             JOptionPane.showMessageDialog(frame,
                 "YOU WIN!\nScore: " + player.getScore() + "\nHealth remaining: " + player.getHealth());
             frame.dispose();
+            
+            long cur = System.currentTimeMillis() - Group10Map1.startTime;
+            long fastest = Long.MAX_VALUE;
+            try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("gr10fastest.log")))) {fastest = Long.parseLong(reader.readLine());}
+            catch (IOException ex) {}
+            String Scur = String.format("%d min %d sec", cur/60000, (cur/1000)%60);
+            String Sfastest = String.format("%d min %d sec", fastest/60000, (fastest/1000)%60);
+            if(fastest == Long.MAX_VALUE) JOptionPane.showMessageDialog(null, "First finish time: "+Scur);
+            else if(fastest > cur) JOptionPane.showMessageDialog(null, "New record! Fastest finish time: "+Scur);
+            else JOptionPane.showMessageDialog(null, "Current finish time: "+Scur+"\nFastest finish time: "+Sfastest);
+            if(fastest == Long.MAX_VALUE || fastest > cur) 
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr10fastest.log")))) {
+                    writer.write(String.valueOf(cur));
+                    writer.newLine();
+                } catch(IOException ex) {}
+            
             Menu.startNextLevel(10);
         }
 

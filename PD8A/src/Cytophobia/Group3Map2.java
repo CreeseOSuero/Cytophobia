@@ -3,6 +3,7 @@ package Cytophobia;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 public class Group3Map2 implements KeyListener {
     JFrame frame;
@@ -32,36 +33,36 @@ public class Group3Map2 implements KeyListener {
 
     boolean gateUnlocked = false;
     int seqIndex = 0;
-    int[] sequence = {20, 18, 21, 19, 22};
+    int[] sequence = {20, 18, 21, 19, 22}; // 3, 1, 4, 2, 5
 
     public Group3Map2() {
         frame = new JFrame();
 
-        space = new ImageIcon("assets3/void.png");
-        wall = new ImageIcon("assets3/Walls/wall.JPEG");
-        tile = new ImageIcon("assets3/Tiles/tiles.PNG");
-        tile2 = new ImageIcon("assets3/Tiles/tile2.PNG");
-        tile3 = new ImageIcon("assets3/Tiles/tile3.PNG");
-        crack = new ImageIcon("assets3/Tiles/crack.PNG");
-        crack2 = new ImageIcon("assets3/Tiles/crack2.PNG");
-        crack3 = new ImageIcon("assets3/Tiles/crack3.PNG");
+        space = new ImageIcon("");
+        wall = new ImageIcon(getClass().getResource("/assets3/Walls/wall.JPEG"));
+        tile = new ImageIcon(getClass().getResource("/assets3/Tiles/tiles.PNG"));
+        tile2 = new ImageIcon(getClass().getResource("/assets3/Tiles/tile2.PNG"));
+        tile3 = new ImageIcon(getClass().getResource("/assets3/Tiles/tile3.PNG"));
+        crack = new ImageIcon(getClass().getResource("/assets3/Tiles/crack.PNG"));
+        crack2 = new ImageIcon(getClass().getResource("/assets3/Tiles/crack2.PNG"));
+        crack3 = new ImageIcon(getClass().getResource("/assets3/Tiles/crack3.PNG"));
 
-        window = new ImageIcon("assets3/Walls/window.JPEG");
-        window2 = new ImageIcon("assets3/Walls/window2.JPEG");
-        window3 = new ImageIcon("assets3/Walls/window3.JPEG");
+        window = new ImageIcon(getClass().getResource("/assets3/Walls/window.JPEG"));
+        window2 = new ImageIcon(getClass().getResource("/assets3/Walls/window2.JPEG"));
+        window3 = new ImageIcon(getClass().getResource("/assets3/Walls/window3.JPEG"));
 
-        doorEn = new ImageIcon("assets3/Walls/door1.JPEG");
-        doorEx = new ImageIcon("assets3/Walls/door2.JPEG");
+        doorEn = new ImageIcon(getClass().getResource("/assets3/Walls/door1.JPEG"));
+        doorEx = new ImageIcon(getClass().getResource("/assets3/Walls/door2.JPEG"));
 
-        plant = new ImageIcon("assets3/Items/plant.jpg");
-        bush = new ImageIcon("assets3/Items/bush.jpg");
-        blood = new ImageIcon("assets3/Tiles/blood.PNG");
+        plant = new ImageIcon(getClass().getResource("/assets3/Items/plant.jpg"));
+        bush = new ImageIcon(getClass().getResource("/assets3/Items/bush.jpg"));
+        blood = new ImageIcon(getClass().getResource("/assets3/Tiles/blood.PNG"));
 
-        C1 = new ImageIcon("assets3/Cubicles/C1.jpg");
-        C2 = new ImageIcon("assets3/Cubicles/C2.jpg");
-        C3 = new ImageIcon("assets3/Cubicles/C3.jpg");
-        C4 = new ImageIcon("assets3/Cubicles/C4.jpg");
-        C5 = new ImageIcon("assets3/Cubicles/C5.jpg");
+        C1 = new ImageIcon(getClass().getResource("/assets3/Cubicles/C1.jpg"));
+        C2 = new ImageIcon(getClass().getResource("/assets3/Cubicles/C2.jpg"));
+        C3 = new ImageIcon(getClass().getResource("/assets3/Cubicles/C3.jpg"));
+        C4 = new ImageIcon(getClass().getResource("/assets3/Cubicles/C4.jpg"));
+        C5 = new ImageIcon(getClass().getResource("/assets3/Cubicles/C5.jpg"));
 
         ImageIcon[] icons = {
                 space, wall, tile, tile2, tile3,
@@ -78,10 +79,10 @@ public class Group3Map2 implements KeyListener {
             }
         }
 
-        playerIcon1 = new ImageIcon("assets3/Player/walk_up_0.PNG");
-        playerIcon2 = new ImageIcon("assets3/Player/walk_down_0.PNG");
-        playerIcon3 = new ImageIcon("assets3/Player/walk_left_0.PNG");
-        playerIcon4 = new ImageIcon("assets3/Player/walk_right_0.PNG");
+        playerIcon1 = new ImageIcon(getClass().getResource("/assets3/Player/walk_up_0.PNG"));
+        playerIcon2 = new ImageIcon(getClass().getResource("/assets3/Player/walk_down_0.PNG"));
+        playerIcon3 = new ImageIcon(getClass().getResource("/assets3/Player/walk_left_0.PNG"));
+        playerIcon4 = new ImageIcon(getClass().getResource("/assets3/Player/walk_right_0.PNG"));
 
         playerIcon1.setImage(playerIcon1.getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         playerIcon2.setImage(playerIcon2.getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
@@ -184,6 +185,22 @@ public class Group3Map2 implements KeyListener {
         } else {
             dialog.dispose();
             frame.dispose();
+            
+            long cur = System.currentTimeMillis() - Group3Map1.startTime;
+            long fastest = Long.MAX_VALUE;
+            try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("gr3fastest.log")))) {fastest = Long.parseLong(reader.readLine());}
+            catch (IOException ex) {}
+            String Scur = String.format("%d min %d sec", cur/60000, (cur/1000)%60);
+            String Sfastest = String.format("%d min %d sec", fastest/60000, (fastest/1000)%60);
+            if(fastest == Long.MAX_VALUE) JOptionPane.showMessageDialog(null, "First finish time: "+Scur);
+            else if(fastest > cur) JOptionPane.showMessageDialog(null, "New record! Fastest finish time: "+Scur);
+            else JOptionPane.showMessageDialog(null, "Current finish time: "+Scur+"\nFastest finish time: "+Sfastest);
+            if(fastest == Long.MAX_VALUE || fastest > cur) 
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr3fastest.log")))) {
+                    writer.write(String.valueOf(cur));
+                    writer.newLine();
+                } catch(IOException ex) {}
+            
             Menu.startNextLevel(3);
         }
     });

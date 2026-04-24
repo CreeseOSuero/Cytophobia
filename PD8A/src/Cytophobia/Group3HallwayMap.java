@@ -39,16 +39,16 @@ public class Group3HallwayMap implements KeyListener {
     }
 
     private void loadIcons() {
-        space = new ImageIcon("assets3/void.png");
-        wall = new ImageIcon("assets3/Walls/wall.JPEG");
-        tile = new ImageIcon("assets3/Tiles/tiles.PNG");
-        tile2 = new ImageIcon("assets3/Tiles/tile2.PNG");
-        tile3 = new ImageIcon("assets3/Tiles/tile3.PNG");
-        crack = new ImageIcon("assets3/Tiles/crack.PNG");
-        crack2 = new ImageIcon("assets3/Tiles/crack2.PNG");
-        crack3 = new ImageIcon("assets3/Tiles/crack3.PNG");
-        blood = new ImageIcon("assets3/Tiles/blood.PNG");
-        plant = new ImageIcon("assets3/Items/plant.jpg");
+        space = new ImageIcon("");
+        wall = new ImageIcon(getClass().getResource("/assets3/Walls/wall.JPEG"));
+        tile = new ImageIcon(getClass().getResource("/assets3/Tiles/tiles.PNG"));
+        tile2 = new ImageIcon(getClass().getResource("/assets3/Tiles/tile2.PNG"));
+        tile3 = new ImageIcon(getClass().getResource("/assets3/Tiles/tile3.PNG"));
+        crack = new ImageIcon(getClass().getResource("/assets3/Tiles/crack.PNG"));
+        crack2 = new ImageIcon(getClass().getResource("/assets3/Tiles/crack2.PNG"));
+        crack3 = new ImageIcon(getClass().getResource("/assets3/Tiles/crack3.PNG"));
+        blood = new ImageIcon(getClass().getResource("/assets3/Tiles/blood.PNG"));
+        plant = new ImageIcon(getClass().getResource("/assets3/Items/plant.jpg"));
 
         ImageIcon[] icons = {space, wall, tile, tile2, tile3, crack, crack2, crack3, blood, plant};
 
@@ -58,10 +58,10 @@ public class Group3HallwayMap implements KeyListener {
             }
         }
 
-        playerUp = new ImageIcon("assets3/Player/walk_up_0.PNG");
-        playerDown = new ImageIcon("assets3/Player/walk_down_0.PNG");
-        playerLeft = new ImageIcon("assets3/Player/walk_left_0.PNG");
-        playerRight = new ImageIcon("assets3/Player/walk_right_0.PNG");
+        playerUp = new ImageIcon(getClass().getResource("/assets3/Player/walk_up_0.PNG"));
+        playerDown = new ImageIcon(getClass().getResource("/assets3/Player/walk_down_0.PNG"));
+        playerLeft = new ImageIcon(getClass().getResource("/assets3/Player/walk_left_0.PNG"));
+        playerRight = new ImageIcon(getClass().getResource("/assets3/Player/walk_right_0.PNG"));
 
         playerUp.setImage(playerUp.getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         playerDown.setImage(playerDown.getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));

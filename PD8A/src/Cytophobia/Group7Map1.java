@@ -102,7 +102,7 @@ public class Group7Map1 implements KeyListener, ActionListener {
     }
     
     ImageIcon loadImg(String ref, int scaleX, int scaleY) {
-        return new ImageIcon((new ImageIcon(ref)).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX, (frameHeight/mapHeight) * scaleY, Image.SCALE_DEFAULT));
+        return new ImageIcon((new ImageIcon(getClass().getResource("/"+ref))).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX, (frameHeight/mapHeight) * scaleY, Image.SCALE_DEFAULT));
     }
     
     void addIcon(String ref, int scaleX, int scaleY) {
@@ -163,15 +163,15 @@ public class Group7Map1 implements KeyListener, ActionListener {
         
         icons = new ImageIcon[iconCount];
         iconSizes = new int[iconCount * 2];
-        addIcon(Group7Initializer.assetsFolder+"monster.png", 2, 4); // id 1, test tile, 0-index
-        addIcon(Group7Initializer.assetsFolder+"bed.png", 2, 3); // id 2
-        addIcon(Group7Initializer.assetsFolder+"door.png", 2, 3); // id 3
-        addIcon(Group7Initializer.assetsFolder+"lamp.png", 1, 2); // id 4
-        addIcon(Group7Initializer.assetsFolder+"painting.png", 3, 3); // id 5
-        addIcon(Group7Initializer.assetsFolder+"inverted_door.png", 2, 3); // id 6
-        addIcon(Group7Initializer.assetsFolder+"plant.png", 2, 2); // id 7
-        addIcon(Group7Initializer.assetsFolder+"chair.png", 1, 1); // id 8
-        addIcon(Group7Initializer.assetsFolder+"book.png", 12, 10); // id 9
+        addIcon(Group7Initializer.assetsFolder+"monster.PNG", 2, 4); // id 1, test tile, 0-index
+        addIcon(Group7Initializer.assetsFolder+"bed.PNG", 2, 3); // id 2
+        addIcon(Group7Initializer.assetsFolder+"door.PNG", 2, 3); // id 3
+        addIcon(Group7Initializer.assetsFolder+"lamp.PNG", 1, 2); // id 4
+        addIcon(Group7Initializer.assetsFolder+"painting.PNG", 3, 3); // id 5
+        addIcon(Group7Initializer.assetsFolder+"inverted_door.PNG", 2, 3); // id 6
+        addIcon(Group7Initializer.assetsFolder+"plant.PNG", 2, 2); // id 7
+        addIcon(Group7Initializer.assetsFolder+"chair.PNG", 1, 1); // id 8
+        addIcon(Group7Initializer.assetsFolder+"book.PNG", 12, 10); // id 9
         objs = new JLabel[6];
         roomLayout = new int[mapWidth*mapHeight];
         roomLayout[79] = 6;
@@ -222,8 +222,8 @@ public class Group7Map1 implements KeyListener, ActionListener {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         }; // 8, 22
         curInterLayout = lobbyInterLayout;
-        lobbyImg = loadImg(Group7Initializer.assetsFolder+"lobby.png", mapWidth, mapHeight);
-        roomImg = loadImg(Group7Initializer.assetsFolder+"room.png", mapWidth, mapHeight);
+        lobbyImg = loadImg(Group7Initializer.assetsFolder+"lobby.PNG", mapWidth, mapHeight);
+        roomImg = loadImg(Group7Initializer.assetsFolder+"room.PNG", mapWidth, mapHeight);
         
         lobDoor = new JLabel(getIcon(3));
         
@@ -298,7 +298,7 @@ public class Group7Map1 implements KeyListener, ActionListener {
         frame.add(darkEffect, new Rectangle(0,0,mapWidth,mapHeight));
         frame.add(lobDoor, new Rectangle(15,2,2,3));
         
-        fragL = new JLabel(loadImg(Group7Initializer.assetsFolder+"paperfragment.png",1,1));
+        fragL = new JLabel(loadImg(Group7Initializer.assetsFolder+"paperfragment.PNG",1,1));
         frame.add(fragL, new Rectangle(21,13,1,1));
         fragL.setVisible(false);
         

@@ -56,7 +56,7 @@ public class Group7Map2 implements KeyListener {
         e.start();
     }
     ImageIcon loadImg(String ref, int scaleX, int scaleY) {
-        return new ImageIcon((new ImageIcon(ref)).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX, (frameHeight/mapHeight) * scaleY, Image.SCALE_DEFAULT));
+        return new ImageIcon((new ImageIcon(getClass().getResource("/"+ref))).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX, (frameHeight/mapHeight) * scaleY, Image.SCALE_DEFAULT));
     }
     
     int translateToMTIdx(int x, int y) {
@@ -121,8 +121,8 @@ public class Group7Map2 implements KeyListener {
         
         icons = new ImageIcon[iconCount];
         iconSizes = new int[iconCount * 2];
-        addIcon(Group7Initializer.assetsFolder+"mtile.png", 2, 2);
-        addIcon(Group7Initializer.assetsFolder+"inverted_door.png", 2, 3);
+        addIcon(Group7Initializer.assetsFolder+"mtile.PNG", 2, 2);
+        addIcon(Group7Initializer.assetsFolder+"inverted_door.PNG", 2, 3);
         mapLayout = new int[]{
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -143,7 +143,7 @@ public class Group7Map2 implements KeyListener {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         };
-        bg = new JLabel(loadImg(Group7Initializer.assetsFolder+"room2.png", mapWidth, mapHeight));
+        bg = new JLabel(loadImg(Group7Initializer.assetsFolder+"room2.PNG", mapWidth, mapHeight));
         
         alphaGrad = new JLabel(loadImg(Group7Initializer.assetsFolder+"alpha_grad.png", mapWidth, 3));
         

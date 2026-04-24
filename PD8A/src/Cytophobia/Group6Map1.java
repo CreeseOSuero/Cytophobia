@@ -23,6 +23,8 @@ public class Group6Map1 implements KeyListener {
     
     int questionLocation;
     
+    public static volatile long startTime;
+    
     class Question {
     String question; 
     String[] options;
@@ -76,7 +78,7 @@ public class Group6Map1 implements KeyListener {
     boolean[] usedQuestions = new boolean[questions.length];
 
     public Group6Map1() {
-        
+        startTime = System.currentTimeMillis();
          JOptionPane.showMessageDialog(null,
                 "Every paper holds a question. Answer all the questions correctly and unlock the door!");
         
@@ -84,16 +86,16 @@ public class Group6Map1 implements KeyListener {
 
         characterPosition=-1;
 
-        i1=new ImageIcon("assets6/Images3/1.png");
-        i2=new ImageIcon("assets6/Images3/2.png");
-        i3=new ImageIcon("assets6/Images3/3.png");
-        i4=new ImageIcon("assets6/Images3/4.png");
-        i5=new ImageIcon("assets6/Images3/5.png");
-        i6=new ImageIcon("assets6/Images3/6.png");
-        i7=new ImageIcon("assets6/Images3/7.png");
-        i8=new ImageIcon("assets6/Images3/8.png");
-        i9=new ImageIcon("assets6/Images3/9.png");
-        i10=new ImageIcon("assets6/Images3/10.png");
+        i1=new ImageIcon(getClass().getResource("/assets6/Images3/1.png"));
+        i2=new ImageIcon(getClass().getResource("/assets6/Images3/2.png"));
+        i3=new ImageIcon(getClass().getResource("/assets6/Images3/3.png"));
+        i4=new ImageIcon(getClass().getResource("/assets6/Images3/4.png"));
+        i5=new ImageIcon(getClass().getResource("/assets6/Images3/5.png"));
+        i6=new ImageIcon(getClass().getResource("/assets6/Images3/6.png"));
+        i7=new ImageIcon(getClass().getResource("/assets6/Images3/7.png"));
+        i8=new ImageIcon(getClass().getResource("/assets6/Images3/8.png"));
+        i9=new ImageIcon(getClass().getResource("/assets6/Images3/9.png"));
+        i10=new ImageIcon(getClass().getResource("/assets6/Images3/10.PNG"));
 
         i1=new ImageIcon(i1.getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));
         i2=new ImageIcon(i2.getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));

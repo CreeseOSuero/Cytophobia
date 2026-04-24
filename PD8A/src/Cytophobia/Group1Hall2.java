@@ -53,32 +53,11 @@ public class Group1Hall2 implements KeyListener {
     volatile String interDia[];
     
     ImageIcon loadImg(String ref, int scaleX, int scaleY) {
-    try {
-        File imageFile = new File(ref);
-        
-        // Check if the file actually exists 
-        if (!imageFile.exists()) {
-            throw new java.io.FileNotFoundException("Resource missing: " + ref);
-        }
-
-        return new ImageIcon((new ImageIcon(ref)).getImage().getScaledInstance(
-            (frameWidth / mapWidth) * scaleX, 
-            (frameHeight / mapHeight) * scaleY, 
-            Image.SCALE_DEFAULT));
-
-    } catch (Exception e) {
-        // Displays a clear and helpful error message as required by PD7 
-        JOptionPane.showMessageDialog(frame, 
-            "Error loading game assets: " + e.getMessage() + 
-            "\nPlease ensure your folder structure is correct.", 
-            "Critical File Error", 
-            JOptionPane.ERROR_MESSAGE);
-        
-        // Prevents program from continuing in an unstable state 
-        System.exit(1); 
-        return null;
+        return new ImageIcon((new ImageIcon(getClass().getResource("/"+ref))).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX,
+                (frameHeight/mapHeight) * scaleY,
+                Image.SCALE_DEFAULT));
+    
     }
-}
     
     void addIcon(String ref, int scaleX, int scaleY) {
         icons[ic++] = loadImg(ref, scaleX, scaleY);
@@ -169,7 +148,7 @@ public class Group1Hall2 implements KeyListener {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         }; // .. oh the pain
-        bg = new JLabel(loadImg("assets1/IMG_5159.png", mapWidth, mapHeight));
+        bg = new JLabel(loadImg("assets1/IMG_5159.PNG", mapWidth, mapHeight));
         alphaGrad = new JLabel(loadImg("assets1/alpha_grad.png", mapWidth, 3));
         dialogueBox = new JLabel();
         dialogueBox.setBackground(Color.BLACK);
@@ -348,8 +327,6 @@ public class Group1Hall2 implements KeyListener {
             }
         }
         
-        SwingUtilities.invokeLater(() -> { objs[0].setIcon(icons[4]); });
-        
         plrMobile = true;
         doingObjective = false;
         doDialog = false;
@@ -428,4 +405,8 @@ public void keyPressed(KeyEvent e) {
     public void keyTyped(KeyEvent e) {}
     @Override
     public void keyReleased(KeyEvent e) { keyPress = false; }   
+    
+    public static void main(String[] args) {
+        (new Group1Hall2()).setFrame();
+    }
 }

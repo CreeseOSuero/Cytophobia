@@ -71,32 +71,11 @@ public class Group1HallL implements KeyListener {
     // --- Internal Logic ---
 
     ImageIcon loadImg(String ref, int scaleX, int scaleY) {
-    try {
-        File imageFile = new File(ref);
-        
-        // Check if the file actually exists 
-        if (!imageFile.exists()) {
-            throw new java.io.FileNotFoundException("Resource missing: " + ref);
-        }
-
-        return new ImageIcon((new ImageIcon(ref)).getImage().getScaledInstance(
-            (frameWidth / mapWidth) * scaleX, 
-            (frameHeight / mapHeight) * scaleY, 
-            Image.SCALE_DEFAULT));
-
-    } catch (Exception e) {
-        // Displays a clear and helpful error message as required by PD7 
-        JOptionPane.showMessageDialog(frame, 
-            "Error loading game assets: " + e.getMessage() + 
-            "\nPlease ensure your folder structure is correct.", 
-            "Critical File Error", 
-            JOptionPane.ERROR_MESSAGE);
-        
-        // Prevents program from continuing in an unstable state 
-        System.exit(1); 
-        return null;
+        return new ImageIcon((new ImageIcon(getClass().getResource("/"+ref))).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX,
+                (frameHeight/mapHeight) * scaleY,
+                Image.SCALE_DEFAULT));
+    
     }
-}
     
     private void addIcon(String ref, int scaleX, int scaleY) {
         icons[ic++] = loadImg(ref, scaleX, scaleY);
@@ -137,7 +116,7 @@ public class Group1HallL implements KeyListener {
         
         objs = new JLabel[6];
         interDone = new boolean[7];
-        interDia = new String[]{"", "...It's open.", "...Locked?", "", "", "...It won't open.", "...It needs a keycard."};
+        interDia = new String[]{" ", "...It's open.", "...Locked?", " ", " ", "...It won't open.", "...It needs a keycard."};
 
         mapLayout = new int[mapWidth * mapHeight];
         mapLayout[10*mapWidth+9] = 5;
@@ -163,7 +142,7 @@ public class Group1HallL implements KeyListener {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         };
 
-        bg = new JLabel(loadImg("assets1/IMG_5163.png", mapWidth, mapHeight));
+        bg = new JLabel(loadImg("assets1/IMG_5163.PNG", mapWidth, mapHeight));
         alphaGrad = new JLabel(loadImg("assets1/alpha_grad.png", mapWidth, 3));
         dialogueBox = new JLabel();
         dialogueBox.setBackground(Color.BLACK);
@@ -238,13 +217,37 @@ public class Group1HallL implements KeyListener {
                     darkEffect.setOpaque(true);
                     darkEffect.setBackground(Color.BLACK);
                     darkEffect.setVisible(true);
-                    frame.getContentPane().setComponentZOrder(darkEffect, 0);
                     frame.repaint();
                 });
                 tWait(500);
                 tWriteDia("SYSTEM", "Stage Clear!.", 1500, 1000);
                 tWait(1000);
                 SwingUtilities.invokeLater(() -> frame.repaint());
+                long currentAttemptMillis = System.currentTimeMillis() - Group1Map.startTime;
+                long fastestMillis = Long.MAX_VALUE; // Default if no file exists
+                File recordFile = new File(Menu.resolveFilePath("g1fastest.txt"));
+                try {
+                    if (recordFile.exists()) {
+                        java.util.Scanner reader = new java.util.Scanner(recordFile);
+                        if (reader.hasNextLong()) {
+                            fastestMillis = reader.nextLong();
+                        }
+                        reader.close();
+                    }
+                } catch (java.io.IOException e) {
+                    System.out.println("Error reading record: " + e.getMessage());
+                }
+                if (currentAttemptMillis < fastestMillis) {
+                    fastestMillis = currentAttemptMillis;
+                    try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(recordFile))) {
+                        writer.print(fastestMillis);
+                    } catch (java.io.IOException e) {
+                        System.out.println("Error saving record: " + e.getMessage());
+                    }
+                }
+                String stats = String.format("Current Attempt: %d seconds\nFastest Attempt: %d seconds", 
+                                            currentAttemptMillis / 1000, (fastestMillis / 1000));
+                JOptionPane.showMessageDialog(frame, "Map Complete!\n" + stats);
                 frame.dispose();
                 Menu.startNextLevel(1);
             } catch (InterruptedException ex) { ex.printStackTrace(); }
@@ -340,4 +343,8 @@ public class Group1HallL implements KeyListener {
 
     @Override public void keyTyped(KeyEvent e) {}
     @Override public void keyReleased(KeyEvent e) { keyPress = false; }
+    
+    public static void main(String[] args) {
+        (new Group1HallL()).setFrame();
+    }
 }

@@ -54,22 +54,22 @@ public class Group5Map2 implements KeyListener {
         wall7 = load("assets5/wall7.jpg");
         wall8 = load("assets5/wall8.jpg");
 
-        floor = load("assets5/floor.png");
-        bed1 = load("assets5/bed1.png");
-        bed2 = load("assets5/bed2.png");
+        floor = load("assets5/floor.PNG");
+        bed1 = load("assets5/bed1.PNG");
+        bed2 = load("assets5/bed2.PNG");
         sky = load("assets5/sky.jpg");
 
-        couch = load("assets5/couch.png");
-        shelf = load("assets5/shelf.png");
-        carpet = load("assets5/carpet.png");
-        table = load("assets5/table.png");
-        plant = load("assets5/plant.png");
-        paper = load("assets5/paper.png");
+        couch = load("assets5/couch.PNG");
+        shelf = load("assets5/shelf.PNG");
+        carpet = load("assets5/carpet.PNG");
+        table = load("assets5/table.PNG");
+        plant = load("assets5/plant.PNG");
+        paper = load("assets5/paper.PNG");
 
-        key = load("assets5/key.png");
+        key = load("assets5/key.PNG");
         chest = load("assets5/chest.jpg");
-        goldkey = load("assets5/goldkey.png");
-        safe = load("assets5/safe.png");
+        goldkey = load("assets5/goldkey.PNG");
+        safe = load("assets5/safe.PNG");
 
         frontS = load("assets5/plr_10.PNG");
         frontW = load("assets5/plr_11.PNG");
@@ -141,7 +141,7 @@ public class Group5Map2 implements KeyListener {
     }
 
     private ImageIcon load(String path) {
-        Image img = new ImageIcon(path).getImage();
+        Image img = new ImageIcon(getClass().getResource("/"+path)).getImage();
         Image scaled = img.getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
     }
@@ -230,6 +230,22 @@ public class Group5Map2 implements KeyListener {
             }
             if(safeUnlocked && chestUnlocked) {
                 frame.dispose();
+                
+                long cur = System.currentTimeMillis() - Group5Map1.startTime;
+                long fastest = Long.MAX_VALUE;
+                try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("gr5fastest.log")))) {fastest = Long.parseLong(reader.readLine());}
+                catch (IOException ex) {}
+                String Scur = String.format("%d min %d sec", cur/60000, (cur/1000)%60);
+                String Sfastest = String.format("%d min %d sec", fastest/60000, (fastest/1000)%60);
+                if(fastest == Long.MAX_VALUE) JOptionPane.showMessageDialog(null, "First finish time: "+Scur);
+                else if(fastest > cur) JOptionPane.showMessageDialog(null, "New record! Fastest finish time: "+Scur);
+                else JOptionPane.showMessageDialog(null, "Current finish time: "+Scur+"\nFastest finish time: "+Sfastest);
+                if(fastest == Long.MAX_VALUE || fastest > cur) 
+                    try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr5fastest.log")))) {
+                        writer.write(String.valueOf(cur));
+                        writer.newLine();
+                    } catch(IOException ex) {}
+
                 Menu.startNextLevel(5);
             }
 
@@ -249,7 +265,7 @@ public class Group5Map2 implements KeyListener {
 
     private boolean askQuiz() {
         ArrayList<String[]> questions = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("questions.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(Menu.resolveFilePath("questions.txt")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",", 2);
@@ -273,7 +289,7 @@ public class Group5Map2 implements KeyListener {
     }
 
     private void logAnswer(String question, String answer, boolean correct) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter("answers.txt", true))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(Menu.resolveFilePath("answers.txt"), true))) {
             pw.println(question + " | Your answer: " + answer + " | Correct: " + correct);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(frame, "Error logging answer!");
@@ -281,7 +297,7 @@ public class Group5Map2 implements KeyListener {
     }
 
     private void saveProgress() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter("progress.txt"))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(Menu.resolveFilePath("progress.txt")))) {
             pw.println("chestUnlocked=" + chestUnlocked);
             pw.println("safeUnlocked=" + safeUnlocked);
         } catch (IOException e) {
@@ -290,7 +306,7 @@ public class Group5Map2 implements KeyListener {
     }
 
     private void loadProgress() {
-        try (BufferedReader br = new BufferedReader(new FileReader("progress.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(Menu.resolveFilePath("progress.txt")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.startsWith("chestUnlocked=")) chestUnlocked = Boolean.parseBoolean(line.split("=")[1]);

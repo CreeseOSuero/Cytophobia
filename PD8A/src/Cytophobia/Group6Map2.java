@@ -3,6 +3,7 @@ package Cytophobia;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,23 +45,23 @@ public class Group6Map2 implements KeyListener {
 
         frame = new JFrame();
 
-        i1 = scale(new ImageIcon("assets6/Images4/1.png"));
-        i2 = scale(new ImageIcon("assets6/Images4/2.png"));
-        i3 = scale(new ImageIcon("assets6/Images4/3.png"));
-        i4 = scale(new ImageIcon("assets6/Images4/8.png"));
-        i5 = scale(new ImageIcon("assets6/Images4/18.png"));
-        i6 = scale(new ImageIcon("assets6/Images4/23.png"));
-        i7 = scale(new ImageIcon("assets6/Images4/20.png"));
-        i8 = scale(new ImageIcon("assets6/Images4/21.png"));
-        i9 = scale(new ImageIcon("assets6/Images4/14.png"));
-        i10 = scale(new ImageIcon("assets6/Images4/24.png"));
-        i11 = scale(new ImageIcon("assets6/Images4/5.png"));
-        i12 = scale(new ImageIcon("assets6/Images4/4.png"));
+        i1 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/1.png")));
+        i2 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/2.png")));
+        i3 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/3.png")));
+        i4 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/8.png")));
+        i5 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/18.png")));
+        i6 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/23.png")));
+        i7 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/20.png")));
+        i8 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/21.png")));
+        i9 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/14.png")));
+        i10 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/24.png")));
+        i11 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/5.png")));
+        i12 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/4.png")));
 
-        playerup = scale(new ImageIcon("assets6/Images4/up.png"));
-        playerdown = scale(new ImageIcon("assets6/Images4/down.png"));
-        playerleft = scale(new ImageIcon("assets6/Images4/left.png"));
-        playerright = scale(new ImageIcon("assets6/Images4/right.png"));
+        playerup = scale(new ImageIcon(getClass().getResource("/assets6/Images4/up.png")));
+        playerdown = scale(new ImageIcon(getClass().getResource("/assets6/Images4/down.PNG")));
+        playerleft = scale(new ImageIcon(getClass().getResource("/assets6/Images4/left.png")));
+        playerright = scale(new ImageIcon(getClass().getResource("/assets6/Images4/right.PNG")));
 
         tiles = new JLabel[mapWidth * mapHeight];
         character = new JLabel[mapWidth * mapHeight];
@@ -266,6 +267,22 @@ public class Group6Map2 implements KeyListener {
             JOptionPane.showMessageDialog(frame,"Game is complete!");
             quizCompleted = true;
             frame.dispose();
+            
+            long cur = System.currentTimeMillis() - Group6Map1.startTime;
+            long fastest = Long.MAX_VALUE;
+            try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("gr6fastest.log")))) {fastest = Long.parseLong(reader.readLine());}
+            catch (IOException ex) {}
+            String Scur = String.format("%d min %d sec", cur/60000, (cur/1000)%60);
+            String Sfastest = String.format("%d min %d sec", fastest/60000, (fastest/1000)%60);
+            if(fastest == Long.MAX_VALUE) JOptionPane.showMessageDialog(null, "First finish time: "+Scur);
+            else if(fastest > cur) JOptionPane.showMessageDialog(null, "New record! Fastest finish time: "+Scur);
+            else JOptionPane.showMessageDialog(null, "Current finish time: "+Scur+"\nFastest finish time: "+Sfastest);
+            if(fastest == Long.MAX_VALUE || fastest > cur) 
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr6fastest.log")))) {
+                    writer.write(String.valueOf(cur));
+                    writer.newLine();
+                } catch(IOException ex) {}
+            
             Menu.startNextLevel(6);
         } else {
             JOptionPane.showMessageDialog(frame,"Not enough correct answers. Try again!");

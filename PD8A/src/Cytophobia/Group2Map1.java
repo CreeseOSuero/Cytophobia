@@ -9,11 +9,6 @@ import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 //groupmates: Tanya June Deocampo & Savine Gail Cansancio 
 //gemini was used in making this :DDDD
-class InvalidKeyException extends Exception {
-    public InvalidKeyException(String message) {
-        super(message);
-    }
-}
 
 public class Group2Map1 implements KeyListener {
     private int[] ML_BLUEPRINT;
@@ -81,39 +76,38 @@ public class Group2Map1 implements KeyListener {
     int step = 0;
     public Group2Map1() {
         f = new JFrame("PD Map");
-        animd[2] = new ImageIcon("Images/animd3.png");
-        animd[1] = new ImageIcon("Images/animd2.png");
-        animd[0] = new ImageIcon("Images/animd1.png");
-        animr[0] = new ImageIcon("Images/animr1.png");
-        animr[1] = new ImageIcon("Images/animr2.png");
-        animr[2] = new ImageIcon("Images/animr3.png");
-        animl[0] = new ImageIcon("Images/animl1.png"); 
-        animl[1] = new ImageIcon("Images/animl2.png"); 
-        animl[2] = new ImageIcon("Images/animl3.png"); 
-        animu[0] = new ImageIcon("Images/animu1.png");
-        animu[1] = new ImageIcon("Images/animu2.png"); 
-        animu[2] = new ImageIcon("Images/animu3.png");
-        idle = new ImageIcon("Images/idle.png");
-        table = new ImageIcon("Images/table.png");
-        key1 = new ImageIcon("Images/key1.png");
-        key2 = new ImageIcon("Images/bookshelf.png");
-        book = new ImageIcon("Images/book.png");
-        lore = new ImageIcon("Images/bookshelf.png");
-        bookshelf = new ImageIcon("Images/bookshelf.png");
-        mirror = new ImageIcon("Images/mirror.png");
-        lantern = new ImageIcon("Images/lantern.png");
-        mirrornormal = new ImageIcon("Images/mirrornormal.png");
-        w = new ImageIcon("Images/wall.png");
-        w1 = new ImageIcon("Images/wall1.png");
-        w2 = new ImageIcon("Images/wall2.jpg");
-        w3 = new ImageIcon("Images/wall3.png");
-        w4 = new ImageIcon("Images/wall4.png");
-        t = new ImageIcon("Images/floor.png");
-        b = new ImageIcon("Images/bed.png");
-        B = new ImageIcon("Images/bathtub.png");
-        D = new ImageIcon("Images/door.png");
-        d = new ImageIcon("Images/drawer.png");
-        T = new ImageIcon("Images/toilet.png");
+        animd[2] = new ImageIcon(getClass().getResource("/assets2/animd3.png"));
+        animd[1] = new ImageIcon(getClass().getResource("/assets2/animd2.png"));
+        animd[0] = new ImageIcon(getClass().getResource("/assets2/animd1.png"));
+        animr[0] = new ImageIcon(getClass().getResource("/assets2/animr1.png"));
+        animr[1] = new ImageIcon(getClass().getResource("/assets2/animr2.png"));
+        animr[2] = new ImageIcon(getClass().getResource("/assets2/animr3.png"));
+        animl[0] = new ImageIcon(getClass().getResource("/assets2/animl1.png")); 
+        animl[1] = new ImageIcon(getClass().getResource("/assets2/animl2.png")); 
+        animl[2] = new ImageIcon(getClass().getResource("/assets2/animl3.png")); 
+        animu[0] = new ImageIcon(getClass().getResource("/assets2/animu1.png"));
+        animu[1] = new ImageIcon(getClass().getResource("/assets2/animu2.png")); 
+        animu[2] = new ImageIcon(getClass().getResource("/assets2/animu3.png"));
+        table = new ImageIcon(getClass().getResource("/assets2/table.png"));
+        key1 = new ImageIcon(getClass().getResource("/assets2/key1.png"));
+        key2 = new ImageIcon(getClass().getResource("/assets2/bookshelf.png"));
+        book = new ImageIcon(getClass().getResource("/assets2/book.png"));
+        lore = new ImageIcon(getClass().getResource("/assets2/bookshelf.png"));
+        bookshelf = new ImageIcon(getClass().getResource("/assets2/bookshelf.png"));
+        mirror = new ImageIcon(getClass().getResource("/assets2/mirror.png"));
+        lantern = new ImageIcon(getClass().getResource("/assets2/lantern.png"));
+        mirrornormal = new ImageIcon(getClass().getResource("/assets2/mirrornormal.png"));
+        w = new ImageIcon(getClass().getResource("/assets2/wall.jpg"));
+        w1 = new ImageIcon(getClass().getResource("/assets2/wall1.jpg"));
+        w2 = new ImageIcon(getClass().getResource("/assets2/wall2.jpg"));
+        w3 = new ImageIcon(getClass().getResource("/assets2/wall3.jpg"));
+        w4 = new ImageIcon(getClass().getResource("/assets2/wall4.jpg"));
+        t = new ImageIcon(getClass().getResource("/assets2/floor.png"));
+        b = new ImageIcon(getClass().getResource("/assets2/bed.png"));
+        B = new ImageIcon(getClass().getResource("/assets2/bathtub.png"));
+        D = new ImageIcon(getClass().getResource("/assets2/door.png"));
+        d = new ImageIcon(getClass().getResource("/assets2/drawer.png"));
+        T = new ImageIcon(getClass().getResource("/assets2/toilet.png"));
         this.tileW = (fW / mW);
         this.tileH = (fH / mH);
         int bedW = (int)(tileW/1.15);
@@ -145,7 +139,6 @@ public class Group2Map1 implements KeyListener {
         animu[1]=new ImageIcon(animu[1].getImage().getScaledInstance(bigW, bigH, Image.SCALE_DEFAULT));
         animu[0]=new ImageIcon(animu[0].getImage().getScaledInstance(bigW, bigH, Image.SCALE_DEFAULT));
         animu[2]=new ImageIcon(animu[1].getImage().getScaledInstance(bigW, bigH, Image.SCALE_DEFAULT));
-        w=new ImageIcon(w.getImage().getScaledInstance(tileW, tileH, Image.SCALE_DEFAULT));
         lore=new ImageIcon(lore.getImage().getScaledInstance(tileW, tileH, Image.SCALE_DEFAULT));
         w1=new ImageIcon(w1.getImage().getScaledInstance(tileW, tileH, Image.SCALE_DEFAULT));
         w2=new ImageIcon(w2.getImage().getScaledInstance(tileW, tileH, Image.SCALE_DEFAULT));
@@ -307,6 +300,9 @@ public class Group2Map1 implements KeyListener {
         this.ML_BLUEPRINT = mL.clone();
         this.OP_BLUEPRINT = OP.clone();
     }   
+    public static void main(String[] args) {
+        (new Group2Map1()).setFrame();
+    }
 public void setFrame() {
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.getContentPane().setBackground(Color.BLACK);
@@ -393,7 +389,7 @@ public void setFrame() {
         bookUI.add(choices[i]);
     }
 
-    JLabel bookBackground = new JLabel(new ImageIcon(new ImageIcon("Images/quiz.png")
+    JLabel bookBackground = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/assets2/quiz.png"))
         .getImage().getScaledInstance(700, 500, Image.SCALE_SMOOTH)));
     bookBackground.setBounds(0, 0, 700, 500);
     bookUI.add(bookBackground);
@@ -454,7 +450,7 @@ if (!introPlayed) {
 public void triggerDeathSequence() {
     canMove = false;
     bookUI.setVisible(false);
-    scareOverlay.setIcon(new ImageIcon(new ImageIcon("Images/scary_face.jpg")
+    scareOverlay.setIcon(new ImageIcon(new ImageIcon("assets2/scary_face.jpg")
         .getImage().getScaledInstance(960, 560, Image.SCALE_SMOOTH)));
     scareOverlay.setVisible(true);
     Timer deathTimer = new Timer(50, new ActionListener() {
@@ -734,7 +730,7 @@ public void typeText(String text) {
         startDialogueTimer(2500);
     } 
     else if (mirrorCount == 2) {
-    scareOverlay.setIcon(new ImageIcon(new ImageIcon("Images/mirror.png").getImage()
+    scareOverlay.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/assets2/mirror.png")).getImage()
               .getScaledInstance(960, 560, Image.SCALE_SMOOTH)));
     
     scareOverlay.setBounds(cameraScroll.getX(), cameraScroll.getY(), 960, 560);

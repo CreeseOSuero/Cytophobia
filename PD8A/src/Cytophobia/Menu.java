@@ -44,7 +44,7 @@ public class Menu implements ActionListener {
     };
     
     public ImageIcon loadImg(String path, int scaleW, int scaleH) {
-        return new ImageIcon((new ImageIcon(path)).getImage().getScaledInstance((frameWidth/layoutW) * scaleW,
+        return new ImageIcon((new ImageIcon(getClass().getResource("/"+path))).getImage().getScaledInstance((frameWidth/layoutW) * scaleW,
                 (frameHeight/layoutH) * scaleH,
                 Image.SCALE_DEFAULT));
     } 
@@ -244,8 +244,8 @@ public class Menu implements ActionListener {
             getLvlUnlocked();
             if(lvl == lvlUnlocked) {
                 setLvlUnlocked(++lvlUnlocked);
-                curLvl = lvlUnlocked;
             }
+            curLvl = lvl+1;
             int result = JOptionPane.showConfirmDialog(
                 null,
                 "Do you want to continue?",

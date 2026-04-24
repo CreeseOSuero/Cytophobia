@@ -28,36 +28,38 @@ public class Group5Map1 implements KeyListener {
     int keyPosition;
     int chestPosition;
     boolean chestUnlocked = false;
+    public static volatile long startTime;
 
     public Group5Map1() {
+        startTime = System.currentTimeMillis();
         frame = new JFrame();
         characterMode = 0;
         characterPosition = (mapHeight / 2) * mapWidth + (mapWidth / 2);
 
         // Load images
-        wall1 = new ImageIcon("assets5/wall1.jpg");
-        wall2 = new ImageIcon("assets5/wall2.jpg");
-        wall3 = new ImageIcon("assets5/wall3.jpg");
-        wall4 = new ImageIcon("assets5/wall4.jpg");
-        wall5 = new ImageIcon("assets5/wall5.jpg");
-        wall6 = new ImageIcon("assets5/wall6.jpg");
-        wall7 = new ImageIcon("assets5/wall7.jpg");
-        wall8 = new ImageIcon("assets5/wall8.jpg");
-        floor = new ImageIcon("assets5/floor.png");
-        key = new ImageIcon("assets5/key.png");
-        chest = new ImageIcon("assets5/chest.jpg");
-        bed1 = new ImageIcon("assets5/bed1.png");
-        bed2 = new ImageIcon("assets5/bed2.png");
-        sky = new ImageIcon("assets5/sky.jpg");
+        wall1 = new ImageIcon(getClass().getResource("/assets5/wall1.jpg"));
+        wall2 = new ImageIcon(getClass().getResource("/assets5/wall2.jpg"));
+        wall3 = new ImageIcon(getClass().getResource("/assets5/wall3.jpg"));
+        wall4 = new ImageIcon(getClass().getResource("/assets5/wall4.jpg"));
+        wall5 = new ImageIcon(getClass().getResource("/assets5/wall5.jpg"));
+        wall6 = new ImageIcon(getClass().getResource("/assets5/wall6.jpg"));
+        wall7 = new ImageIcon(getClass().getResource("/assets5/wall7.jpg"));
+        wall8 = new ImageIcon(getClass().getResource("/assets5/wall8.jpg"));
+        floor = new ImageIcon(getClass().getResource("/assets5/floor.PNG"));
+        key = new ImageIcon(getClass().getResource("/assets5/key.PNG"));
+        chest = new ImageIcon(getClass().getResource("/assets5/chest.jpg"));
+        bed1 = new ImageIcon(getClass().getResource("/assets5/bed1.PNG"));
+        bed2 = new ImageIcon(getClass().getResource("/assets5/bed2.PNG"));
+        sky = new ImageIcon(getClass().getResource("/assets5/sky.jpg"));
 
-        frontS = new ImageIcon("assets5/plr_10.PNG");
-        frontW = new ImageIcon("assets5/plr_11.PNG");
-        backS = new ImageIcon("assets5/plr_30.PNG");
-        backW = new ImageIcon("assets5/plr_31.PNG");
-        leftS = new ImageIcon("assets5/plr_00.PNG");
-        leftW = new ImageIcon("assets5/plr_01.PNG");
-        rightS = new ImageIcon("assets5/plr_20.PNG");
-        rightW = new ImageIcon("assets5/plr_21.PNG");
+        frontS = new ImageIcon(getClass().getResource("/assets5/plr_10.PNG"));
+        frontW = new ImageIcon(getClass().getResource("/assets5/plr_11.PNG"));
+        backS = new ImageIcon(getClass().getResource("/assets5/plr_30.PNG"));
+        backW = new ImageIcon(getClass().getResource("/assets5/plr_31.PNG"));
+        leftS = new ImageIcon(getClass().getResource("/assets5/plr_00.PNG"));
+        leftW = new ImageIcon(getClass().getResource("/assets5/plr_01.PNG"));
+        rightS = new ImageIcon(getClass().getResource("/assets5/plr_20.PNG"));
+        rightW = new ImageIcon(getClass().getResource("/assets5/plr_21.PNG"));
 
         // Scale all icons
         wall1 = scaleIcon(wall1); wall2 = scaleIcon(wall2); wall3 = scaleIcon(wall3); wall4 = scaleIcon(wall4);

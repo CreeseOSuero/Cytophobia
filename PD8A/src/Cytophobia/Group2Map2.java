@@ -97,36 +97,36 @@ public class Group2Map2 implements KeyListener {
         this.tileW = (fW / mW);
         this.tileH = (fH / mH);     
 
-        wall = scaleIcon("Images/walll.png", tileW, tileH);
-        trash = scaleIcon("Images/trash.png", tileW, tileH);
-        barrel = scaleIcon("Images/barrel.png", tileW, tileH);
-        table = scaleIcon("Images/tablee.png", tileW, tileH);
-        stairs = scaleIcon("Images/stairs.png", tileW*3, tileH*3); 
-        shelf = scaleIcon("Images/shelf.png", tileW, tileH);
-        planks = scaleIcon("Images/planks.png", tileW, tileH);
-        painting = scaleIcon("Images/painting.png", tileW, tileH);
-        floors = scaleIcon("Images/floors.png", tileW, tileH);
-        clock = scaleIcon("Images/clock.png", tileW, tileH);
-        box = scaleIcon("Images/box.png", tileW, tileH);
+        wall = scaleIcon("assets2/walll.png", tileW, tileH);
+        trash = scaleIcon("assets2/trash.png", tileW, tileH);
+        barrel = scaleIcon("assets2/barrel.png", tileW, tileH);
+        table = scaleIcon("assets2/tablee.png", tileW, tileH);
+        stairs = scaleIcon("assets2/stairs.png", tileW*3, tileH*3); 
+        shelf = scaleIcon("assets2/shelf.png", tileW, tileH);
+        planks = scaleIcon("assets2/planks.png", tileW, tileH);
+        painting = scaleIcon("assets2/painting.png", tileW, tileH);
+        floors = scaleIcon("assets2/floors.png", tileW, tileH);
+        clock = scaleIcon("assets2/clock.png", tileW, tileH);
+        box = scaleIcon("assets2/box.png", tileW, tileH);
         
-        saltIcon = scaleIcon("Images/saltIcon.png", tileW, tileH);
-        saltBagIcon = scaleIcon("Images/saltBagIcon.png", tileW, tileH);
-        saltCounterIcon = scaleIcon("Images/saltCounter.png", 45, 45);
+        saltIcon = scaleIcon("assets2/saltIcon.png", tileW, tileH);
+        saltBagIcon = scaleIcon("assets2/saltBagIcon.png", tileW, tileH);
+        saltCounterIcon = scaleIcon("assets2/saltCounter.png", 45, 45);
         
-        matchIcon = scaleIcon("Images/matches.png", tileW, tileH);
-        matchCounterIcon = scaleIcon("Images/matchCounter.png", 45, 45);
-        effigyIcon = scaleIcon("Images/effigy.png", tileW, tileH);
-        doorIcon = scaleIcon("Images/door.png", tileW, tileH);
+        matchIcon = scaleIcon("assets2/matches.png", tileW, tileH);
+        matchCounterIcon = scaleIcon("assets2/matchCounter.png", 45, 45);
+        effigyIcon = scaleIcon("assets2/effigy.png", tileW, tileH);
+        doorIcon = scaleIcon("assets2/door.png", tileW, tileH);
 
         for(int i=0; i<3; i++) {
-            animd[i] = scaleIcon("Images/animd" + (i+1) + ".png", tileW, tileH);
-            animr[i] = scaleIcon("Images/animr" + (i+1) + ".png", tileW, tileH);
-            animl[i] = scaleIcon("Images/animl" + (i+1) + ".png", tileW, tileH);
-            animu[i] = scaleIcon("Images/animu" + (i+1) + ".png", tileW, tileH);
+            animd[i] = scaleIcon("assets2/animd" + (i+1) + ".png", tileW, tileH);
+            animr[i] = scaleIcon("assets2/animr" + (i+1) + ".png", tileW, tileH);
+            animl[i] = scaleIcon("assets2/animl" + (i+1) + ".png", tileW, tileH);
+            animu[i] = scaleIcon("assets2/animu" + (i+1) + ".png", tileW, tileH);
         }
 
         enemyLogic = new ChaserEnemy(70, 400); 
-        enemyIcon = scaleIcon("Images/enemy.png", tileW, tileH);
+        enemyIcon = scaleIcon("assets2/enemy.png", tileW, tileH);
         enemyLabel = new JLabel(enemyIcon);
 
         OP=new int[]{
@@ -235,9 +235,11 @@ public class Group2Map2 implements KeyListener {
     }   
 
     private ImageIcon scaleIcon(String path, int w, int h) {
-        return new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT));
+        return new ImageIcon(new ImageIcon(getClass().getResource("/"+path)).getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT));
     }
-
+    public static void main(String[] args) {
+        (new Group2Map2()).setFrame();
+    }
     public void setFrame() {
         container = new JPanel(new GraphPaperLayout(new Dimension(mW, mH)));
         container.setPreferredSize(new Dimension(fW, fH));
@@ -300,14 +302,14 @@ public class Group2Map2 implements KeyListener {
         }
     }
 
-    private void triggerWin() {
+private void triggerWin() {
         canMove = false;
         enemyTimer.stop();
     long finalTime = Group2TimerAttempts.getElapsed();
     Group2TimerAttempts.saveBestTime(finalTime);
     
     JOptionPane.showMessageDialog(null, "WIN! Time: " + finalTime + "s\nRecord: " + Group2TimerAttempts.getBestTimeDisplay());
-    frame.dispose()
+    f.dispose();
     Menu.startNextLevel(2);
     }
 

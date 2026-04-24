@@ -99,11 +99,11 @@ public class Group4Map1 implements KeyListener{
 
         //----------------------------
 
-        background = setupImage("assets4/background.png", mW, mH);
-        background2 = setupImage("assets4/background2.png", mW, mH);
-        door0 = setupImage("assets4/door0.png", 1, 3);
-        monster0 = setupImage("assets4/monster.png", 1, 2);
-        //cover = setupImage("/assets9/cover.png", 4, 3);
+        background = setupImage("assets4/background.PNG", mW, mH);
+        background2 = setupImage("assets4/background2.PNG", mW, mH);
+        door0 = setupImage("assets4/door0.PNG", 1, 3);
+        monster0 = setupImage("assets4/monster.PNG", 1, 2);
+        //cover = setupImage("/assets9/cover.PNG", 4, 3);
         //test =setupImage("/assets9/test.jpg");
 
         pconup_0 = setupImage("assets4/pconup_0.PNG");
@@ -248,11 +248,11 @@ public class Group4Map1 implements KeyListener{
 
     public ImageIcon setupImage(String dir, int gridSizeX, int gridSizeY){
         return new ImageIcon(
-                new ImageIcon(dir).getImage().getScaledInstance((fW/mW)*gridSizeX, (fH/mH)*gridSizeY, Image.SCALE_SMOOTH));
+                new ImageIcon(getClass().getResource("/"+dir)).getImage().getScaledInstance((fW/mW)*gridSizeX, (fH/mH)*gridSizeY, Image.SCALE_SMOOTH));
     }
     public ImageIcon setupImage(String dir){
         return new ImageIcon(
-                new ImageIcon(dir).getImage().getScaledInstance(fW/mW, fH/mH, Image.SCALE_SMOOTH));
+                new ImageIcon(getClass().getResource("/"+dir)).getImage().getScaledInstance(fW/mW, fH/mH, Image.SCALE_SMOOTH));
     }
 
     //interaction variables
@@ -364,7 +364,6 @@ public class Group4Map1 implements KeyListener{
 
         new Thread(() -> {
             try {
-                /*
                 tWait(3000);
 
                 tWriteDia("", "<html>General Hilario Moncado constructed the dilapidated Moncado White Mansion in the 1930s, " +
@@ -377,7 +376,7 @@ public class Group4Map1 implements KeyListener{
                         "you must find a way to escape the room. </html>", 3000, 4000);
 
                 tWait(2000);
-                */
+
                 blackScreen.setVisible(false);
 
 
@@ -505,7 +504,7 @@ public class Group4Map1 implements KeyListener{
     public static void updateTimeRecord(double currentTime) {
         double bestTime = Double.MAX_VALUE;
 
-        File file = new File("src/Code/Log/record_Time.txt");
+        File file = new File(Menu.resolveFilePath("/gr4fastest.log"));
         file.getParentFile().mkdirs();
 
         if (file.exists()) {

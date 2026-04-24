@@ -86,7 +86,7 @@ public class Group4Player {
     public void updateCharacterRotation(String dir){
         pendingIndex = 0;
         switch (dir) {
-            case "r" -> {
+            case "r": {
                 if (characterMode == 0) {
                     characterMode++;
                     Elements[currentIndex].setIcon(Group4Map1.pconright_1);
@@ -97,8 +97,8 @@ public class Group4Player {
                     characterMode = 0;
                     Elements[currentIndex].setIcon(Group4Map1.pconright_0);
                 }
-            }
-            case "l" -> {
+            } break;
+            case "l": {
                 if (characterMode == 0) {
                     characterMode++;
                     Elements[currentIndex].setIcon(Group4Map1.pconleft_1);
@@ -109,8 +109,8 @@ public class Group4Player {
                     characterMode = 0;
                     Elements[currentIndex].setIcon(Group4Map1.pconleft_0);
                 }
-            }
-            case "u" -> {
+            } break;
+            case "u": {
                 if (characterMode == 0) {
                     characterMode++;
                     Elements[currentIndex].setIcon(Group4Map1.pconup_1);
@@ -121,8 +121,8 @@ public class Group4Player {
                     characterMode = 0;
                     Elements[currentIndex].setIcon(Group4Map1.pconup_0);
                 }
-            }
-            case null, default -> {
+            } break;
+            default: {
                 if (characterMode == 0) {
                     characterMode++;
                     Elements[currentIndex].setIcon(Group4Map1.pcondown_1);
@@ -133,7 +133,7 @@ public class Group4Player {
                     characterMode = 0;
                     Elements[currentIndex].setIcon(Group4Map1.pcondown_0);
                 }
-            }
+            } break;
         }
     }
 

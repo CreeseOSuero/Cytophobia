@@ -50,32 +50,11 @@ public class Group1RoomL implements KeyListener {
     volatile String interDia[];
     
     ImageIcon loadImg(String ref, int scaleX, int scaleY) {
-    try {
-        File imageFile = new File(ref);
-        
-        // Check if the file actually exists 
-        if (!imageFile.exists()) {
-            throw new java.io.FileNotFoundException("Resource missing: " + ref);
-        }
-
-        return new ImageIcon((new ImageIcon(ref)).getImage().getScaledInstance(
-            (frameWidth / mapWidth) * scaleX, 
-            (frameHeight / mapHeight) * scaleY, 
-            Image.SCALE_DEFAULT));
-
-    } catch (Exception e) {
-        // Displays a clear and helpful error message as required by PD7 
-        JOptionPane.showMessageDialog(frame, 
-            "Error loading game assets: " + e.getMessage() + 
-            "\nPlease ensure your folder structure is correct.", 
-            "Critical File Error", 
-            JOptionPane.ERROR_MESSAGE);
-        
-        // Prevents program from continuing in an unstable state 
-        System.exit(1); 
-        return null;
+        return new ImageIcon((new ImageIcon(getClass().getResource("/"+ref))).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX,
+                (frameHeight/mapHeight) * scaleY,
+                Image.SCALE_DEFAULT));
+    
     }
-}
     
     void addIcon(String ref, int scaleX, int scaleY) {
         icons[ic++] = loadImg(ref, scaleX, scaleY);
@@ -153,7 +132,7 @@ public class Group1RoomL implements KeyListener {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         }; 
-        bg = new JLabel(loadImg("assets1/IMG_5116.png", mapWidth, mapHeight));
+        bg = new JLabel(loadImg("assets1/IMG_5116.PNG", mapWidth, mapHeight));
         alphaGrad = new JLabel(loadImg("assets1/alpha_grad.png", mapWidth, 3));
         dialogueBox = new JLabel();
         dialogueBox.setBackground(Color.BLACK);

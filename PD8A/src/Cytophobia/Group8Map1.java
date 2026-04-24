@@ -29,12 +29,14 @@ public class Group8Map1 implements KeyListener {
     private PlayerState playerState;
     private MapData mapData;
     private GameState gameState;
+    public static volatile long startTime;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Group8Map1());
     }
     
     public Group8Map1() {
+        startTime = System.currentTimeMillis();
         System.out.println("=== PD4_GUI Starting ===");
         try {
             initializeFrame();
@@ -197,7 +199,7 @@ public class Group8Map1 implements KeyListener {
             "src/" + ref,                           // From src folder
             "./" + ref,                             // Relative
             ref.toLowerCase(),                      // Lowercase
-            ref.replace(".PNG", ".png").replace(".png", ".PNG") // Try both cases
+            ref.replace(".PNG", ".PNG").replace(".PNG", ".PNG") // Try both cases
         };
         
         for (String path : attempts) {
@@ -301,7 +303,11 @@ public class Group8Map1 implements KeyListener {
         }
         
         boolean isTransition(int x, int y) {
-            return x >= 28 && x <= 30 && y >= 3 && y <= 5;
+            frame.dispose();
+            
+            
+            new Group8Map1();
+            return true;
         }
     }
     

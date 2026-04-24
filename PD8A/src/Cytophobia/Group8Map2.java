@@ -2,6 +2,7 @@ package Cytophobia;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 
 public class Group8Map2 implements KeyListener {
@@ -172,6 +173,22 @@ public class Group8Map2 implements KeyListener {
                     JOptionPane.showMessageDialog(frame, "The chest creaks open...");
                     System.out.println("Quiz complete! Chest opened.");
                     frame.dispose();
+                    
+                    long cur = System.currentTimeMillis() - Group8Map1.startTime;
+                    long fastest = Long.MAX_VALUE;
+                    try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("gr8fastest.log")))) {fastest = Long.parseLong(reader.readLine());}
+                    catch (IOException ex) {}
+                    String Scur = String.format("%d min %d sec", cur/60000, (cur/1000)%60);
+                    String Sfastest = String.format("%d min %d sec", fastest/60000, (fastest/1000)%60);
+                    if(fastest == Long.MAX_VALUE) JOptionPane.showMessageDialog(null, "First finish time: "+Scur);
+                    else if(fastest > cur) JOptionPane.showMessageDialog(null, "New record! Fastest finish time: "+Scur);
+                    else JOptionPane.showMessageDialog(null, "Current finish time: "+Scur+"\nFastest finish time: "+Sfastest);
+                    if(fastest == Long.MAX_VALUE || fastest > cur) 
+                        try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr8fastest.log")))) {
+                            writer.write(String.valueOf(cur));
+                            writer.newLine();
+                        } catch(IOException ex) {}
+                    
                     Menu.startNextLevel(8);
                 }
                 
