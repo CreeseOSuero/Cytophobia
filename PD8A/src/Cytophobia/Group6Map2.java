@@ -257,10 +257,12 @@ public class Group6Map2 implements KeyListener {
         Collections.shuffle(questions);
 
         for(int i=0;i<5;i++){
+            Group6Map1.answered++;
             Question q = questions.get(i);
             String answer = JOptionPane.showInputDialog(frame,q.question);
             if(answer!=null && answer.equalsIgnoreCase(q.answer))
                 correct++;
+            else Group6Map1.wrongAnswers++;
         }
 
         if(correct>=3){
@@ -280,6 +282,21 @@ public class Group6Map2 implements KeyListener {
             if(fastest == Long.MAX_VALUE || fastest > cur) 
                 try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr6fastest.log")))) {
                     writer.write(String.valueOf(cur));
+                    writer.newLine();
+                } catch(IOException ex) {}
+            
+            float curError = (float)Group6Map1.wrongAnswers / (float)Group6Map1.answered;
+            float lowest = 2.0f;
+            try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("error_percentage.log")))) {lowest = Float.parseFloat(reader.readLine());}
+            catch (IOException ex) {}
+            String ScurError = String.format("%.2f%%", curError*100);
+            String Slowest = String.format("%.2f%%", lowest*100);
+            if(lowest == 2.0f) JOptionPane.showMessageDialog(null, "First time! Error%: "+ScurError);
+            else if(lowest > curError) JOptionPane.showMessageDialog(null, "Record broken! Error%: "+ScurError);
+            else JOptionPane.showMessageDialog(null, "Current Error%: "+ScurError+"\nLowest Error%: "+Slowest);
+            if(lowest > curError) 
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("error_percentage.log")))) {
+                    writer.write(String.valueOf(curError));
                     writer.newLine();
                 } catch(IOException ex) {}
             

@@ -23,6 +23,9 @@ public class Group6Map1 implements KeyListener {
     
     int questionLocation;
     
+    public static volatile int answered = 0;
+    public static volatile int wrongAnswers = 0;
+    
     public static volatile long startTime;
     
     class Question {
@@ -78,6 +81,8 @@ public class Group6Map1 implements KeyListener {
     boolean[] usedQuestions = new boolean[questions.length];
 
     public Group6Map1() {
+        answered = 0;
+        wrongAnswers = 0;
         startTime = System.currentTimeMillis();
          JOptionPane.showMessageDialog(null,
                 "Every paper holds a question. Answer all the questions correctly and unlock the door!");
@@ -214,7 +219,7 @@ public class Group6Map1 implements KeyListener {
                 q.options,
                 q.options[0]
             );
-     
+     answered++;
      if(choice == q.correctIndex) {
      JOptionPane.showMessageDialog(frame, "Correct! 🎉");
      
@@ -230,6 +235,7 @@ public class Group6Map1 implements KeyListener {
                     frame,
                     "Wrong!" 
                 );
+                wrongAnswers++;
      }
     }
     if (mapLayout[characterPosition] == 8) {
