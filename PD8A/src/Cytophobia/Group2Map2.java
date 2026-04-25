@@ -235,7 +235,7 @@ public class Group2Map2 implements KeyListener {
     }   
 
     private ImageIcon scaleIcon(String path, int w, int h) {
-        return new ImageIcon(new ImageIcon(getClass().getResource("/"+path)).getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT));
+        return new ImageIcon(new ImageIcon(Menu.getRes("/"+path)).getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT));
     }
     public static void main(String[] args) {
         (new Group2Map2()).setFrame();

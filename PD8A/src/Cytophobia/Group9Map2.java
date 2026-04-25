@@ -66,27 +66,27 @@ public class Group9Map2 extends JPanel implements KeyListener {
     int houseRow = 5, houseCol = 4;
 
     public Group9Map2() {
-        floor1 = new ImageIcon(getClass().getResource("/assets9/Floortile.png")).getImage();
-        wall1 = new ImageIcon(getClass().getResource("/assets9/Walltile.png")).getImage();
-        window1 = new ImageIcon(getClass().getResource("/assets9/Wallwithwindow.png")).getImage();
-        Fbed = new ImageIcon(getClass().getResource("/assets9/Floorwithbed.png")).getImage();
-        Fblood = new ImageIcon(getClass().getResource("/assets9/Floortilewithblood.png")).getImage();
-        Ftable = new ImageIcon(getClass().getResource("/assets9/Floorwithtable.png")).getImage();
-        Wblood = new ImageIcon(getClass().getResource("/assets9/Wallwithblood.png")).getImage();
-        Wspider = new ImageIcon(getClass().getResource("/assets9/Wallwithspider.png")).getImage();
-        waterImg = new ImageIcon(getClass().getResource("/assets9/Watertile.png")).getImage();
-        floorImg = new ImageIcon(getClass().getResource("/assets9/Rocktiles.png")).getImage();
-        treeImg = new ImageIcon(getClass().getResource("/assets9/tree3.jpg")).getImage();
-        objectImg = new ImageIcon(getClass().getResource("/assets9/mat.jpg")).getImage();
-        correctHouseImg = new ImageIcon(getClass().getResource("/assets9/house.jpg")).getImage();
+        floor1 = new ImageIcon(Menu.getRes("/assets9/Floortile.png")).getImage();
+        wall1 = new ImageIcon(Menu.getRes("/assets9/Walltile.png")).getImage();
+        window1 = new ImageIcon(Menu.getRes("/assets9/Wallwithwindow.png")).getImage();
+        Fbed = new ImageIcon(Menu.getRes("/assets9/Floorwithbed.png")).getImage();
+        Fblood = new ImageIcon(Menu.getRes("/assets9/Floortilewithblood.png")).getImage();
+        Ftable = new ImageIcon(Menu.getRes("/assets9/Floorwithtable.png")).getImage();
+        Wblood = new ImageIcon(Menu.getRes("/assets9/Wallwithblood.png")).getImage();
+        Wspider = new ImageIcon(Menu.getRes("/assets9/Wallwithspider.png")).getImage();
+        waterImg = new ImageIcon(Menu.getRes("/assets9/Watertile.png")).getImage();
+        floorImg = new ImageIcon(Menu.getRes("/assets9/Rocktiles.png")).getImage();
+        treeImg = new ImageIcon(Menu.getRes("/assets9/tree3.jpg")).getImage();
+        objectImg = new ImageIcon(Menu.getRes("/assets9/mat.jpg")).getImage();
+        correctHouseImg = new ImageIcon(Menu.getRes("/assets9/house.jpg")).getImage();
 
-        playerDown = new ImageIcon(getClass().getResource("/assets9/front2.png")).getImage();
-        playerUp = new ImageIcon(getClass().getResource("/assets9/back2.png")).getImage();
-        playerLeft = new ImageIcon(getClass().getResource("/assets9/left2.png")).getImage();
-        playerRight = new ImageIcon(getClass().getResource("/assets9/right2.png")).getImage();
+        playerDown = new ImageIcon(Menu.getRes("/assets9/front2.PNG")).getImage();
+        playerUp = new ImageIcon(Menu.getRes("/assets9/back2.PNG")).getImage();
+        playerLeft = new ImageIcon(Menu.getRes("/assets9/left2.PNG")).getImage();
+        playerRight = new ImageIcon(Menu.getRes("/assets9/right2.PNG")).getImage();
 
-        keyImage = new ImageIcon(getClass().getResource("/assets9/key.png")).getImage();
-        manananggalImage = new ImageIcon(getClass().getResource("/assets9/monster.png")).getImage();
+        keyImage = new ImageIcon(Menu.getRes("/assets9/key.png")).getImage();
+        manananggalImage = new ImageIcon(Menu.getRes("/assets9/monster.png")).getImage();
 
         player = new Player(1, 1);
 

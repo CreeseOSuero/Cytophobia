@@ -51,7 +51,7 @@ public class Group1Room3 implements KeyListener {
     volatile String interDia[];
     
     ImageIcon loadImg(String ref, int scaleX, int scaleY) {
-        return new ImageIcon((new ImageIcon(getClass().getResource("/"+ref))).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX,
+        return new ImageIcon((new ImageIcon(Menu.getRes("/"+ref))).getImage().getScaledInstance((frameWidth/mapWidth) * scaleX,
                 (frameHeight/mapHeight) * scaleY,
                 Image.SCALE_DEFAULT));
     

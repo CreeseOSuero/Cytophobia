@@ -141,7 +141,7 @@ public class Group5Map2 implements KeyListener {
     }
 
     private ImageIcon load(String path) {
-        Image img = new ImageIcon(getClass().getResource("/"+path)).getImage();
+        Image img = new ImageIcon(Menu.getRes("/"+path)).getImage();
         Image scaled = img.getScaledInstance(tileSize, tileSize, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
     }

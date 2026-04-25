@@ -3,6 +3,7 @@ package Cytophobia;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Paths;
 import javax.swing.*;
 
@@ -260,6 +261,14 @@ public class Menu implements ActionListener {
             }
         } else (new Menu()).setFrame();
         
+    }
+    public static URL getRes(String path) {
+        String[] pArr = path.split("\\.");
+        if(pArr.length != 2) return Menu.class.getResource(path);
+        if(Menu.class.getResource(pArr[0] +"."+ pArr[1].toLowerCase()) == null) {
+            return Menu.class.getResource(pArr[0] +"."+ pArr[1].toUpperCase());
+        }
+        return Menu.class.getResource(pArr[0] +"."+ pArr[1].toLowerCase());
     }
     
     public static void main(String[] args) {

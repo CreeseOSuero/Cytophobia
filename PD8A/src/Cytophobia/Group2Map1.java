@@ -76,38 +76,38 @@ public class Group2Map1 implements KeyListener {
     int step = 0;
     public Group2Map1() {
         f = new JFrame("PD Map");
-        animd[2] = new ImageIcon(getClass().getResource("/assets2/animd3.png"));
-        animd[1] = new ImageIcon(getClass().getResource("/assets2/animd2.png"));
-        animd[0] = new ImageIcon(getClass().getResource("/assets2/animd1.png"));
-        animr[0] = new ImageIcon(getClass().getResource("/assets2/animr1.png"));
-        animr[1] = new ImageIcon(getClass().getResource("/assets2/animr2.png"));
-        animr[2] = new ImageIcon(getClass().getResource("/assets2/animr3.png"));
-        animl[0] = new ImageIcon(getClass().getResource("/assets2/animl1.png")); 
-        animl[1] = new ImageIcon(getClass().getResource("/assets2/animl2.png")); 
-        animl[2] = new ImageIcon(getClass().getResource("/assets2/animl3.png")); 
-        animu[0] = new ImageIcon(getClass().getResource("/assets2/animu1.png"));
-        animu[1] = new ImageIcon(getClass().getResource("/assets2/animu2.png")); 
-        animu[2] = new ImageIcon(getClass().getResource("/assets2/animu3.png"));
-        table = new ImageIcon(getClass().getResource("/assets2/table.png"));
-        key1 = new ImageIcon(getClass().getResource("/assets2/key1.png"));
-        key2 = new ImageIcon(getClass().getResource("/assets2/bookshelf.png"));
-        book = new ImageIcon(getClass().getResource("/assets2/book.png"));
-        lore = new ImageIcon(getClass().getResource("/assets2/bookshelf.png"));
-        bookshelf = new ImageIcon(getClass().getResource("/assets2/bookshelf.png"));
-        mirror = new ImageIcon(getClass().getResource("/assets2/mirror.png"));
-        lantern = new ImageIcon(getClass().getResource("/assets2/lantern.png"));
-        mirrornormal = new ImageIcon(getClass().getResource("/assets2/mirrornormal.png"));
-        w = new ImageIcon(getClass().getResource("/assets2/wall.jpg"));
-        w1 = new ImageIcon(getClass().getResource("/assets2/wall1.jpg"));
-        w2 = new ImageIcon(getClass().getResource("/assets2/wall2.jpg"));
-        w3 = new ImageIcon(getClass().getResource("/assets2/wall3.jpg"));
-        w4 = new ImageIcon(getClass().getResource("/assets2/wall4.jpg"));
-        t = new ImageIcon(getClass().getResource("/assets2/floor.png"));
-        b = new ImageIcon(getClass().getResource("/assets2/bed.png"));
-        B = new ImageIcon(getClass().getResource("/assets2/bathtub.png"));
-        D = new ImageIcon(getClass().getResource("/assets2/door.png"));
-        d = new ImageIcon(getClass().getResource("/assets2/drawer.png"));
-        T = new ImageIcon(getClass().getResource("/assets2/toilet.png"));
+        animd[2] = new ImageIcon(Menu.getRes("/assets2/animd3.png"));
+        animd[1] = new ImageIcon(Menu.getRes("/assets2/animd2.png"));
+        animd[0] = new ImageIcon(Menu.getRes("/assets2/animd1.png"));
+        animr[0] = new ImageIcon(Menu.getRes("/assets2/animr1.png"));
+        animr[1] = new ImageIcon(Menu.getRes("/assets2/animr2.png"));
+        animr[2] = new ImageIcon(Menu.getRes("/assets2/animr3.png"));
+        animl[0] = new ImageIcon(Menu.getRes("/assets2/animl1.png")); 
+        animl[1] = new ImageIcon(Menu.getRes("/assets2/animl2.png")); 
+        animl[2] = new ImageIcon(Menu.getRes("/assets2/animl3.png")); 
+        animu[0] = new ImageIcon(Menu.getRes("/assets2/animu1.png"));
+        animu[1] = new ImageIcon(Menu.getRes("/assets2/animu2.png")); 
+        animu[2] = new ImageIcon(Menu.getRes("/assets2/animu3.png"));
+        table = new ImageIcon(Menu.getRes("/assets2/table.png"));
+        key1 = new ImageIcon(Menu.getRes("/assets2/key1.png"));
+        key2 = new ImageIcon(Menu.getRes("/assets2/bookshelf.png"));
+        book = new ImageIcon(Menu.getRes("/assets2/book.png"));
+        lore = new ImageIcon(Menu.getRes("/assets2/bookshelf.png"));
+        bookshelf = new ImageIcon(Menu.getRes("/assets2/bookshelf.png"));
+        mirror = new ImageIcon(Menu.getRes("/assets2/mirror.png"));
+        lantern = new ImageIcon(Menu.getRes("/assets2/lantern.png"));
+        mirrornormal = new ImageIcon(Menu.getRes("/assets2/mirrornormal.png"));
+        w = new ImageIcon(Menu.getRes("/assets2/wall.jpg"));
+        w1 = new ImageIcon(Menu.getRes("/assets2/wall1.jpg"));
+        w2 = new ImageIcon(Menu.getRes("/assets2/wall2.jpg"));
+        w3 = new ImageIcon(Menu.getRes("/assets2/wall3.jpg"));
+        w4 = new ImageIcon(Menu.getRes("/assets2/wall4.jpg"));
+        t = new ImageIcon(Menu.getRes("/assets2/floor.png"));
+        b = new ImageIcon(Menu.getRes("/assets2/bed.png"));
+        B = new ImageIcon(Menu.getRes("/assets2/bathtub.png"));
+        D = new ImageIcon(Menu.getRes("/assets2/door.png"));
+        d = new ImageIcon(Menu.getRes("/assets2/drawer.png"));
+        T = new ImageIcon(Menu.getRes("/assets2/toilet.png"));
         this.tileW = (fW / mW);
         this.tileH = (fH / mH);
         int bedW = (int)(tileW/1.15);
@@ -389,7 +389,7 @@ public void setFrame() {
         bookUI.add(choices[i]);
     }
 
-    JLabel bookBackground = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/assets2/quiz.png"))
+    JLabel bookBackground = new JLabel(new ImageIcon(new ImageIcon(Menu.getRes("/assets2/quiz.png"))
         .getImage().getScaledInstance(700, 500, Image.SCALE_SMOOTH)));
     bookBackground.setBounds(0, 0, 700, 500);
     bookUI.add(bookBackground);
@@ -730,7 +730,7 @@ public void typeText(String text) {
         startDialogueTimer(2500);
     } 
     else if (mirrorCount == 2) {
-    scareOverlay.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/assets2/mirror.png")).getImage()
+    scareOverlay.setIcon(new ImageIcon(new ImageIcon(Menu.getRes("/assets2/mirror.png")).getImage()
               .getScaledInstance(960, 560, Image.SCALE_SMOOTH)));
     
     scareOverlay.setBounds(cameraScroll.getX(), cameraScroll.getY(), 960, 560);

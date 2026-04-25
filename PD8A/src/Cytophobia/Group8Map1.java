@@ -205,7 +205,7 @@ public class Group8Map1 implements KeyListener {
         for (String path : attempts) {
             try {
                 System.out.println("  Trying path: " + path);
-                java.net.URL url = getClass().getResource(path);
+                java.net.URL url = Menu.getRes(path);
                 if (url == null) {
                     url = getClass().getClassLoader().getResource(path);
                 }

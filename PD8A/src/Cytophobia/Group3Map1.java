@@ -31,22 +31,22 @@ public class Group3Map1 implements KeyListener {
         frame = new JFrame();
 
         space = new ImageIcon("");
-        wall = new ImageIcon(getClass().getResource("/assets3/Walls/wall.JPEG"));
-        tile = new ImageIcon(getClass().getResource("/assets3/Tiles/tiles.PNG"));
-        tile2 = new ImageIcon(getClass().getResource("/assets3/Tiles/tile2.PNG"));
-        tile3 = new ImageIcon(getClass().getResource("/assets3/Tiles/tile3.PNG"));
-        crack = new ImageIcon(getClass().getResource("/assets3/Tiles/crack.PNG"));
-        crack2 = new ImageIcon(getClass().getResource("/assets3/Tiles/crack2.PNG"));
-        crack3 = new ImageIcon(getClass().getResource("/assets3/Tiles/crack3.PNG"));
-        window = new ImageIcon(getClass().getResource("/assets3/Walls/window.JPEG"));
-        window2 = new ImageIcon(getClass().getResource("/assets3/Walls/window2.JPEG"));
-        window3 = new ImageIcon(getClass().getResource("/assets3/Walls/window3.JPEG"));
-        doorEx = new ImageIcon(getClass().getResource("/assets3/Walls/door2.JPEG"));
-        doorEn = new ImageIcon(getClass().getResource("/assets3/Walls/door1.JPEG"));
-        ticket = new ImageIcon(getClass().getResource("/assets3/Items/ticket.jpg"));
-        plant = new ImageIcon(getClass().getResource("/assets3/Items/plant.jpg")); 
-        bush = new ImageIcon(getClass().getResource("/assets3/Items/bush.jpg"));
-        blood = new ImageIcon(getClass().getResource("/assets3/Tiles/blood.PNG"));
+        wall = new ImageIcon(Menu.getRes("/assets3/Walls/wall.JPEG"));
+        tile = new ImageIcon(Menu.getRes("/assets3/Tiles/tiles.PNG"));
+        tile2 = new ImageIcon(Menu.getRes("/assets3/Tiles/tile2.PNG"));
+        tile3 = new ImageIcon(Menu.getRes("/assets3/Tiles/tile3.PNG"));
+        crack = new ImageIcon(Menu.getRes("/assets3/Tiles/crack.PNG"));
+        crack2 = new ImageIcon(Menu.getRes("/assets3/Tiles/crack2.PNG"));
+        crack3 = new ImageIcon(Menu.getRes("/assets3/Tiles/crack3.PNG"));
+        window = new ImageIcon(Menu.getRes("/assets3/Walls/window.JPEG"));
+        window2 = new ImageIcon(Menu.getRes("/assets3/Walls/window2.JPEG"));
+        window3 = new ImageIcon(Menu.getRes("/assets3/Walls/window3.JPEG"));
+        doorEx = new ImageIcon(Menu.getRes("/assets3/Walls/door2.JPEG"));
+        doorEn = new ImageIcon(Menu.getRes("/assets3/Walls/door1.JPEG"));
+        ticket = new ImageIcon(Menu.getRes("/assets3/Items/ticket.jpg"));
+        plant = new ImageIcon(Menu.getRes("/assets3/Items/plant.jpg")); 
+        bush = new ImageIcon(Menu.getRes("/assets3/Items/bush.jpg"));
+        blood = new ImageIcon(Menu.getRes("/assets3/Tiles/blood.PNG"));
         
         ImageIcon[] icons = {space, wall, tile, tile2, tile3, crack, crack2,crack3, window, window2, window3, doorEx, doorEn, ticket, plant, bush, blood};
 
@@ -57,10 +57,10 @@ public class Group3Map1 implements KeyListener {
             }
         }
 
-        playerIcon1 = new ImageIcon(getClass().getResource("/assets3/Player/walk_up_0.PNG"));
-        playerIcon2 = new ImageIcon(getClass().getResource("/assets3/Player/walk_down_0.PNG"));
-        playerIcon3 = new ImageIcon(getClass().getResource("/assets3/Player/walk_left_0.PNG"));
-        playerIcon4 = new ImageIcon(getClass().getResource("/assets3/Player/walk_right_0.PNG"));
+        playerIcon1 = new ImageIcon(Menu.getRes("/assets3/Player/walk_up_0.PNG"));
+        playerIcon2 = new ImageIcon(Menu.getRes("/assets3/Player/walk_down_0.PNG"));
+        playerIcon3 = new ImageIcon(Menu.getRes("/assets3/Player/walk_left_0.PNG"));
+        playerIcon4 = new ImageIcon(Menu.getRes("/assets3/Player/walk_right_0.PNG"));
 
         playerIcon1.setImage(playerIcon1.getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));
         playerIcon2.setImage(playerIcon2.getImage().getScaledInstance(tileSize, tileSize, Image.SCALE_DEFAULT));

@@ -248,11 +248,11 @@ public class Group4Map1 implements KeyListener{
 
     public ImageIcon setupImage(String dir, int gridSizeX, int gridSizeY){
         return new ImageIcon(
-                new ImageIcon(getClass().getResource("/"+dir)).getImage().getScaledInstance((fW/mW)*gridSizeX, (fH/mH)*gridSizeY, Image.SCALE_SMOOTH));
+                new ImageIcon(Menu.getRes("/"+dir)).getImage().getScaledInstance((fW/mW)*gridSizeX, (fH/mH)*gridSizeY, Image.SCALE_SMOOTH));
     }
     public ImageIcon setupImage(String dir){
         return new ImageIcon(
-                new ImageIcon(getClass().getResource("/"+dir)).getImage().getScaledInstance(fW/mW, fH/mH, Image.SCALE_SMOOTH));
+                new ImageIcon(Menu.getRes("/"+dir)).getImage().getScaledInstance(fW/mW, fH/mH, Image.SCALE_SMOOTH));
     }
 
     //interaction variables

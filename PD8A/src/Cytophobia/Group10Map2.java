@@ -140,7 +140,7 @@ public class Group10Map2 implements KeyListener, WindowListener {
     }
 
     private ImageIcon scaleIcon(String path) {
-        return new ImageIcon((new ImageIcon(getClass().getResource("/"+path))).getImage().getScaledInstance(frameWidth/mapWidth,
+        return new ImageIcon((new ImageIcon(Menu.getRes("/"+path))).getImage().getScaledInstance(frameWidth/mapWidth,
                 frameHeight/mapHeight,
                 Image.SCALE_DEFAULT));
     }

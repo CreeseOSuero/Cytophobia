@@ -25,17 +25,17 @@ public class Group9Map1 extends JPanel implements KeyListener {
 
     public Group9Map1() {
         startTime = System.currentTimeMillis();
-        waterImg = new ImageIcon(getClass().getResource("/assets9/Watertile.PNG")).getImage();
-        floorImg = new ImageIcon(getClass().getResource("/assets9/Rocktiles.PNG")).getImage();
-        wallImg = new ImageIcon(getClass().getResource("/assets9/tree3.jpg")).getImage();
-        objectImg = new ImageIcon(getClass().getResource("/assets9/mat.jpg")).getImage();
-        correctHouseImg = new ImageIcon(getClass().getResource("/assets9/house.jpg")).getImage();
-        wrongHouseImg = new ImageIcon(getClass().getResource("/assets9/house.jpg")).getImage();
+        waterImg = new ImageIcon(Menu.getRes("/assets9/Watertile.png")).getImage();
+        floorImg = new ImageIcon(Menu.getRes("/assets9/Rocktiles.png")).getImage();
+        wallImg = new ImageIcon(Menu.getRes("/assets9/tree3.jpg")).getImage();
+        objectImg = new ImageIcon(Menu.getRes("/assets9/mat.jpg")).getImage();
+        correctHouseImg = new ImageIcon(Menu.getRes("/assets9/house.jpg")).getImage();
+        wrongHouseImg = new ImageIcon(Menu.getRes("/assets9/house.jpg")).getImage();
 
-        playerUp    = new ImageIcon(getClass().getResource("/assets9/back2.PNG")).getImage();
-        playerDown  = new ImageIcon(getClass().getResource("/assets9/front2.PNG")).getImage();
-        playerLeft  = new ImageIcon(getClass().getResource("/assets9/left2.PNG")).getImage();
-        playerRight = new ImageIcon(getClass().getResource("/assets9/right2.PNG")).getImage();
+        playerUp    = new ImageIcon(Menu.getRes("/assets9/back2.PNG")).getImage();
+        playerDown  = new ImageIcon(Menu.getRes("/assets9/front2.PNG")).getImage();
+        playerLeft  = new ImageIcon(Menu.getRes("/assets9/left2.PNG")).getImage();
+        playerRight = new ImageIcon(Menu.getRes("/assets9/right2.PNG")).getImage();
 
         currentPlayerSprite = playerDown;
 

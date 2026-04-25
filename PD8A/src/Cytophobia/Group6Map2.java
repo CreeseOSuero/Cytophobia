@@ -45,23 +45,23 @@ public class Group6Map2 implements KeyListener {
 
         frame = new JFrame();
 
-        i1 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/1.png")));
-        i2 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/2.png")));
-        i3 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/3.png")));
-        i4 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/8.png")));
-        i5 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/18.png")));
-        i6 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/23.png")));
-        i7 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/20.png")));
-        i8 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/21.png")));
-        i9 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/14.png")));
-        i10 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/24.png")));
-        i11 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/5.png")));
-        i12 = scale(new ImageIcon(getClass().getResource("/assets6/Images4/4.png")));
+        i1 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/1.png")));
+        i2 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/2.png")));
+        i3 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/3.png")));
+        i4 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/8.png")));
+        i5 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/18.png")));
+        i6 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/23.png")));
+        i7 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/20.png")));
+        i8 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/21.png")));
+        i9 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/14.png")));
+        i10 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/24.png")));
+        i11 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/5.png")));
+        i12 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/4.png")));
 
-        playerup = scale(new ImageIcon(getClass().getResource("/assets6/Images4/up.png")));
-        playerdown = scale(new ImageIcon(getClass().getResource("/assets6/Images4/down.PNG")));
-        playerleft = scale(new ImageIcon(getClass().getResource("/assets6/Images4/left.png")));
-        playerright = scale(new ImageIcon(getClass().getResource("/assets6/Images4/right.PNG")));
+        playerup = scale(new ImageIcon(Menu.getRes("/assets6/Images4/up.png")));
+        playerdown = scale(new ImageIcon(Menu.getRes("/assets6/Images4/down.PNG")));
+        playerleft = scale(new ImageIcon(Menu.getRes("/assets6/Images4/left.png")));
+        playerright = scale(new ImageIcon(Menu.getRes("/assets6/Images4/right.PNG")));
 
         tiles = new JLabel[mapWidth * mapHeight];
         character = new JLabel[mapWidth * mapHeight];
