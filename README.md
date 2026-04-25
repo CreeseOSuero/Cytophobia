@@ -1,5 +1,5 @@
 # For PD8A
-
+## JAR file for Cytophobia is out, Check release
 ## The compilation of all maps are within the PD8A folder.
 
 - res is a source package folder. When using the source code along with the assets directly, Set res as a source package folder
