@@ -4,47 +4,46 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.ArrayList;
 
 public class Group5Map2 implements KeyListener {
 
     JFrame frame;
 
-    // ===== SETTINGS =====
+    // ====== SETTINGS ======
     int mapWidth = 32;
-    int mapHeight = 18;
-    int tileSize = 60;
+    int mapHeight = 12;   // matches your actual rows
+    int tileSize = 60;    // square tiles
+
     int frameWidth = mapWidth * tileSize;
     int frameHeight = mapHeight * tileSize;
 
-    // ===== IMAGES =====
+    // ====== IMAGES ======
     ImageIcon wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8;
     ImageIcon floor, bed1, bed2, sky, couch, shelf, carpet, table, plant, paper;
-    ImageIcon key, chest, goldkey, safe;
+    ImageIcon goldkey, safe;
+
     ImageIcon frontS, frontW, backS, backW, leftS, leftW, rightS, rightW;
 
     JLabel[] tiles;
     JLabel[] character;
 
     int[] mapLayout;
+
     int characterPosition;
     int characterMode = 0;
     int direction;
 
-    int keyPosition = -1;
-    int chestPosition = -1;
-    boolean chestUnlocked = false;
-
-    int goldKeyPosition = -1;
-    int safePosition = -1;
+    int keyPosition;
+    int safePosition;
     boolean safeUnlocked = false;
 
     public Group5Map2() {
-        frame = new JFrame("PD Merge");
+
+        frame = new JFrame("PDBL");
 
         characterPosition = (mapHeight / 2) * mapWidth + (mapWidth / 2);
 
-        // ===== LOAD IMAGES =====
+        // ===== LOAD IMAGES (scaled properly) =====
         wall1 = load("assets5/wall1.jpg");
         wall2 = load("assets5/wall2.jpg");
         wall3 = load("assets5/wall3.jpg");
@@ -54,22 +53,20 @@ public class Group5Map2 implements KeyListener {
         wall7 = load("assets5/wall7.jpg");
         wall8 = load("assets5/wall8.jpg");
 
-        floor = load("assets5/floor.PNG");
-        bed1 = load("assets5/bed1.PNG");
-        bed2 = load("assets5/bed2.PNG");
+        floor = load("assets5/floor.png");
+        bed1 = load("assets5/bed1.png");
+        bed2 = load("assets5/bed2.png");
         sky = load("assets5/sky.jpg");
 
-        couch = load("assets5/couch.PNG");
-        shelf = load("assets5/shelf.PNG");
-        carpet = load("assets5/carpet.PNG");
-        table = load("assets5/table.PNG");
-        plant = load("assets5/plant.PNG");
-        paper = load("assets5/paper.PNG");
+        couch = load("assets5/couch.png");
+        shelf = load("assets5/shelf.png");
+        carpet = load("assets5/carpet.png");
+        table = load("assets5/table.png");
+        plant = load("assets5/plant.png");
+        paper = load("assets5/paper.png");
 
-        key = load("assets5/key.PNG");
-        chest = load("assets5/chest.jpg");
-        goldkey = load("assets5/goldkey.PNG");
-        safe = load("assets5/safe.PNG");
+        goldkey = load("assets5/goldkey.png");
+        safe = load("assets5/safe.png");
 
         frontS = load("assets5/plr_10.PNG");
         frontW = load("assets5/plr_11.PNG");
@@ -80,32 +77,25 @@ public class Group5Map2 implements KeyListener {
         rightS = load("assets5/plr_20.PNG");
         rightW = load("assets5/plr_21.PNG");
 
-        // ===== NEW MAP LAYOUT =====
+        // ===== MAP =====
         mapLayout = new int[]{
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,6,4,4,4,4,4,4,4,4,4,4,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,5,12,1,1,1,1,1,1,1,1,13,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,5,14,1,1,19,1,1,17,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,5,1,1,1,1,1,1,1,1,1,11,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,5,15,1,1,1,1,18,16,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,9,11,11,11,11,1,1,11,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,6,4,4,4,4,4,1,1,4,4,4,4,4,7,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,1,1,1,1,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,1,12,1,1,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,1,1,1,1,1,1,1,1,1,1,13,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,1,1,1,1,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,1,1,1,1,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,1,1,1,1,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,1,1,1,1,1,1,1,1,1,1,1,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,5,2,1,1,1,1,1,1,1,1,1,1,3,10,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,9,11,11,11,11,11,11,11,11,11,11,11,11,8,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+            0,0,0,0,0,0,9,11,11,11,11,11,11,11,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         };
 
         tiles = new JLabel[mapLayout.length];
         character = new JLabel[mapLayout.length];
 
-        // ===== INITIALIZE TILES =====
         for (int i = 0; i < mapLayout.length; i++) {
             tiles[i] = new JLabel();
             character[i] = new JLabel();
@@ -123,12 +113,12 @@ public class Group5Map2 implements KeyListener {
                 case 9 -> tiles[i].setIcon(wall6);
                 case 10 -> tiles[i].setIcon(wall7);
                 case 11 -> tiles[i].setIcon(wall8);
-                case 12 -> { tiles[i].setIcon(key); keyPosition = i; }
-                case 13 -> { tiles[i].setIcon(chest); chestPosition = i; }
+                case 12 -> tiles[i].setIcon(couch);
+                case 13 -> tiles[i].setIcon(shelf);
                 case 14 -> tiles[i].setIcon(carpet);
                 case 15 -> tiles[i].setIcon(table);
                 case 16 -> tiles[i].setIcon(plant);
-                case 17 -> { tiles[i].setIcon(goldkey); goldKeyPosition = i; }
+                case 17 -> { tiles[i].setIcon(goldkey); keyPosition = i; }
                 case 18 -> { tiles[i].setIcon(safe); safePosition = i; }
                 case 19 -> tiles[i].setIcon(paper);
                 default -> tiles[i].setIcon(sky);
@@ -136,8 +126,6 @@ public class Group5Map2 implements KeyListener {
         }
 
         character[characterPosition].setIcon(frontS);
-
-        loadProgress(); // Load saved chest/safe status
     }
 
     private ImageIcon load(String path) {
@@ -148,18 +136,25 @@ public class Group5Map2 implements KeyListener {
 
     public boolean isWall(int index) {
         if (index < 0 || index >= mapLayout.length) return true;
+
         int tile = mapLayout[index];
+
         if (tile >= 4 && tile <= 11) return true;
-        if (tile == 2 || tile == 3 || tile == 14 || tile == 15 || tile == 16) return true;
-        if ((index == chestPosition && !chestUnlocked) || (index == safePosition && !safeUnlocked)) return true;
+        if (tile == 2 || tile == 3 || tile == 12 || tile == 13 ||
+            tile == 15 || tile == 16) return true;
+
+        if (tile == 18 && !safeUnlocked) return true;
+
         return false;
     }
 
     public void setFrame() {
+
         JLayeredPane pane = new JLayeredPane();
         pane.setPreferredSize(new Dimension(frameWidth, frameHeight));
 
         for (int i = 0; i < tiles.length; i++) {
+
             int x = (i % mapWidth) * tileSize;
             int y = (i / mapWidth) * tileSize;
 
@@ -179,56 +174,54 @@ public class Group5Map2 implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-        int nextPos = characterPosition;
-        ImageIcon nextIcon = null;
+public void keyPressed(KeyEvent e) {
+    int nextPos = characterPosition;
+    ImageIcon nextIcon = null;
 
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_RIGHT -> { direction = 3; if ((characterPosition % mapWidth) < mapWidth-1) nextPos++; nextIcon = (characterMode==0)?rightW:rightS; }
-            case KeyEvent.VK_LEFT  -> { direction = 2; if ((characterPosition % mapWidth) >0) nextPos--; nextIcon = (characterMode==0)?leftW:leftS; }
-            case KeyEvent.VK_DOWN  -> { direction = 1; if ((characterPosition/mapWidth) < mapHeight-1) nextPos += mapWidth; nextIcon = (characterMode==0)?backW:backS; }
-            case KeyEvent.VK_UP    -> { direction = 0; if ((characterPosition/mapWidth) >0) nextPos -= mapWidth; nextIcon = (characterMode==0)?frontW:frontS; }
+    switch (e.getKeyCode()) {
+        case KeyEvent.VK_RIGHT -> {
+            direction = 3;
+            if ((characterPosition % mapWidth) < mapWidth - 1) nextPos += 1;
+            nextIcon = (characterMode == 0) ? rightW : rightS;
         }
+        case KeyEvent.VK_LEFT -> {
+            direction = 2;
+            if ((characterPosition % mapWidth) > 0) nextPos -= 1;
+            nextIcon = (characterMode == 0) ? leftW : leftS;
+        }
+        case KeyEvent.VK_DOWN -> {
+            direction = 1;
+            if ((characterPosition / mapWidth) < mapHeight - 1) nextPos += mapWidth;
+            nextIcon = (characterMode == 0) ? backW : backS;
+        }
+        case KeyEvent.VK_UP -> {
+            direction = 0;
+            if ((characterPosition / mapWidth) > 0) nextPos -= mapWidth;
+            nextIcon = (characterMode == 0) ? frontW : frontS;
+        }
+    }
 
-        // PUSH key logic
-        if (nextPos == keyPosition || nextPos == goldKeyPosition) {
-            int pushPos = switch(direction) {
-                case 0 -> nextPos - mapWidth;
-                case 1 -> nextPos + mapWidth;
-                case 2 -> nextPos - 1;
-                case 3 -> nextPos + 1;
-                default -> nextPos;
-            };
-            if (pushPos<0 || pushPos>=mapLayout.length) return;
+    // Handle pushing key
+    if (nextPos == keyPosition) {
+        int pushPos = switch (direction) {
+            case 0 -> keyPosition - mapWidth;
+            case 1 -> keyPosition + mapWidth;
+            case 2 -> keyPosition - 1;
+            case 3 -> keyPosition + 1;
+            default -> keyPosition;
+        };
 
-            // Chest puzzle
-            if (nextPos == keyPosition && pushPos == chestPosition && !chestUnlocked) {
-                if (askQuiz()) {
-                    chestUnlocked = true;
-                    saveProgress();
-                    JOptionPane.showMessageDialog(frame,"Chest unlocked!");
-                } else {
-                    JOptionPane.showMessageDialog(frame,"Wrong! Try again.");
-                }
-                return;
-            }
+        // Prevent pushing off map
+        if (pushPos < 0 || pushPos >= mapLayout.length) return;
 
-            // Safe puzzle
-            if (nextPos == goldKeyPosition && pushPos == safePosition && !safeUnlocked) {
-                String answer = JOptionPane.showInputDialog(frame,"Radian of (0,-1)?");
-                if (answer != null && (answer.equalsIgnoreCase("3pi/2") || answer.equals("270"))) {
-                    safeUnlocked = true;
-                    saveProgress();
-                    JOptionPane.showMessageDialog(frame,"Safe unlocked!");
-                    tiles[goldKeyPosition].setIcon(floor);
-                    tiles[safePosition].setIcon(floor);
-                    goldKeyPosition = -1;
-                } else {
-                    JOptionPane.showMessageDialog(frame,"Wrong answer!");
-                }
-                return;
-            }
-            if(safeUnlocked && chestUnlocked) {
+        if (pushPos == safePosition && !safeUnlocked) {
+            String answer = JOptionPane.showInputDialog(frame, "What is the radian of (0,-1)?");
+            if (answer != null && (answer.equalsIgnoreCase("3pi/2") || answer.equals("270"))) {
+                safeUnlocked = true;
+                JOptionPane.showMessageDialog(frame, "Correct! Safe Unlocked!");
+                tiles[keyPosition].setIcon(floor);
+                tiles[safePosition].setIcon(floor);
+                keyPosition = -1;
                 frame.dispose();
                 
                 long cur = System.currentTimeMillis() - Group5Map1.startTime;
@@ -247,82 +240,32 @@ public class Group5Map2 implements KeyListener {
                     } catch(IOException ex) {}
 
                 Menu.startNextLevel(5);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Wrong answer!");
             }
-
-            if (!isWall(pushPos)) {
-                if (nextPos == keyPosition) { tiles[keyPosition].setIcon(floor); keyPosition = pushPos; tiles[keyPosition].setIcon(key); }
-                if (nextPos == goldKeyPosition) { tiles[goldKeyPosition].setIcon(floor); goldKeyPosition = pushPos; tiles[goldKeyPosition].setIcon(goldkey); }
-            } else return;
+            return;
         }
 
-        if (!isWall(nextPos)) {
-            character[characterPosition].setIcon(null);
-            characterPosition = nextPos;
-            character[characterPosition].setIcon(nextIcon);
-            characterMode = 1 - characterMode;
-        }
+        if (!isWall(pushPos)) {
+            tiles[keyPosition].setIcon(floor);
+            keyPosition = pushPos;
+            tiles[keyPosition].setIcon(goldkey);
+        } else return;
     }
 
-    private boolean askQuiz() {
-        ArrayList<String[]> questions = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(Menu.resolveFilePath("questions.txt")))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",", 2);
-                if (parts.length == 2) questions.add(parts);
-            }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(frame, "Questions file not found!");
-            return false;
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Error reading questions file!");
-            return false;
-        }
-
-        for (String[] q : questions) {
-            String ans = JOptionPane.showInputDialog(frame, q[0]);
-            boolean correct = ans != null && ans.trim().equalsIgnoreCase(q[1]);
-            logAnswer(q[0], ans, correct);
-            if (!correct) return false;
-        }
-        return true;
+    // Move player
+    if (!isWall(nextPos)) {
+        character[characterPosition].setIcon(null);
+        characterPosition = nextPos;
+        character[characterPosition].setIcon(nextIcon);
+        characterMode = 1 - characterMode;
     }
+}
 
-    private void logAnswer(String question, String answer, boolean correct) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(Menu.resolveFilePath("answers.txt"), true))) {
-            pw.println(question + " | Your answer: " + answer + " | Correct: " + correct);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Error logging answer!");
-        }
-    }
+    @Override public void keyTyped(KeyEvent e) {}
+    @Override public void keyReleased(KeyEvent e) {}
 
-    private void saveProgress() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(Menu.resolveFilePath("progress.txt")))) {
-            pw.println("chestUnlocked=" + chestUnlocked);
-            pw.println("safeUnlocked=" + safeUnlocked);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Error saving progress!");
-        }
-    }
-
-    private void loadProgress() {
-        try (BufferedReader br = new BufferedReader(new FileReader(Menu.resolveFilePath("progress.txt")))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.startsWith("chestUnlocked=")) chestUnlocked = Boolean.parseBoolean(line.split("=")[1]);
-                if (line.startsWith("safeUnlocked=")) safeUnlocked = Boolean.parseBoolean(line.split("=")[1]);
-            }
-        } catch (FileNotFoundException e) {
-            // first time playing, no file yet
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Error loading progress!");
-        }
-    }
-
-    @Override public void keyTyped(KeyEvent e){}
-    @Override public void keyReleased(KeyEvent e){}
-
-    public static void main(String[] args){
-        new Group5Map2().setFrame();
+    public static void main(String[] args) {
+        (new Group5Map2()).setFrame();
     }
 }

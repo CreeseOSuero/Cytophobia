@@ -20,8 +20,8 @@ public class Menu implements ActionListener {
     JLabel guide;
     JLabel semiOpaqueBg;
     
-    int frameHeight = 480;
-    int frameWidth = 720;
+    int frameHeight = 960;
+    int frameWidth = 1440;
     int layoutH = 12;
     int layoutW = 18;
     int btnW = 4; // amount of grids taken
@@ -272,6 +272,7 @@ public class Menu implements ActionListener {
     }
     
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.uiScale", "1.0");
         Menu m = new Menu();
         m.setFrame();
         

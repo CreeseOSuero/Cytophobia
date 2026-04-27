@@ -3,6 +3,7 @@ package Cytophobia;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -221,9 +222,10 @@ public class Group4Map1 implements KeyListener{
 
         //--------------------------------------------------------
 
-
+        frame.setResizable(false);
         frame.setVisible(true);
-        frame.setSize(fW,fH);
+        frame.getContentPane().setPreferredSize(new Dimension(fW, fH));
+        frame.pack();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.addKeyListener(this);
         mapElements[40].setOpaque(true);
@@ -248,11 +250,11 @@ public class Group4Map1 implements KeyListener{
 
     public ImageIcon setupImage(String dir, int gridSizeX, int gridSizeY){
         return new ImageIcon(
-                new ImageIcon(Menu.getRes("/"+dir)).getImage().getScaledInstance((fW/mW)*gridSizeX, (fH/mH)*gridSizeY, Image.SCALE_SMOOTH));
+                new ImageIcon(Menu.getRes("/"+dir)).getImage().getScaledInstance(fW/mW*gridSizeX, fH/mH*gridSizeY, Image.SCALE_FAST));
     }
     public ImageIcon setupImage(String dir){
         return new ImageIcon(
-                new ImageIcon(Menu.getRes("/"+dir)).getImage().getScaledInstance(fW/mW, fH/mH, Image.SCALE_SMOOTH));
+                new ImageIcon(Menu.getRes("/"+dir)).getImage().getScaledInstance(fW/mW, fH/mH, Image.SCALE_FAST));
     }
 
     //interaction variables
@@ -396,6 +398,7 @@ public class Group4Map1 implements KeyListener{
     }
 
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.uiScale", "1.0");
         new Group4Map1();
     }
 
@@ -492,6 +495,7 @@ public class Group4Map1 implements KeyListener{
             int y = i / mW;
             if (labels[i] != null){
                 if (labels[i].getIcon() != null){
+                    System.out.println(labels[i].getIcon().getIconWidth());
                     frame.add(labels[i], new Rectangle(x, y, labels[i].getIcon().getIconWidth()/(fW/mW), labels[i].getIcon().getIconHeight()/(fH/mH)));
 
                 } else {
