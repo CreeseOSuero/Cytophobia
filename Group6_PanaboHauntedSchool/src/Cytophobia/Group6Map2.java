@@ -1,19 +1,20 @@
-package Cytophobia;
+package Quarter3;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.*;
 
-public class Group6Map2 implements KeyListener {
+public class Q3PD6 implements KeyListener {
 
     JFrame frame;
 
-    ImageIcon i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12;
+    ImageIcon i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12, i13, i14, i15, i16;
     ImageIcon playerup,playerdown,playerleft,playerright;
+   
 
     JLabel tiles[];
     JLabel character[];
@@ -37,7 +38,7 @@ public class Group6Map2 implements KeyListener {
     int[] originalMapLayout;
     JButton resetButton;
 
-    public Group6Map2() {
+    public Q3PD6() {
 
         JOptionPane.showMessageDialog(null,
                 "Push the desk to find the key in one of the trash cans, open the locker thats not quite like the rest. Answer at least 3 questions correctly and make your escape!"
@@ -45,23 +46,27 @@ public class Group6Map2 implements KeyListener {
 
         frame = new JFrame();
 
-        i1 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/1.png")));
-        i2 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/2.png")));
-        i3 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/3.png")));
-        i4 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/8.png")));
-        i5 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/18.png")));
-        i6 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/23.png")));
-        i7 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/20.png")));
-        i8 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/21.png")));
-        i9 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/14.png")));
-        i10 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/24.png")));
-        i11 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/5.png")));
-        i12 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/4.png")));
+        i1 = scale(new ImageIcon("Images4/1.png"));
+        i2 = scale(new ImageIcon("Images4/2.png"));
+        i3 = scale(new ImageIcon("Images4/3.png"));
+        i4 = scale(new ImageIcon("Images4/8.png"));
+        i5 = scale(new ImageIcon("Images4/18.png"));
+        i6 = scale(new ImageIcon("Images4/23.png"));
+        i7 = scale(new ImageIcon("Images4/20.png"));
+        i8 = scale(new ImageIcon("Images4/21.png"));
+        i9 = scale(new ImageIcon("Images4/14.png"));
+        i10 = scale(new ImageIcon("Images4/24.png"));
+        i11 = scale(new ImageIcon("Images4/5.png"));
+        i12 = scale(new ImageIcon("Images4/4.png"));
+        i13 = scale(new ImageIcon("Images4/11.png"));
+        i14 = scale(new ImageIcon("Images4/12.png"));
+        i15 = scale(new ImageIcon("Images4/15.png"));
+        i16 = scale(new ImageIcon("Images4/25.png"));
 
-        playerup = scale(new ImageIcon(Menu.getRes("/assets6/Images4/up.png")));
-        playerdown = scale(new ImageIcon(Menu.getRes("/assets6/Images4/down.PNG")));
-        playerleft = scale(new ImageIcon(Menu.getRes("/assets6/Images4/left.png")));
-        playerright = scale(new ImageIcon(Menu.getRes("/assets6/Images4/right.PNG")));
+        playerup = scale(new ImageIcon("Images4/playerup.png"));
+        playerdown = scale(new ImageIcon("Images4/playerdown.png"));
+        playerleft = scale(new ImageIcon("Images4/playerleft.png"));
+        playerright = scale(new ImageIcon("Images4/playerright.png"));
 
         tiles = new JLabel[mapWidth * mapHeight];
         character = new JLabel[mapWidth * mapHeight];
@@ -70,23 +75,23 @@ public class Group6Map2 implements KeyListener {
                 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
                 3,3,18,18,18,3,5,5,5,3,18,24,18,3,3,3,
                 6,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,
-                6,2,2,2,2,2,2,19,2,2,2,2,2,2,2,6,
-                6,2,2,19,2,2,2,2,2,2,2,2,19,2,2,3,
+                6,2,2,2,2,19,2,2,2,2,2,2,2,2,2,6,
+                6,2,2,19,2,2,2,2,2,2,2,19,2,2,2,3,
                 3,2,9,2,2,19,2,2,2,19,2,2,2,2,2,3,
-                3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,
-                8,4,18,18,18,3,5,5,5,3,18,18,18,18,3,3,
+                3,4,2,2,2,2,2,2,2,2,2,2,2,2,2,6,
+                8,2,18,18,18,3,5,5,5,3,18,18,18,18,3,3,
                 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
         };
 
         mapLayout = new int[]{
                 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-                3,3,18,18,18,3,5,5,5,3,18,24,18,3,3,3,
-                6,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,
-                6,2,2,2,2,2,2,19,2,2,2,2,2,2,2,6,
-                6,2,2,19,2,2,2,2,2,2,2,2,19,2,2,3,
+                3,3,6,18,5,3,18,5,24,6,18,6,18,5,3,3,
+                3,2,2,2,10,2,2,2,2,2,2,2,2,2,7,3,
+                3,13,2,2,2,19,2,2,2,2,19,2,2,2,2,3,
+                3,2,2,19,2,2,2,2,2,2,2,2,19,10,2,3,
                 3,2,9,2,2,19,2,2,2,19,2,2,2,2,2,3,
-                3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,
-                3,8,18,18,18,3,5,5,5,3,18,18,18,18,3,3,
+                3,8,2,2,2,2,2,2,2,2,2,2,2,13,2,3,
+                3,3,3,25,18,6,18,25,18,5,18,6,18,25,3,3,
                 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
         };
 
@@ -119,6 +124,22 @@ public class Group6Map2 implements KeyListener {
         resetButton.addActionListener(e -> resetGame());
     }
 
+    private void saveGame(String fileName) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            writer.println(characterPosition);
+            writer.println(hasKey);
+            writer.println(quizCompleted);
+            writer.println(keyTrashIndex);
+            for (int i = 0; i < mapLayout.length; i++) {
+                writer.print(mapLayout[i]);
+                if (i < mapLayout.length - 1) writer.print(" ");
+            }
+            writer.println();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void updateTileIcon(int index){
         switch(mapLayout[index]){
             case 1 -> tiles[index].setIcon(i1);
@@ -133,6 +154,10 @@ public class Group6Map2 implements KeyListener {
             case 9 -> tiles[index].setIcon(i9);
             case 24 -> tiles[index].setIcon(i10);
             case 5 -> tiles[index].setIcon(i11);
+            case 13 -> tiles[index].setIcon(i13);
+            case 7 -> tiles[index].setIcon(i14);
+            case 10 -> tiles[index].setIcon(i15);
+            case 25 -> tiles[index].setIcon(i16);
         }
     }
 
@@ -245,8 +270,6 @@ public class Group6Map2 implements KeyListener {
                 startQuiz();
             }
 
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return;
         } catch (Exception e) {
             return;
         }
@@ -257,50 +280,16 @@ public class Group6Map2 implements KeyListener {
         Collections.shuffle(questions);
 
         for(int i=0;i<5;i++){
-            Group6Map1.answered++;
             Question q = questions.get(i);
             String answer = JOptionPane.showInputDialog(frame,q.question);
             if(answer!=null && answer.equalsIgnoreCase(q.answer))
                 correct++;
-            else Group6Map1.wrongAnswers++;
         }
 
         if(correct>=3){
             JOptionPane.showMessageDialog(frame,"Game is complete!");
             quizCompleted = true;
             frame.dispose();
-            
-            long cur = System.currentTimeMillis() - Group6Map1.startTime;
-            long fastest = Long.MAX_VALUE;
-            try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("gr6fastest.log")))) {fastest = Long.parseLong(reader.readLine());}
-            catch (IOException ex) {}
-            String Scur = String.format("%d min %d sec", cur/60000, (cur/1000)%60);
-            String Sfastest = String.format("%d min %d sec", fastest/60000, (fastest/1000)%60);
-            if(fastest == Long.MAX_VALUE) JOptionPane.showMessageDialog(null, "First finish time: "+Scur);
-            else if(fastest > cur) JOptionPane.showMessageDialog(null, "New record! Fastest finish time: "+Scur);
-            else JOptionPane.showMessageDialog(null, "Current finish time: "+Scur+"\nFastest finish time: "+Sfastest);
-            if(fastest == Long.MAX_VALUE || fastest > cur) 
-                try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr6fastest.log")))) {
-                    writer.write(String.valueOf(cur));
-                    writer.newLine();
-                } catch(IOException ex) {}
-            
-            float curError = (float)Group6Map1.wrongAnswers / (float)Group6Map1.answered;
-            float lowest = 2.0f;
-            try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("error_percentage.log")))) {lowest = Float.parseFloat(reader.readLine());}
-            catch (IOException ex) {}
-            String ScurError = String.format("%.2f%%", curError*100);
-            String Slowest = String.format("%.2f%%", lowest*100);
-            if(lowest == 2.0f) JOptionPane.showMessageDialog(null, "First time! Error%: "+ScurError);
-            else if(lowest > curError) JOptionPane.showMessageDialog(null, "Record broken! Error%: "+ScurError);
-            else JOptionPane.showMessageDialog(null, "Current Error%: "+ScurError+"\nLowest Error%: "+Slowest);
-            if(lowest > curError) 
-                try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("error_percentage.log")))) {
-                    writer.write(String.valueOf(curError));
-                    writer.newLine();
-                } catch(IOException ex) {}
-            
-            Menu.startNextLevel(6);
         } else {
             JOptionPane.showMessageDialog(frame,"Not enough correct answers. Try again!");
         }
@@ -357,7 +346,7 @@ public class Group6Map2 implements KeyListener {
     }
 
     public static void main(String[] args){
-        Group6Map2 game = new Group6Map2();
+        Q3PD6 game = new Q3PD6();
         game.setFrame();
     }
 }
