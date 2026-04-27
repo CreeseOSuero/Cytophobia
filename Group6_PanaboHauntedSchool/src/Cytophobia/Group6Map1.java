@@ -1,10 +1,10 @@
-package Quarter3;
+package Cytophobia;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Q3PD4 implements KeyListener {
+public class Group6Map1 implements KeyListener {
 
     JFrame frame;
     ImageIcon i1,i2,i3,i4,i5,i6,i7,i8,i9,i10;
@@ -22,6 +22,10 @@ public class Q3PD4 implements KeyListener {
     int characterLayout[];
     int characterPosition;
     int questionsAnswered = 0; 
+    
+    public static volatile long startTime = System.currentTimeMillis();
+    public static volatile int answered = 0;
+    public static volatile int wrongAnswers = 0;
     
     int questionLocation;
 
@@ -48,8 +52,10 @@ public class Q3PD4 implements KeyListener {
 
     boolean[] usedQuestions = new boolean[questions.length];
 
-    public Q3PD4() {
-        
+    public Group6Map1() {
+        startTime = System.currentTimeMillis();
+        answered = 0;
+        wrongAnswers = 0;
         JOptionPane.showMessageDialog(null,
                 "Every paper holds a question. Answer all the questions correctly and unlock the door!");
 
@@ -57,21 +63,21 @@ public class Q3PD4 implements KeyListener {
 
         characterPosition=-1;
 
-        i1=new ImageIcon("Images3/1.png");
-        i2=new ImageIcon("Images3/2.png");
-        i3=new ImageIcon("Images3/3.png");
-        i4=new ImageIcon("Images3/4.png");
-        i5=new ImageIcon("Images3/5.png");
-        i6=new ImageIcon("Images3/6.png");
-        i7=new ImageIcon("Images3/7.png");
-        i8=new ImageIcon("Images3/8.png");
-        i9=new ImageIcon("Images3/9.png");
-        i10=new ImageIcon("Images3/10.png");
+        i1=new ImageIcon(Menu.getRes("/assets6/Images3/1.png"));
+        i2=new ImageIcon(Menu.getRes("/assets6/Images3/2.png"));
+        i3=new ImageIcon(Menu.getRes("/assets6/Images3/3.png"));
+        i4=new ImageIcon(Menu.getRes("/assets6/Images3/4.png"));
+        i5=new ImageIcon(Menu.getRes("/assets6/Images3/5.png"));
+        i6=new ImageIcon(Menu.getRes("/assets6/Images3/6.png"));
+        i7=new ImageIcon(Menu.getRes("/assets6/Images3/7.png"));
+        i8=new ImageIcon(Menu.getRes("/assets6/Images3/8.png"));
+        i9=new ImageIcon(Menu.getRes("/assets6/Images3/9.png"));
+        i10=new ImageIcon(Menu.getRes("/assets6/Images3/10.png"));
 
-        playerup = new ImageIcon("Images3/up.png");
-        playerdown = new ImageIcon("Images3/down.png");
-        playerleft = new ImageIcon("Images3/left.png");
-        playerright = new ImageIcon("Images3/right.png");
+        playerup = new ImageIcon(Menu.getRes("/assets6/Images3/up.png"));
+        playerdown = new ImageIcon(Menu.getRes("/assets6/Images3/down.png"));
+        playerleft = new ImageIcon(Menu.getRes("/assets6/Images3/left.png"));
+        playerright = new ImageIcon(Menu.getRes("/assets6/Images3/right.png"));
 
         i1=new ImageIcon(i1.getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));
         i2=new ImageIcon(i2.getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));
@@ -207,7 +213,7 @@ public class Q3PD4 implements KeyListener {
                 q.options,
                 q.options[0]
             );
-
+            answered++;
             if(choice == q.correctIndex) {
                 JOptionPane.showMessageDialog(frame, "Correct! 🎉");
                 mapLayout[characterPosition] = 3;
@@ -216,6 +222,7 @@ public class Q3PD4 implements KeyListener {
                 usedQuestions[randomIndex] = true;
             } else if(choice != -1) {
                 JOptionPane.showMessageDialog(frame,"Wrong!");
+                wrongAnswers++;
             }
         }
 
@@ -223,7 +230,7 @@ public class Q3PD4 implements KeyListener {
             if (questionsAnswered >= 5) {
                 JOptionPane.showMessageDialog(frame, "Level Complete! Lets move to the next room!");
                 frame.dispose();
-                Q3PD6 nextLevel = new Q3PD6();
+                Group6Map2 nextLevel = new Group6Map2();
                 nextLevel.setFrame();
             } else {
                 JOptionPane.showMessageDialog(frame,
@@ -237,7 +244,7 @@ public class Q3PD4 implements KeyListener {
     public void keyTyped(KeyEvent e){}
 
     public static void main(String[] args){
-        new Q3PD4();
+        new Group6Map1();
     }
 }
 

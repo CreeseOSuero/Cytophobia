@@ -1,4 +1,4 @@
-package Quarter3;
+package Cytophobia;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.io.*;
 
-public class Q3PD6 implements KeyListener {
+public class Group6Map2 implements KeyListener {
 
     JFrame frame;
 
@@ -38,7 +38,7 @@ public class Q3PD6 implements KeyListener {
     int[] originalMapLayout;
     JButton resetButton;
 
-    public Q3PD6() {
+    public Group6Map2() {
 
         JOptionPane.showMessageDialog(null,
                 "Push the desk to find the key in one of the trash cans, open the locker thats not quite like the rest. Answer at least 3 questions correctly and make your escape!"
@@ -46,27 +46,27 @@ public class Q3PD6 implements KeyListener {
 
         frame = new JFrame();
 
-        i1 = scale(new ImageIcon("Images4/1.png"));
-        i2 = scale(new ImageIcon("Images4/2.png"));
-        i3 = scale(new ImageIcon("Images4/3.png"));
-        i4 = scale(new ImageIcon("Images4/8.png"));
-        i5 = scale(new ImageIcon("Images4/18.png"));
-        i6 = scale(new ImageIcon("Images4/23.png"));
-        i7 = scale(new ImageIcon("Images4/20.png"));
-        i8 = scale(new ImageIcon("Images4/21.png"));
-        i9 = scale(new ImageIcon("Images4/14.png"));
-        i10 = scale(new ImageIcon("Images4/24.png"));
-        i11 = scale(new ImageIcon("Images4/5.png"));
-        i12 = scale(new ImageIcon("Images4/4.png"));
-        i13 = scale(new ImageIcon("Images4/11.png"));
-        i14 = scale(new ImageIcon("Images4/12.png"));
-        i15 = scale(new ImageIcon("Images4/15.png"));
-        i16 = scale(new ImageIcon("Images4/25.png"));
+        i1 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/1.png")));
+        i2 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/2.png")));
+        i3 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/3.png")));
+        i4 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/8.png")));
+        i5 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/18.png")));
+        i6 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/23.png")));
+        i7 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/20.png")));
+        i8 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/21.png")));
+        i9 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/14.png")));
+        i10 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/24.png")));
+        i11 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/5.png")));
+        i12 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/4.png")));
+        i13 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/11.png")));
+        i14 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/12.png")));
+        i15 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/15.png")));
+        i16 = scale(new ImageIcon(Menu.getRes("/assets6/Images4/25.png")));
 
-        playerup = scale(new ImageIcon("Images4/playerup.png"));
-        playerdown = scale(new ImageIcon("Images4/playerdown.png"));
-        playerleft = scale(new ImageIcon("Images4/playerleft.png"));
-        playerright = scale(new ImageIcon("Images4/playerright.png"));
+        playerup = scale(new ImageIcon(Menu.getRes("/assets6/Images4/playerup.png")));
+        playerdown = scale(new ImageIcon(Menu.getRes("/assets6/Images4/playerdown.png")));
+        playerleft = scale(new ImageIcon(Menu.getRes("/assets6/Images4/playerleft.png")));
+        playerright = scale(new ImageIcon(Menu.getRes("/assets6/Images4/playerright.png")));
 
         tiles = new JLabel[mapWidth * mapHeight];
         character = new JLabel[mapWidth * mapHeight];
@@ -290,6 +290,38 @@ public class Q3PD6 implements KeyListener {
             JOptionPane.showMessageDialog(frame,"Game is complete!");
             quizCompleted = true;
             frame.dispose();
+            
+            long cur = System.currentTimeMillis() - Group6Map1.startTime;
+            long fastest = Long.MAX_VALUE;
+            try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("gr6fastest.log")))) {fastest = Long.parseLong(reader.readLine());}
+            catch (IOException ex) {}
+            String Scur = String.format("%d min %d sec", cur/60000, (cur/1000)%60);
+            String Sfastest = String.format("%d min %d sec", fastest/60000, (fastest/1000)%60);
+            if(fastest == Long.MAX_VALUE) JOptionPane.showMessageDialog(null, "First finish time: "+Scur);
+            else if(fastest > cur) JOptionPane.showMessageDialog(null, "New record! Fastest finish time: "+Scur);
+            else JOptionPane.showMessageDialog(null, "Current finish time: "+Scur+"\nFastest finish time: "+Sfastest);
+            if(fastest == Long.MAX_VALUE || fastest > cur) 
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("gr6fastest.log")))) {
+                    writer.write(String.valueOf(cur));
+                    writer.newLine();
+                } catch(IOException ex) {}
+            
+            float curError = (float)Group6Map1.wrongAnswers / (float)Group6Map1.answered;
+            float lowest = 2.0f;
+            try (BufferedReader reader = new BufferedReader(new FileReader(Menu.resolveFilePath("error_percentage.log")))) {lowest = Float.parseFloat(reader.readLine());}
+            catch (IOException ex) {}
+            String ScurError = String.format("%.2f%%", curError*100);
+            String Slowest = String.format("%.2f%%", lowest*100);
+            if(lowest == 2.0f) JOptionPane.showMessageDialog(null, "First time! Error%: "+ScurError);
+            else if(lowest > curError) JOptionPane.showMessageDialog(null, "Record broken! Error%: "+ScurError);
+            else JOptionPane.showMessageDialog(null, "Current Error%: "+ScurError+"\nLowest Error%: "+Slowest);
+            if(lowest > curError) 
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter(Menu.resolveFilePath("error_percentage.log")))) {
+                    writer.write(String.valueOf(curError));
+                    writer.newLine();
+                } catch(IOException ex) {}
+            
+            Menu.startNextLevel(6);
         } else {
             JOptionPane.showMessageDialog(frame,"Not enough correct answers. Try again!");
         }
@@ -346,7 +378,7 @@ public class Q3PD6 implements KeyListener {
     }
 
     public static void main(String[] args){
-        Q3PD6 game = new Q3PD6();
+        Group6Map2 game = new Group6Map2();
         game.setFrame();
     }
 }
