@@ -3,20 +3,29 @@ package Cytophobia;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.List;
 
 public class Group6Map1 implements KeyListener {
 
     JFrame frame;
     ImageIcon i1,i2,i3,i4,i5,i6,i7,i8,i9,i10;
     ImageIcon playerup,playerdown,playerleft,playerright;
-    ImageIcon  monsterup, monsterdown, monsterleft, monsterright;
+    ImageIcon monsterstand, monsterup, monsterdown, monsterleft, monsterright;
 
+    JLabel monster;
+    int monsterPosition;
+    
     JLabel tiles[];
     int mapLayout[];
     int mapWidth=16;
     int mapHeight=9;
     int frameWidth=1600;
     int frameHeight=900;
+    
+    JLayeredPane layeredPane;
 
     JLabel character[];
     int characterLayout[];
@@ -51,7 +60,72 @@ public class Group6Map1 implements KeyListener {
     };
 
     boolean[] usedQuestions = new boolean[questions.length];
-
+    
+    int[] dirX = {-1, 0, 1, 0};
+    int[] dirY = {0, -1, 0, 1};
+     
+    public int getNextMPos() {
+        int[] path = new int[mapWidth*mapHeight];
+        int mX = monsterPosition % mapWidth, mY = monsterPosition / mapWidth;
+        int pX = characterPosition % mapWidth, pY = characterPosition / mapWidth;
+        Queue f = new LinkedList<>();
+        List<Integer> visited = new ArrayList<>();
+        f.add(monsterPosition);
+        s: while(!f.isEmpty()) {
+            int cpos = (int)f.poll();
+            int cX = cpos % mapWidth;
+            int cY = cpos / mapWidth;
+            if(cX == pX && cY == pY) break;
+            for(int i = 0; i < 4; ++i) {
+                if((cX + dirX[i]) >= 0 && (cX + dirX[i]) < mapWidth && (cY + dirY[i]) >= 0 && (cY + dirY[i]) < mapHeight) {
+                    if(cX+dirX[i] == mX && cY+dirY[i] == mY) continue;
+                    if(mapLayout[cX+dirX[i]+mapWidth*(cY+dirY[i])] != 3 && mapLayout[cX+dirX[i]+mapWidth*(cY+dirY[i])] != 9) continue;
+                    if(!visited.contains(cX + dirX[i] + (cY + dirY[i])*mapWidth)) {
+                        f.add((cX + dirX[i]) + mapWidth * (cY + dirY[i]));
+                        visited.add(cX + dirX[i] + (cY + dirY[i])*mapWidth);
+                        path[cX + dirX[i] + (cY + dirY[i])*mapWidth] = cX + mapWidth*cY;
+                        if(cX + dirX[i] == pX && cY + dirY[i] == pY) break s;
+                    }
+                }
+            }
+        }
+        int cpos = characterPosition;
+        int prevpos = -1;
+        while(cpos != monsterPosition) {
+            prevpos = cpos;
+            cpos = path[cpos];
+        }
+        return prevpos;
+    }
+    
+    public void setMonsterPos(int x, int y) {
+        monster.setBounds(x*frameWidth/mapWidth, y*frameHeight/mapHeight, frameWidth/mapWidth, frameHeight/mapHeight);
+        monsterPosition = x + y * mapWidth;
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
+    
+    public void moveMonsterToPlayer() {
+        int npos = getNextMPos();
+        if(npos-monsterPosition == mapWidth) monster.setIcon(monsterdown);
+        else if(npos-monsterPosition == -mapWidth) monster.setIcon(monsterup);
+        else if(npos-monsterPosition == 1) monster.setIcon(monsterright);
+        else if(npos-monsterPosition == -1) monster.setIcon(monsterleft);
+        setMonsterPos(npos % mapWidth, npos / mapWidth);
+        
+    }
+    
+    public void spawnMonster() {
+        monster.setVisible(true);
+    }
+    
+    public void setupMonster() {
+        monster = new JLabel(monsterstand);
+        monster.setVisible(false);
+        setMonsterPos(13, 2);
+        layeredPane.add(monster, 2);
+    }
+    
     public Group6Map1() {
         startTime = System.currentTimeMillis();
         answered = 0;
@@ -63,6 +137,11 @@ public class Group6Map1 implements KeyListener {
 
         characterPosition=-1;
 
+        monsterstand = new ImageIcon((new ImageIcon(Menu.getRes("/assets6/Images3/monsterstand.PNG"))).getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));
+        monsterleft = new ImageIcon((new ImageIcon(Menu.getRes("/assets6/Images3/monsterleft.PNG"))).getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));
+        monsterup = new ImageIcon((new ImageIcon(Menu.getRes("/assets6/Images3/monsterup.PNG"))).getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));
+        monsterright = new ImageIcon((new ImageIcon(Menu.getRes("/assets6/Images3/monsterright.PNG"))).getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));
+        monsterdown = new ImageIcon((new ImageIcon(Menu.getRes("/assets6/Images3/monsterdown.PNG"))).getImage().getScaledInstance(frameWidth/mapWidth, frameHeight/mapHeight, Image.SCALE_DEFAULT));
         i1=new ImageIcon(Menu.getRes("/assets6/Images3/1.png"));
         i2=new ImageIcon(Menu.getRes("/assets6/Images3/2.png"));
         i3=new ImageIcon(Menu.getRes("/assets6/Images3/3.png"));
@@ -122,7 +201,7 @@ public class Group6Map1 implements KeyListener {
         tiles = new JLabel[mapWidth*mapHeight];
         character = new JLabel[mapWidth*mapHeight];
 
-        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(frameWidth, frameHeight));
 
         for(int i=0;i<tiles.length;i++){
@@ -155,6 +234,8 @@ public class Group6Map1 implements KeyListener {
                                    frameHeight/mapHeight);
             layeredPane.add(character[i], Integer.valueOf(1));
         }
+        
+        setupMonster();
 
         frame.add(layeredPane);
         frame.addKeyListener(this);
@@ -165,7 +246,8 @@ public class Group6Map1 implements KeyListener {
         frame.setVisible(true);
         frame.requestFocus();
     }
-
+    
+    int c = 0;
     public void keyPressed(KeyEvent e) {
         int next = characterPosition;
         ImageIcon currentSprite = playerdown;
@@ -222,7 +304,9 @@ public class Group6Map1 implements KeyListener {
                 usedQuestions[randomIndex] = true;
             } else if(choice != -1) {
                 JOptionPane.showMessageDialog(frame,"Wrong!");
-                wrongAnswers++;
+                if(++wrongAnswers >= 3) {
+                    spawnMonster();
+                }
             }
         }
 
@@ -238,12 +322,22 @@ public class Group6Map1 implements KeyListener {
                 );
             }
         }
+        if((mapLayout[characterPosition] == 3 || mapLayout[characterPosition] == 9) && monster.isVisible() && ++c >= 2) {
+            c = 0;
+            moveMonsterToPlayer();
+            if(monsterPosition == characterPosition) {
+                JOptionPane.showMessageDialog(frame, "You failed. Re-attempt.");
+                frame.dispose();
+                new Group6Map1();
+            }
+        }
     }
 
     public void keyReleased(KeyEvent e){}
     public void keyTyped(KeyEvent e){}
 
     public static void main(String[] args){
+        System.setProperty("sun.java2d.uiScale", "1.0");
         new Group6Map1();
     }
 }
