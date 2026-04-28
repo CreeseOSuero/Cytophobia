@@ -85,7 +85,7 @@ public class Group9Map2 extends JPanel implements KeyListener {
         playerLeft = new ImageIcon(Menu.getRes("/assets9/left2.PNG")).getImage();
         playerRight = new ImageIcon(Menu.getRes("/assets9/right2.PNG")).getImage();
 
-        keyImage = new ImageIcon(Menu.getRes("/assets9/key.png")).getImage();
+        keyImage = new ImageIcon(Menu.getRes("/assets9/Key.png")).getImage();
         manananggalImage = new ImageIcon(Menu.getRes("/assets9/monster.png")).getImage();
 
         player = new Player(1, 1);
