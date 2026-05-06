@@ -303,11 +303,7 @@ public class Group8Map1 implements KeyListener {
         }
         
         boolean isTransition(int x, int y) {
-            frame.dispose();
-            
-            
-            new Group8Map1();
-            return true;
+            return x >= 28 && x <= 30 && y >= 3 && y <= 5;
         }
     }
     
@@ -347,7 +343,8 @@ public class Group8Map1 implements KeyListener {
         
         // Check transition
         if (mapData.isTransition(playerState.x, playerState.y)) {
-            System.out.println("Transition triggered!");
+            frame.dispose();
+            new Group8Map2();
             return;
         }
         
